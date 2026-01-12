@@ -1,0 +1,95 @@
+\documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage[colorlinks=true,allcolors=black]{hyperref}
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+\usetikzlibrary{matrix, calc, decorations}
+
+
+% link to database file
+\usepackage[backend=biber]{biblatex}
+\addbibresource{/home/ralf/Projekte/LitDatabase/liblatexbase.bib}
+
+\usepackage[left=1in,right=1in,top=1in,bottom=.5in,includeheadfoot]{geometry}
+%\usepackage[colorlinks=true,allcolors=black]{hyperref}
+\usepackage{url}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2ex}
+
+\renewcommand{\arraystretch}{1.2}  %vertical stretch of arrays
+
+\newcommand{\BF}{\mathbb{F}}
+
+% for conversion see https://www.glukhov.org/de/post/2025/11/converting-latex-to-markdown-tools-and-workflows/
+% pandoc document.tex -t markdown+tex_math_dollars -o document.md
+% pandoc document.tex --bibliography=refs.bib --citeproc -o document.md
+% pandoc gf2vs.tex -t markdown_strict+tex_math_dollars+raw_tex --bibliography=/home/ralf/Projekte/LitDatabase/liblatexbase.bib --citeproc -o gf2vs.md
+
+\title{Vector space $\BF_2^n$}
+\author{Ralf Pöppel \\ \url{mailto:ralf@poeppel-familie.de}}
+\date{2026-01-12}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This article is a supplemental documentation to the package gf2vs. 
+It descibes the vector space $\BF_2^n$ based on the finite field of order 2 or Galois field $GF(2)$ of size $n$. \cite{wikipedia_en_2026_GaloisField}
+\end{abstract}
+
+\section*{Field $\BF_2$}
+The finite field of order 2 has 2 elements $\BF_2 = \{0, 1\}$ and the operations addition  $+$ and multiplication $\cdot$. For the
+definition see equation (\ref{def:fieldoperations}).
+\begin{equation}
+\begin{array}{r l l l l}
++ : & 0 + 0 = 0, & 0 + 1 = 1, & 1 + 0 = 1, & 1 + 1 = 0, \\
+\cdot : & 0 \cdot 0 = 0, & 0 \cdot 1 = 0, & 1 \cdot 0 = 0, & 1 \cdot 1 = 1. \\
+\end{array} \label{def:fieldoperations}
+\end{equation}
+Each of the 2 operations of the field $\BF_2$ satisfy the group axioms \cite{wikipedia_en_2026_GroupMathematics} for the groups $G_+ : (\BF_2, +)$ and $G_{\cdot} : (\BF_2, \cdot)$. For reference the group axioms are repeated here. We use the symbol $\circ$ to denote the binary operations $+, \cdot$.
+\begin{description}
+\item[Associativity]  \ \\
+$\forall a, b, c \in G: (a \circ b) \circ c = a \circ (b \circ c)$.
+\item[Identity element $e$] \ \\
+$\exists e \in G, \forall a \in G:  e \circ a = a \text{ and }  a \circ e = a$, $e$ is unique.
+\item[Inverse element $a^{-1}$] \ \\
+$\forall a \in G \enspace \exists b \in G : a \circ b = e \text{ and } b \circ a = e, e$ identity element, $ b $ is unique $\forall a$, notation $b = a^{-1}$.
+\end{description}
+
+We can look at the field from an algebraic point of view or from a logic view. In logic the field can be seen as the boolean variables $F = 0$ and $T = 1$. The boolean operations are disjunction $\vee$ \cite{wikipedia_en_2025_InclusiveOr}, 
+contravalence~$\oplus$~ \cite{wikipedia_en_2025_ExclusiveOr} and 
+conjunction $\wedge$ \cite{wikipedia_en_2025_LogicalConjunction} the definition is repeated in equation (\ref{def:booleanoperation}).
+\begin{equation}
+\begin{array}{r l l l l}
+\vee : & 0 \vee 0 = 0, & 0 \vee 1 = 1, & 1 \vee 0 = 1, & 1 \vee 1 = 1, \\
+\oplus : & 0 \oplus 0 = 0, & 0 \oplus 1 = 1, & 1 \oplus 0 = 1, & 1 \oplus 1 = 0, \\
+\wedge : & 0 \wedge 0 = 0, & 0 \wedge 1 = 0, & 1 \wedge 0 = 0, & 1 \wedge 1 = 1. \\
+\end{array} \label{def:booleanoperation}
+\end{equation}
+Please note the operations $\oplus$ and $\wedge$ are identically defined as $+$ and $\cdot$ and hence satisfy the group axioms.
+But the operation $\vee$ does not satisfy the group axioms, there is no inverse element. In the remaining chapters we will use the 
+notation $+, \cdot$ for the operations only.
+
+\section*{Vector Space $\BF_2^n$}
+We define the vector space 
+$\BF_2^n$ over the field $\BF_2$ as set $V$ of vectors $v$ of $n$ elements of the field together with the 
+binary operation addition~$u + v = w, \enspace u, v, w \in V$ and the binary function scalar multiplication~$a \cdot v = w, \enspace a \in \BF_2, v, w \in V$. We apply the addition element-wise and we multiply the scalar with each element of the vector.
+This definition is similar to the definition in \cite{wikipedia_en_2025_VectorSpace}.
+
+
+
+\newpage
+\printbibliography
+
+\end{document}
+
