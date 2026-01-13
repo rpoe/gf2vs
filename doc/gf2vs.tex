@@ -7,6 +7,7 @@
 \usepackage[colorlinks=true,allcolors=black]{hyperref}
 \usepackage{csquotes}
 \usepackage{enumitem}
+\usepackage{newtxmath}
 
 \usepackage{tikz}
 \usepackage{pgfplots}
@@ -29,7 +30,10 @@
 
 \renewcommand{\arraystretch}{1.2}  %vertical stretch of arrays
 
+\newcommand{\BE}{\mathbb{E}}
 \newcommand{\BF}{\mathbb{F}}
+\newcommand{\0}{\vmathbb{0}}
+\newcommand{\1}{\vmathbb{1}}
 
 % for conversion see https://www.glukhov.org/de/post/2025/11/converting-latex-to-markdown-tools-and-workflows/
 % pandoc document.tex -t markdown+tex_math_dollars -o document.md
@@ -48,7 +52,7 @@ It descibes the vector space $\BF_2^n$ based on the finite field of order 2 or G
 \end{abstract}
 
 \section*{Field $\BF_2$}
-The finite field of order 2 has 2 elements $\BF_2 = \{0, 1\}$ and the operations addition  $+$ and multiplication $\cdot$. For the
+The finite field of order 2 has 2 elements $\BF_2 = \{0, 1\}$ and the operations addition~ $+$ and multiplication~$\cdot$. For the
 definition see equation (\ref{def:fieldoperations}).
 \begin{equation}
 \begin{array}{r l l l l}
@@ -56,6 +60,8 @@ definition see equation (\ref{def:fieldoperations}).
 \cdot : & 0 \cdot 0 = 0, & 0 \cdot 1 = 0, & 1 \cdot 0 = 0, & 1 \cdot 1 = 1. \\
 \end{array} \label{def:fieldoperations}
 \end{equation}
+We may use the notation $a b$ instead of $a \cdot b$ omitting the multiplication sign if there is no ambiguity.
+
 Each of the 2 operations of the field $\BF_2$ satisfy the group axioms \cite{wikipedia_en_2026_GroupMathematics} for the groups $G_+ : (\BF_2, +)$ and $G_{\cdot} : (\BF_2, \cdot)$. For reference the group axioms are repeated here. We use the symbol $\circ$ to denote the binary operations $+, \cdot$.
 \begin{description}
 \item[Associativity]  \ \\
@@ -85,6 +91,62 @@ We define the vector space
 $\BF_2^n$ over the field $\BF_2$ as set $V$ of vectors $v$ of $n$ elements of the field together with the 
 binary operation addition~$u + v = w, \enspace u, v, w \in V$ and the binary function scalar multiplication~$a \cdot v = w, \enspace a \in \BF_2, v, w \in V$. We apply the addition element-wise and we multiply the scalar with each element of the vector.
 This definition is similar to the definition in \cite{wikipedia_en_2025_VectorSpace}.
+
+We use the notation $v = (x_i)$ for the vector $v$ with the components $x_i$ .
+
+In addition we define 2 constants:
+\begin{description}
+\item[Zeros]  \ \\
+$\0$ Zero vector were all components are $0$.
+\item[Ones] \ \\
+$\1$ Vector were all components are $1$.
+\end{description}
+
+The axioms of a vector space are satisfied  \cite{wikipedia_en_2025_VectorSpace}:
+\begin{description}
+\item[Associativity of vector addition]  \ \\
+$u + (v + w) = (u + v) + w, \forall u, v, w \in \BF_2^n$.
+\item[Commutativity of vector addition] \ \\
+$u + v = v + u, \forall u, v \in \BF_2^n$.
+\item[Identity element of vector addition] \ \\
+$\exists \0 \in \BF_2^n : v + \0 = v, \forall v \in \BF_1^n$.
+\item[Inverse elements of vector addition] \ \\
+$\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v + (-v) = \0, -v = v$, \enspace each vector is its own additive inverse.
+\item[Compatibility of scalar multiplication with field multiplication] \ \\
+$a (b v) = (a b ) v, \enspace a, b \in \BF_2, v \in \BF_2^n$.
+\item[Identity element of scalar multiplication] \ \\
+$1 v = v, \enspace 1 \in \BF_2, v \in \BF_2^n$, \enspace $1$ is the multiplicative identity of $\BF_2$.
+\item[Distributivity of scalar multiplication with respect to vector addition] \ \\
+$a (u + v) = a u + a v, \enspace a \in \BF_2, u, v \in \BF_2^n$.
+\item[Distributivity of scalar multiplication with respect to field addition] \ \\
+$(a + b) v = a v + b v, \enspace a, b \in \BF_2, v \in \BF_2^n$.
+\end{description}
+
+We use some more definitions:
+\begin{description}
+\item[Unit vector]  \ \\
+We define the unit vectors $e_i$ of the vector space as the vectors where all elements except the $i$th~element $x_i$ are $0$ and
+$x_i = 1$. \\
+$e_i = (x_i) : x_i = 1 \wedge x_j = 0, i \ne j, x_i, x_j \in \BF_2, e_i \in \BF_2^n$.
+\item[Generating system] \ \\
+We define the subspace $\BE = \{e_i\}$, $\BE = \subset \BF_2^n$.
+The vectors $e_i$ form a generating system. Obviously each vector $v$ of $\BF_2^n$ is a linear combination of the scalars $a_i$ and the $e_i$. \\
+$\forall v \in BF_2^n : v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, e_i \in \BE$.
+So the $\BE$ is a span of $\BF_2^n$. In this vector space it is the only span. And the decomposition of a vector $v$ in a linear combination
+of unit vectors $e_i$ is unique.
+\item[Basis] \ \\
+The subspace $\BE$ is the one and only basis of the vector space $\BF_2^n$. 
+\item[Index] \ \\
+We name $i$ of $e_i$ the index of a unit vector in the basis.
+\item[Norm] \ \\
+We define the Norm $|v|$ of a vector $v \in \BF_2^n$ to be its Hamming weight \cite{wikipedia_en_2025_HammingWeight}. In this case the count of ones of the vector.
+\end{description}
+
+
+
+
+
+
 
 
 
