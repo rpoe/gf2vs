@@ -19,6 +19,43 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{rp:gopkg:gf2vs}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=fcd632149e6ab9b0604bf1186ae29645}{%
+           family={Poeppel},
+           familyi={P\bibinitperiod},
+           given={Ralf},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{fcd632149e6ab9b0604bf1186ae29645}
+      \strng{fullhash}{fcd632149e6ab9b0604bf1186ae29645}
+      \strng{fullhashraw}{fcd632149e6ab9b0604bf1186ae29645}
+      \strng{bibnamehash}{fcd632149e6ab9b0604bf1186ae29645}
+      \strng{authorbibnamehash}{fcd632149e6ab9b0604bf1186ae29645}
+      \strng{authornamehash}{fcd632149e6ab9b0604bf1186ae29645}
+      \strng{authorfullhash}{fcd632149e6ab9b0604bf1186ae29645}
+      \strng{authorfullhashraw}{fcd632149e6ab9b0604bf1186ae29645}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{6}
+      \field{month}{1}
+      \field{title}{Package documentation gf2vs}
+      \field{urlday}{10}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{version}{v1.0.0}
+      \field{year}{2026}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://pkg.go.dev/github.com/rpoe/gf2vs
+      \endverb
+      \verb{url}
+      \verb https://pkg.go.dev/github.com/rpoe/gf2vs
+      \endverb
+    \endentry
     \entry{wikipedia_en_2025_ExclusiveOr}{misc}{}{}
       \name{author}{1}{}{%
         {{hash=b6aea1a416c89509a7df1cbb69249cb6}{%

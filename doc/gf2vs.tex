@@ -32,6 +32,7 @@
 
 \newcommand{\BE}{\mathbb{E}}
 \newcommand{\BF}{\mathbb{F}}
+\newcommand{\BZ}{\mathbb{Z}}
 \newcommand{\0}{\vmathbb{0}}
 \newcommand{\1}{\vmathbb{1}}
 
@@ -42,13 +43,14 @@
 
 \title{Vector space $\BF_2^n$}
 \author{Ralf Pöppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-01-12}
+\date{2026-01-14}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-This article is a supplemental documentation to the package gf2vs. 
-It descibes the vector space $\BF_2^n$ based on the finite field of order 2 or Galois field $GF(2)$ of size $n$. \cite{wikipedia_en_2026_GaloisField}
+This article is a supplemental documentation to the go package gf2vs \cite{rp:gopkg:gf2vs}. The package implements data types and functions 
+modeling the vector space $\BF_2^n$.
+The vector space $\BF_2^n$  of size $n$ is based on the finite field of order 2 or Galois field $GF(2)$ \cite{wikipedia_en_2026_GaloisField}. We use $GF(2)$ to model binary values, or bits. We consider the properties of the vector space of bit vectors.
 \end{abstract}
 
 \section*{Field $\BF_2$}
@@ -62,7 +64,7 @@ definition see equation (\ref{def:fieldoperations}).
 \end{equation}
 We may use the notation $a b$ instead of $a \cdot b$ omitting the multiplication sign if there is no ambiguity.
 
-Each of the 2 operations of the field $\BF_2$ satisfy the group axioms \cite{wikipedia_en_2026_GroupMathematics} for the groups $G_+ : (\BF_2, +)$ and $G_{\cdot} : (\BF_2, \cdot)$. For reference the group axioms are repeated here. We use the symbol $\circ$ to denote the binary operations $+, \cdot$.
+Each of the 2 operations of the field $\BF_2$ satisfy the group axioms \cite{wikipedia_en_2026_GroupMathematics} for the groups $G_+ : (\BF_2, +)$ and $G_{\cdot} : (\BF_2, \cdot)$. in addition both operations are commutative. For reference the group axioms are repeated here. We use the symbol $\circ$ to denote the binary operations $+, \cdot$.
 \begin{description}
 \item[Associativity]  \ \\
 $\forall a, b, c \in G: (a \circ b) \circ c = a \circ (b \circ c)$.
@@ -70,11 +72,13 @@ $\forall a, b, c \in G: (a \circ b) \circ c = a \circ (b \circ c)$.
 $\exists e \in G, \forall a \in G:  e \circ a = a \text{ and }  a \circ e = a$, $e$ is unique.
 \item[Inverse element $a^{-1}$] \ \\
 $\forall a \in G \enspace \exists b \in G : a \circ b = e \text{ and } b \circ a = e, e$ identity element, $ b $ is unique $\forall a$, notation $b = a^{-1}$.
+\item[Commutivity] \ \\
+$a \circ b= b \circ a$.
 \end{description}
 
 We can look at the field from an algebraic point of view or from a logic view. In logic the field can be seen as the boolean variables $F = 0$ and $T = 1$. The boolean operations are disjunction $\vee$ \cite{wikipedia_en_2025_InclusiveOr}, 
 contravalence~$\oplus$~ \cite{wikipedia_en_2025_ExclusiveOr} and 
-conjunction $\wedge$ \cite{wikipedia_en_2025_LogicalConjunction} the definition is repeated in equation (\ref{def:booleanoperation}).
+conjunction $\wedge$ \cite{wikipedia_en_2025_LogicalConjunction}. The definition is repeated in equation (\ref{def:booleanoperation}).
 \begin{equation}
 \begin{array}{r l l l l}
 \vee : & 0 \vee 0 = 0, & 0 \vee 1 = 1, & 1 \vee 0 = 1, & 1 \vee 1 = 1, \\
@@ -84,17 +88,22 @@ conjunction $\wedge$ \cite{wikipedia_en_2025_LogicalConjunction} the definition 
 \end{equation}
 Please note the operations $\oplus$ and $\wedge$ are identically defined as $+$ and $\cdot$ and hence satisfy the group axioms.
 But the operation $\vee$ does not satisfy the group axioms, there is no inverse element. In the remaining chapters we will use the 
-notation $+, \cdot$ for the operations only.
+notation $+, \cdot, \vee$ for the operations only.
 
 \section*{Vector Space $\BF_2^n$}
 We define the vector space 
 $\BF_2^n$ over the field $\BF_2$ as set $V$ of vectors $v$ of $n$ elements of the field together with the 
-binary operation addition~$u + v = w, \enspace u, v, w \in V$ and the binary function scalar multiplication~$a \cdot v = w, \enspace a \in \BF_2, v, w \in V$. We apply the addition element-wise and we multiply the scalar with each element of the vector.
+binary operation addition and the binary function scalar multiplication \ref{def:vectoroperations}.
+\begin{equation}
+u + v = w, \enspace u, v, w \in V,  \quad
+a \cdot v = w, \enspace a \in \BF_2, v, w \in V.
+\end{equation}
+ We apply the addition element-wise and we multiply the scalar with each element of the vector.
 This definition is similar to the definition in \cite{wikipedia_en_2025_VectorSpace}.
 
-We use the notation $v = (x_i)$ for the vector $v$ with the components $x_i$ .
+We use the notation $(v_i) := v$ for the vector $v$ with the components $v_i$ .
 
-In addition we define 2 constants:
+In addition we define 2 constants of $\BF_2^n$:
 \begin{description}
 \item[Zeros]  \ \\
 $\0$ Zero vector were all components are $0$.
@@ -105,11 +114,11 @@ $\1$ Vector were all components are $1$.
 The axioms of a vector space are satisfied  \cite{wikipedia_en_2025_VectorSpace}:
 \begin{description}
 \item[Associativity of vector addition]  \ \\
-$u + (v + w) = (u + v) + w, \forall u, v, w \in \BF_2^n$.
+$u + (v + w) = (u + v) + w, \enspace \forall u, v, w \in \BF_2^n$.
 \item[Commutativity of vector addition] \ \\
-$u + v = v + u, \forall u, v \in \BF_2^n$.
+$u + v = v + u, \enspace \forall u, v \in \BF_2^n$.
 \item[Identity element of vector addition] \ \\
-$\exists \0 \in \BF_2^n : v + \0 = v, \forall v \in \BF_1^n$.
+$\exists \0 \in \BF_2^n : v + \0 = v, \enspace \forall v \in \BF_1^n$.
 \item[Inverse elements of vector addition] \ \\
 $\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v + (-v) = \0, -v = v$, \enspace each vector is its own additive inverse.
 \item[Compatibility of scalar multiplication with field multiplication] \ \\
@@ -122,24 +131,47 @@ $a (u + v) = a u + a v, \enspace a \in \BF_2, u, v \in \BF_2^n$.
 $(a + b) v = a v + b v, \enspace a, b \in \BF_2, v \in \BF_2^n$.
 \end{description}
 
-We use some more definitions:
+In this vector space we are not limited to the operations vector addition and scalar multiplication. We can use the boolean operations too.
+\begin{description}
+\item[Complement, Not]  \ \\
+$\overline v = \1 - v = \1 + v$, swap all bits.
+\item[Disjunction, Or] \ \\
+$u \vee v = (u_i) \vee (v_i) = (u_i \vee v_i)$, element wise Or.
+\item[Contravalence, Xor] \ \\
+$u \oplus v = u + v = (u_i) + (v_i) = (u_i + v_i)$, element wise xor, duplicate of vector addition.
+\item[Conjunction, And] \ \\
+$u \wedge v = (u_i) \cdot (v_i) = (u_i \cdot v_i)$, element wise And.
+\end{description}
+As we apply the operations element wise, we satisfy the laws of associativity and commutativity.
+
+We use some more definitions to cover the further properties of a vector space:
 \begin{description}
 \item[Unit vector]  \ \\
-We define the unit vectors $e_i$ of the vector space as the vectors where all elements except the $i$th~element $x_i$ are $0$ and
-$x_i = 1$. \\
-$e_i = (x_i) : x_i = 1 \wedge x_j = 0, i \ne j, x_i, x_j \in \BF_2, e_i \in \BF_2^n$.
+We define the unit vectors $e_i, i = 1, \dots, n$ of the vector space as the vectors where the $i$th~element is $x_i = 1$ and all other elements are $0$. 
+\begin{flalign*}
+& e_i = (x_k), & \\
+& x_k = \left\{ \begin{array}{ll} 1, & k = i, \\ 0, & k \ne i,  \\ \end{array} \right. x_k \in \BF_2, \enspace e_i \in \BF_2^n. & \\
+\end{flalign*}
 \item[Generating system] \ \\
-We define the subspace $\BE = \{e_i\}$, $\BE = \subset \BF_2^n$.
-The vectors $e_i$ form a generating system. Obviously each vector $v$ of $\BF_2^n$ is a linear combination of the scalars $a_i$ and the $e_i$. \\
-$\forall v \in BF_2^n : v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, e_i \in \BE$.
-So the $\BE$ is a span of $\BF_2^n$. In this vector space it is the only span. And the decomposition of a vector $v$ in a linear combination
+We define the subspace $\BE = \{e_i\}$, $\BE  \subset \BF_2^n$ of vectors $e_i$.
+The subspace $\BE$ forms a generating system. Obviously each vector $v$ of $\BF_2^n$ is a linear combination of the scalars $a_i,$ and the $e_i$.
+\begin{flalign*}
+&  v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, \enspace e_i \in \BE, \quad \forall v \in \BF_2^n. &
+\end{flalign*}
+So the subset $\BE$ is a span of $\BF_2^n$. In this vector space it is the only span. And the decomposition of a vector $v$ in a linear combination
 of unit vectors $e_i$ is unique.
 \item[Basis] \ \\
 The subspace $\BE$ is the one and only basis of the vector space $\BF_2^n$. 
 \item[Index] \ \\
-We name $i$ of $e_i$ the index of a unit vector in the basis.
+We name $i = 1, \dots n$ of $e_i$ the index of a unit vector in the basis.
 \item[Norm] \ \\
-We define the Norm $|v|$ of a vector $v \in \BF_2^n$ to be its Hamming weight \cite{wikipedia_en_2025_HammingWeight}. In this case the count of ones of the vector.
+We define the Norm $|v|$ of a vector $v \in \BF_2^n$ to be its Hamming weight \cite{wikipedia_en_2025_HammingWeight}. In this case the count of ones of the vector. The value of the norm is an element of the set $\{0, 1, \dots n\} \ne \BF_2, n > 2$, In contrast to usual vector spaces for example on $\BZ$, where the norm of a vector is an element of~$\BZ$.
+\item[Inner product]
+We define the inner product of 2 vectors, to be the norm of the product of 2 vectors: \\
+$< u, v > = | u \cdot v |$.
+\item[Orthogonality] \ \\
+$< u, v > = 0$, \\
+we say 2 vectors are orthogonal if the inner product is $0$.  Please note the inner product of any vector with $\0$ is $0$.
 \end{description}
 
 
