@@ -43,9 +43,36 @@
       \field{howpublished}{\url{https://pkg.go.dev/github.com/rpoe/gf2vs}}
       \field{month}{1}
       \field{note}{[Online; accessed 10-January-2026]}
-      \field{title}{Package documentation gf2vs}
-      \field{version}{v1.0.0}
+      \field{title}{Go package documentation gf2vs}
       \field{year}{2026}
+      \field{dateera}{ce}
+    \endentry
+    \entry{Mathworld2025:L1-Norm}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=819197bfeff32a3f58d49b2a3eb0a580}{%
+           family={Weisstein},
+           familyi={W\bibinitperiod},
+           given={Eric\bibnamedelima W.},
+           giveni={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{fullhash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{fullhashraw}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{bibnamehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{authorbibnamehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{authornamehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{authorfullhash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{authorfullhashraw}{819197bfeff32a3f58d49b2a3eb0a580}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{day}{27}
+      \field{howpublished}{\url{https://mathworld.wolfram.com/L1-Norm.html}}
+      \field{month}{7}
+      \field{note}{[Online; accessed 09-October-2025]}
+      \field{title}{$L^1-Norm$ From MathWorld--A Wolfram Resource}
+      \field{year}{2025}
       \field{dateera}{ce}
     \endentry
     \entry{wikipedia_en_2025_ExclusiveOr}{misc}{}{}
@@ -192,7 +219,7 @@
       \field{title}{Logical disjunction --- {Wikipedia}{,} The Free Encyclopedia}
       \field{year}{2025}
     \endentry
-    \entry{wikipedia_en_2025_VectorSpace}{misc}{}{}
+    \entry{wikipedia_en_2025_NormMathematics}{misc}{}{}
       \name{author}{1}{}{%
         {{hash=b6aea1a416c89509a7df1cbb69249cb6}{%
            family={{Wikipedia contributors}},
@@ -207,6 +234,30 @@
       \strng{authorfullhash}{b6aea1a416c89509a7df1cbb69249cb6}
       \strng{authorfullhashraw}{b6aea1a416c89509a7df1cbb69249cb6}
       \field{extraname}{7}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=Norm_(mathematics)&oldid=1326013131}}
+      \field{note}{[Online; accessed 14-January-2026]}
+      \field{title}{Norm (mathematics) --- {Wikipedia}{,} The Free Encyclopedia}
+      \field{year}{2025}
+    \endentry
+    \entry{wikipedia_en_2025_VectorSpace}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=b6aea1a416c89509a7df1cbb69249cb6}{%
+           family={{Wikipedia contributors}},
+           familyi={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{fullhash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{fullhashraw}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{bibnamehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{authorbibnamehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{authornamehash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{authorfullhash}{b6aea1a416c89509a7df1cbb69249cb6}
+      \strng{authorfullhashraw}{b6aea1a416c89509a7df1cbb69249cb6}
+      \field{extraname}{8}
       \field{sortinit}{W}
       \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
       \field{labelnamesource}{author}
