@@ -40,21 +40,13 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{day}{6}
+      \field{howpublished}{\url{https://pkg.go.dev/github.com/rpoe/gf2vs}}
       \field{month}{1}
+      \field{note}{[Online; accessed 10-January-2026]}
       \field{title}{Package documentation gf2vs}
-      \field{urlday}{10}
-      \field{urlmonth}{1}
-      \field{urlyear}{2026}
       \field{version}{v1.0.0}
       \field{year}{2026}
       \field{dateera}{ce}
-      \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://pkg.go.dev/github.com/rpoe/gf2vs
-      \endverb
-      \verb{url}
-      \verb https://pkg.go.dev/github.com/rpoe/gf2vs
-      \endverb
     \endentry
     \entry{wikipedia_en_2025_ExclusiveOr}{misc}{}{}
       \name{author}{1}{}{%

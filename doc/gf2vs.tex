@@ -1,29 +1,21 @@
 \documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath,amsthm,amssymb}
-\usepackage[colorlinks=true,allcolors=black]{hyperref}
 \usepackage{csquotes}
 \usepackage{enumitem}
-\usepackage{newtxmath}
-
-\usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18}
-\usetikzlibrary{datavisualization}
-\usetikzlibrary{datavisualization.formats.functions}
-\usetikzlibrary{matrix, calc, decorations}
-
+\usepackage{newtxtext,newtxmath}
 
 % link to database file
 \usepackage[backend=biber]{biblatex}
 \addbibresource{/home/ralf/Projekte/LitDatabase/liblatexbase.bib}
 
 \usepackage[left=1in,right=1in,top=1in,bottom=.5in,includeheadfoot]{geometry}
-%\usepackage[colorlinks=true,allcolors=black]{hyperref}
-\usepackage{url}
+
+\usepackage[colorlinks=true,allcolors=black]{hyperref}
+\setcounter{biburllcpenalty}{9000}% Kleinbuchstaben
+\setcounter{biburlucpenalty}{9000}% Großbuchstaben
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2ex}
@@ -37,12 +29,10 @@
 \newcommand{\1}{\vmathbb{1}}
 
 % for conversion see https://www.glukhov.org/de/post/2025/11/converting-latex-to-markdown-tools-and-workflows/
-% pandoc document.tex -t markdown+tex_math_dollars -o document.md
-% pandoc document.tex --bibliography=refs.bib --citeproc -o document.md
 % pandoc gf2vs.tex -t markdown_strict+tex_math_dollars+raw_tex --bibliography=/home/ralf/Projekte/LitDatabase/liblatexbase.bib --citeproc -o gf2vs.md
 
 \title{Vector space $\BF_2^n$}
-\author{Ralf Pöppel \\ \url{mailto:ralf@poeppel-familie.de}}
+\author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
 \date{2026-01-14}
 \begin{document}
 \maketitle
@@ -93,10 +83,11 @@ notation $+, \cdot, \vee$ for the operations only.
 \section*{Vector Space $\BF_2^n$}
 We define the vector space 
 $\BF_2^n$ over the field $\BF_2$ as set $V$ of vectors $v$ of $n$ elements of the field together with the 
-binary operation addition and the binary function scalar multiplication \ref{def:vectoroperations}.
+binary operation addition and the binary function scalar multiplication (\ref{def:vectoroperations}).
 \begin{equation}
 u + v = w, \enspace u, v, w \in V,  \quad
-a \cdot v = w, \enspace a \in \BF_2, v, w \in V.
+a \cdot v = w, \enspace a \in \BF_2, v, w \in V. 
+\label{def:vectoroperations}
 \end{equation}
  We apply the addition element-wise and we multiply the scalar with each element of the vector.
 This definition is similar to the definition in \cite{wikipedia_en_2025_VectorSpace}.
@@ -173,14 +164,6 @@ $< u, v > = | u \cdot v |$.
 $< u, v > = 0$, \\
 we say 2 vectors are orthogonal if the inner product is $0$.  Please note the inner product of any vector with $\0$ is $0$.
 \end{description}
-
-
-
-
-
-
-
-
 
 \newpage
 \printbibliography
