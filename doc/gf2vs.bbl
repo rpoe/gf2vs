@@ -19,6 +19,88 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{Fischer2020}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=fad316c1ade2382d28e85754c3839cdc}{%
+           family={Fischer},
+           familyi={F\bibinitperiod},
+           given={Gerd},
+           giveni={G\bibinitperiod}}}%
+        {{hash=c7a38df9a49be3cd27e7a13b00993259}{%
+           family={Springborn},
+           familyi={S\bibinitperiod},
+           given={Boris},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {de}%
+      }
+      \list{location}{1}{%
+        {Wiesbaden, Germany}%
+      }
+      \list{publisher}{1}{%
+        {Springer Spektrum}%
+      }
+      \strng{namehash}{71f882bc6bf079ea05dad5992b4c4a92}
+      \strng{fullhash}{71f882bc6bf079ea05dad5992b4c4a92}
+      \strng{fullhashraw}{71f882bc6bf079ea05dad5992b4c4a92}
+      \strng{bibnamehash}{71f882bc6bf079ea05dad5992b4c4a92}
+      \strng{authorbibnamehash}{71f882bc6bf079ea05dad5992b4c4a92}
+      \strng{authornamehash}{71f882bc6bf079ea05dad5992b4c4a92}
+      \strng{authorfullhash}{71f882bc6bf079ea05dad5992b4c4a92}
+      \strng{authorfullhashraw}{71f882bc6bf079ea05dad5992b4c4a92}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{19}
+      \field{title}{Lineare Algebra: Eine Einführung für Studienanfänger}
+      \field{year}{2020}
+      \verb{file}
+      \verb :/home/ralf/Buecher/Algebra/Fischer-Springborn2020_Book_LineareAlgebra.pdf:PDF
+      \endverb
+    \endentry
+    \entry{knuth:taocp_v4_f0}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
+           family={Knuth},
+           familyi={K\bibinitperiod},
+           given={Donald\bibnamedelima E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Addison-Wesley}%
+      }
+      \strng{namehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{fullhash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{fullhashraw}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{bibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authorbibnamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authornamehash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authorfullhash}{ec08e6f01da5f3814f28a70c89c64656}
+      \strng{authorfullhashraw}{ec08e6f01da5f3814f28a70c89c64656}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{subtitle}{Introduction to Combinatorical Algorithms and Boolean Functions}
+      \field{title}{The Art of Computer Programming, Vol 4, Fasc 0}
+      \field{urlday}{17}
+      \field{urlmonth}{1}
+      \field{urlyear}{2018}
+      \field{volume}{4 Fascicle 0}
+      \field{year}{2008}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/TAOCP/fasc0a.pdf:PDF;:/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/TAOCP/fasc0a.ps.gz:gz;:/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/TAOCP/fasc0b.pdf:PDF;:/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/TAOCP/fasc0b.ps.gz:gz;:/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/TAOCP/fasc0c.pdf:PDF;:/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/TAOCP/fasc0c.ps.gz:gz
+      \endverb
+      \verb{urlraw}
+      \verb https://www-cs-faculty.stanford.edu/~knuth/fasc0a.ps.gz
+      \endverb
+      \verb{url}
+      \verb https://www-cs-faculty.stanford.edu/~knuth/fasc0a.ps.gz
+      \endverb
+    \endentry
     \entry{rp:gopkg:gf2vs}{misc}{}{}
       \name{author}{1}{}{%
         {{hash=fcd632149e6ab9b0604bf1186ae29645}{%
@@ -75,7 +157,7 @@
       \field{year}{2025}
       \field{dateera}{ce}
     \endentry
-    \entry{wikipedia_en_2025_ExclusiveOr}{misc}{}{}
+    \entry{wikipedia_en_2025_DistributiveProperty}{misc}{}{}
       \name{author}{1}{}{%
         {{hash=b6aea1a416c89509a7df1cbb69249cb6}{%
            family={{Wikipedia contributors}},
@@ -94,12 +176,15 @@
       \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=Exclusive_or&oldid=1316886803}}
-      \field{note}{[Online; accessed 12-January-2026]}
-      \field{title}{Exclusive or --- {Wikipedia}{,} The Free Encyclopedia}
+      \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=Distributive_property&oldid=1329322251}}
+      \field{note}{[Online; accessed 28-January-2026]}
+      \field{title}{Distributive property --- {Wikipedia}{,} The Free Encyclopedia}
       \field{year}{2025}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Algebra/wikipedia_en_2025_Distributive_property.pdf:PDF
+      \endverb
     \endentry
-    \entry{wikipedia_en_2026_GaloisField}{misc}{}{}
+    \entry{wikipedia_en_2025_ExclusiveOr}{misc}{}{}
       \name{author}{1}{}{%
         {{hash=b6aea1a416c89509a7df1cbb69249cb6}{%
            family={{Wikipedia contributors}},
@@ -118,10 +203,10 @@
       \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=Finite_field&oldid=1330855394}}
+      \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=Exclusive_or&oldid=1316886803}}
       \field{note}{[Online; accessed 12-January-2026]}
-      \field{title}{Finite field --- {Wikipedia}{,} The Free Encyclopedia}
-      \field{year}{2026}
+      \field{title}{Exclusive or --- {Wikipedia}{,} The Free Encyclopedia}
+      \field{year}{2025}
     \endentry
     \entry{wikipedia_en_2026_GroupMathematics}{misc}{}{}
       \name{author}{1}{}{%
