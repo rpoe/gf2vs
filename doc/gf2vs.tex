@@ -73,6 +73,14 @@ axioms~\cite{wikipedia_en_2026_GroupMathematics}\footnote{We cite Wikipedia for 
 \end{equation}
 The negation of $1$ in $\BF_2$ is computed as $(- 1)\mod 2 = 1$
 
+\subsubsection{Complement}
+
+\begin{equation}
+\begin{array}{r l l l l}
+\neg : \BF_2 \rightarrow \BF_2, & \neg x = 1 - x, & \neg 0 = 1, & \neg1 = 0. \\
+\end{array}
+\end{equation}
+
 \subsubsection{Value}
 We define the mapping value $| x |$ of  an element $x$ of $\BF_2$:
 \begin{equation}
@@ -159,35 +167,64 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 \end{equation}
 \end{description}
 
+\section{Vector space $\BF_2^n$}
 
-
-\section*{Vector space $\BF_2^n$}
-
-We define the vector space
-$\BF_2^n$ over the field $\BF_2$ as the set $V$ of vectors $v$ with $n$ elements of the field, together with the
-binary operation of vector addition and the binary function of scalar multiplication, see~\eqref{def:vectoroperations}.
-This definition is similar to the one in~\cite{wikipedia_en_2025_VectorSpace}.
-We use the notation $v := (v_i)$ for the vector $v$ with components $v_i$.
-
+\subsection{Elements of the vector space}
+We define a bit vector $x$ of size $n$ as a tupel $(x_i)$ or vector $x$  of values $x_i \in \BF_2$:
 \begin{equation}
-u \oplus v = w, \enspace u, v, w \in V, \quad
-a \cdot v = w, \enspace a \in \BF_2, \; v, w \in V.
-\label{def:vectoroperations}
+x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2
 \end{equation}
 
-We apply the addition element-wise and we multiply the scalar with each element of the vector.
+We define the set of all bit vectors of size $n$ see \cite{Fischer2020} 2.4.1:
+\begin{equation}
+\BF_2^n := \{x =  (x_1, \dots, x_n) : x_i \in \BF_2\}
+\end{equation}
 
-In addition we define two distinguished elements of $\BF_2^n$:
-
+In addition we define two distinguished constant elements of $\BF_2^n$:
 \begin{description}
 \item[Zero] \ \\
 $\0$ zero vector, all components are $0$.
 \item[Ones] \ \\
-$\1$ vector, all components are $1$.
+$\1$ ones vector, all components are $1$.
 \end{description}
 
-The axioms of a vector space are satisfied~\cite{wikipedia_en_2025_VectorSpace}:
+\subsection{Operations on vectors}
 
+We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020} 2.4.1 and \cite{knuth:taocp_v4_f1} (1), (2), (3).
+\begin{equation}
+\left.
+\begin{array}{rrcrl}
+\sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
+\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
+\& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
+| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
+\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
+\end{array} 
+\right\} i = 1, \dots, n.
+\label{def:vectoroperations}
+\end{equation}
+
+We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for vectors of size $n$ here:
+\begin{flalign}
+& x \oplus y =  y \oplus x, \quad x \& y = y \& x, \quad x | y = y | x;  &\\
+& (x \oplus y) \oplus z = x \oplus (y \oplus z), \quad (x \& y) \& z = x \& (y \& z), \quad (x | y) | z = x | (y | z); &\\
+& (x \oplus y) \& z = (x \& z) \oplus (y \& z); &\\
+& (x \& y) | z = (x | z) \& (y | z), \quad (x | y) \& z = (x | z) \& (y | z); &\\
+& x \oplus y = (x \& y) \oplus (x | y); &\\
+& (x \& y) | x = x, \quad (x | y) \& x = x; \\
+& \sim \0 = \1, \quad \sim \1 = \0; & \\
+& x \oplus \0 = x, \quad x \& \0 = \0, \quad x | \0 = x; & \\
+& x \oplus x = \0, \quad x \& x = x, \quad x | x = x; & \\
+& x \oplus \1 = \sim x, \quad x \& \1 = x, \quad x | \1 = \1; & \\
+& x \oplus (\sim x) = \1, \quad x \& (\sim x) = \0, \quad x | (\sim x) = \1; & \\
+& - (x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y), \quad \sim ( x \& y) = (\sim x) | (\sim y), \quad \sim(x | y) = (\sim x) \& (\sim y); &
+\end{flalign}
+
+
+\subsection{Axioms of vector space}
+The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, defines a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. 
+
+The axioms of a vector space are satisfied:
 \begin{description}
 \item[Associativity of vector addition] \ \\
 $u \oplus (v \oplus w) = (u \oplus v) \oplus w, \enspace \forall u, v, w \in \BF_2^n$.
@@ -198,20 +235,20 @@ $\exists \0 \in \BF_2^n : v \oplus \0 = v, \enspace \forall v \in \BF_2^n$.
 \item[Inverse elements of vector addition] \ \\
 $\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v \oplus (-v) = \0$, and $-v = v$, i.e.\ each vector is its own additive inverse.
 \item[Compatibility of scalar multiplication with field multiplication] \ \\
-$a (b v) = (ab) v, \enspace a, b \in \BF_2, \; v \in \BF_2^n$.
+$\lambda (\eta v) = (\lambda \eta) v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
 \item[Identity element of scalar multiplication] \ \\
 $1 v = v, \enspace 1 \in \BF_2, \; v \in \BF_2^n$, where $1$ is the multiplicative identity of $\BF_2$.
 \item[Distributivity of scalar multiplication with respect to vector addition] \ \\
-$a (u \oplus v) = a u \oplus a v, \enspace a \in \BF_2, \; u, v \in \BF_2^n$.
+$\lambda (u \oplus v) = \lambda u \oplus \lambda v, \enspace \lambda \in \BF_2, \; u, v \in \BF_2^n$.
 \item[Distributivity of scalar multiplication with respect to field addition] \ \\
-$(a \oplus b) v = a v \oplus b v, \enspace a, b \in \BF_2, \; v \in \BF_2^n$.
+$(\lambda + \eta) v = \lambda v + \eta v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
 \end{description}
 
-In this vector space we are not limited to the operations vector addition and scalar multiplication. We can use the Boolean operations as well.
+In the vector space $\BF_2^n$ we are not limited to the operations vector addition and scalar multiplication. We can use the Boolean operations as well.
 
 \begin{description}
-\item[Complement, Not] \ \\
-$\overline v = \1 - v = \1 \oplus v$, swap all bits.
+\item[Negation, Complement, Not] \ \\
+$\sim v = \1 - v = \1 \oplus v$, swap all bits.
 \item[Disjunction, Or] \ \\
 $u \vee v = (u_i) \vee (v_i) = (u_i \vee v_i)$, element-wise Or.
 \item[Exclusive or, Xor] \ \\
