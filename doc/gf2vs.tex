@@ -27,6 +27,7 @@
 \newcommand{\BC}{\mathbb{C}}
 \newcommand{\BE}{\mathbb{E}}
 \newcommand{\BF}{\mathbb{F}}
+\newcommand{\BQ}{\mathbb{Q}}
 \newcommand{\BR}{\mathbb{R}}
 \newcommand{\BZ}{\mathbb{Z}}
 \newcommand{\0}{\vmathbb{0}}
@@ -35,7 +36,7 @@
 % for conversion see https://www.glukhov.org/de/post/2025/11/converting-latex-to-markdown-tools-and-workflows/
 % pandoc gf2vs.tex -t markdown_strict+tex_math_dollars+raw_tex --bibliography=/home/ralf/Projekte/LitDatabase/liblatexbase.bib --citeproc -o gf2vs.md
 
-\title{Vector space $\BF_2^n$}
+\title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
 \date{2026-01-28}
 
@@ -44,25 +45,36 @@
 \maketitle
 
 \begin{abstract}
-This article is a supplementary documentation to the Go package \texttt{gf2vs}~\cite{rp:gopkg:gf2vs}. The package implements data types and functions
-modeling the vector space $\BF_2^n$.
-
-The vector space $\BF_2^n$ of dimension $n$ is based on the finite field of order $2$, the Galois field $GF(2)$. We use $GF(2)$ to model binary values, or bits, and provide the properties of the vector space of bit vectors.
+This article is a supplementary documentation to the Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs}. 
+The package implements data types and functions for the vector space of bit vectors.
 \end{abstract}
 
-%~\cite{wikipedia_en_2026_GaloisField}
+\section{Introduction}
 
-\section{Field $\BF_2$}
+Bit vectors are very common in computer science. They are used in for integers, combinatorial algorithms and cryptography. 
+Usually bit vectors are used for logical or arithmetic operations. The vector space of bit vectors is examined relatively rarely.
+
+Bits are based on the the finite set of integers of order $2$. This set with the operations addition and multiplication modulo 2 satisfy the axioms of a field. This finite field is named Galois Field \cite{wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. On this field there is the vector space $\BF_2^n$. 
+
+The aim of this article is to document the properties of the vector space of bit vectors $\BF_2^n$, as implemented in the Go package~
+\texttt{gf2vs}. His is a brief reference of the properties collected from several sources.
+
+\section{Field $GF(2)$}
 
 \subsection{Supporting Set}
 
-The supporting set of $GF(2) = \BF_2$ is $S = \{0, 1\}$. This set equivalent to $\BZ/\BZ2$ the cyclic set of order 2. This set hold the values of a bit in computer science. In logic we have the boolean values False $F = 0$ and True $T = 1$ \cite{knuth:taocp_v4_f0}.
+The supporting set of $GF(2) = \BF_2$ is 
+\begin{equation}
+\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ
+\end{equation}
+the subset $\BZ_2$ of $\BZ$. This set is equal to $\BZ/\BZ2$ the cyclic set of order 2. This set hold the values of a bit in computer science. 
+In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
 
 \subsection{Operations}
 The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2 see \cite{Fischer2020} ch. 2.2.6.
 
 The operations addition and multiplication of the field $\BF_2$ satisfies the group 
-axioms~\cite{wikipedia_en_2026_GroupMathematics}\footnote{We cite Wikipedia for reused wordings.}, both operations are commutative.
+axioms~\cite{wikipedia_en_2026_GroupMathematics}, both operations are commutative.
 
 \subsubsection{Negation}
 
@@ -81,11 +93,12 @@ The negation of $1$ in $\BF_2$ is computed as $(- 1)\mod 2 = 1$
 \end{array}
 \end{equation}
 
-\subsubsection{Value}
-We define the mapping value $| x |$ of  an element $x$ of $\BF_2$:
+\subsubsection{Absolut-value}
+We define the mapping absolute-value $| x |$ of  an element $x$ of $\BF_2$:
 \begin{equation}
 \begin{array}{r l l l l}
 | x | : \BF_2 \rightarrow \BZ, &| 0 | = 0, & | 1  | = 1. \\
+\label{def:value}
 \end{array}
 \end{equation}
 
@@ -154,7 +167,7 @@ The operation $\vee$ does not satisfy the group axioms; there is no inverse elem
 
 \subsection{Field axioms}
 
-The set $K := \BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020} ch. 2.3.3.
+The set $K := \BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020} ch. 2.3.3. We use~$K$ as symbol for any field satisfying the field axioms.
 \begin{description}
 \item[K1] $K$ with the addition $+$ is an abelian group.
 \item[K2] $K^* := K\setminus \{0\}$ with the multiplication $\cdot$ for every element of $K^*$ is an abelian group.
@@ -169,7 +182,8 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 
 \section{Vector space $\BF_2^n$}
 
-\subsection{Elements of the vector space}
+\subsection{Vectors}
+Bit vectors are the elements of the vector space.
 We define a bit vector $x$ of size $n$ as a tupel $(x_i)$ or vector $x$  of values $x_i \in \BF_2$:
 \begin{equation}
 x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2
@@ -195,6 +209,7 @@ We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020}
 \left.
 \begin{array}{rrcrl}
 \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
+|\ |: \BF_2^n \rightarrow \BZ^n, & |x| = y & \Leftrightarrow & x_i = y_i, \\
 \oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
 \& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
 | : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
@@ -204,7 +219,7 @@ We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020}
 \label{def:vectoroperations}
 \end{equation}
 
-We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for vectors of size $n$ here:
+We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for bit vectors of size $n$ here:
 \begin{flalign}
 & x \oplus y =  y \oplus x, \quad x \& y = y \& x, \quad x | y = y | x;  &\\
 & (x \oplus y) \oplus z = x \oplus (y \oplus z), \quad (x \& y) \& z = x \& (y \& z), \quad (x | y) | z = x | (y | z); &\\
@@ -259,7 +274,8 @@ $u \wedge v = (u_i) \cdot (v_i) = (u_i \cdot v_i)$, element-wise And.
 
 As we apply the operations element-wise, we satisfy the laws of associativity and commutativity.
 
-We use some more definitions to cover further properties of the vector space:
+\subsection{Vector space base}
+We give here the definition of the basis, the norm and the scalar product implemented in the Go package.
 
 \begin{description}
 \item[Unit vector] \ \\
@@ -267,44 +283,63 @@ We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the 
 \begin{flalign*}
 & e_i = (x_k), & \\
 & x_k = \left\{
-\begin{array}{ll}
-1, & k = i, \\
-0, & k \ne i, \\
+\begin{array}{lll}
+1, &  k = i, & \text{identity element of multiplication},  \\
+0, & k \ne i, & \text{identity element of addition},  \\
 \end{array}
 \right.
-\quad x_k \in \BF_2, \enspace e_i \in \BF_2^n. &
+\quad x_k \in K, \enspace e_i \in K^n. &
 \end{flalign*}
 Please note the $e_i$ are linearly independent.
+
+We observe the unit vectors are identical to the unit vectors of the vector spaces $\BF_2^n, \BZ^n, \BQ^n, \BR^n, \BC^n$, all over a field $K$.
 
 \item[Generating system] \ \\
 We define the subset $\BE := \{e_i\}$, $\BE \subset \BF_2^n$, of unit vectors $e_i$.
 The subset $\BE$ forms a generating system. Each vector $v$ of $\BF_2^n$ is a linear combination of scalars $a_i$ and the $e_i$:
-\begin{flalign*}
+\begin{flalign}
 & v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, \enspace e_i \in \BE, \quad \forall v \in \BF_2^n. &
-\end{flalign*}
-For the summation, we can use either the algebraic addition $+$ or the modulo 2 $\oplus$ addition. 
+\label{def:genSystem}
+\end{flalign}
+Here the addition is modulo 2.
+
+Equation (\ref{def:genSystem}) is used equally for each vector space on any field $K$ using the operation addition as defined for the field~ $K$ and the $1$ the identity element of the operation multiplication.
 
 Thus the subset $\BE$ spans $\BF_2^n$. In this vector space it is one spanning set, and the decomposition of a vector $v$ into a linear combination
 of unit vectors $e_i$ is unique. 
 
 \item[Basis] \ \\
-The subset $\BE$ is one basis of the vector space $\BF_2^n$.
+The subset $\BE$ is one basis of the vector space $\BF_2^n$ as it is a basis of every vector space over a field K.
 
 \item[Index] \ \\
 We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the basis.
 
 \item[Norm] \ \\
-We define the norm as a function $p$ of a vector $v \in \BF_2^n$ to be its Hamming weight~\cite{wikipedia_en_2025_HammingWeight}, see \autoref{def:norm}, 
-i.e.\ the number of ones in the vector. In some programming languages like C the function is named popcount(). 
+The addition in the field $\BF_2^n$ is the addition modulo 2. Hence each summation gives one of the values 0 or 1.
+\begin{equation}
+\sum_i^n x_i = \left\{ 
+\begin{array}{lll}
+0, & n \mod 2 = 0, & n \ even, \\
+1, & n \mod 2 = 1, & n \ odd. \\
+\end{array}
+\right.
+\end{equation}
+So each sum will have either the value 0 or the value 1. From this it follows we cannot use any usual definition of a norm for computing the
+length of a vector in $\BF_1^n$.
+
+If we first apply operation $| \ |$ we map a vector from $\BF_2^n \rightarrow \BZ$. On vectors in $\BZ^n$ norms are defined. For example the  $L^1$-norm \cite{Mathworld2025:L1-Norm} of
+a vector~$\| x \|$ sometimes called absolute-value
+norm~\cite{wikipedia_en_2025_NormMathematics}.
+
+We define the norm as a function $p$ of a vector $v \in \BF_2^n$ to be its absolute-value norm using the absolute-value function~ (\ref{def:value}). This is called the Hamming weight~\cite{wikipedia_en_2025_HammingWeight}, see equation~(\ref{def:norm}). 
+This is the number of ones in the vector. In some programming languages like C the function is named popcount(). 
 \begin{flalign}
- p := \parallel v \parallel :  \BF_2^n \rightarrow \BR, \enspace p = \sum_{i=1}^n v_i
+ p := \| v \| :  \BF_2^n \rightarrow \BZ, \enspace p = \sum_{i=1}^n | v_i |
  \label{def:norm}
 \end{flalign}
 This definition is equivalent to the definition of the $L^1$-norm \cite{Mathworld2025:L1-Norm} of
-a vector~$\parallel x \parallel_1$ sometimes called absolute-value
-norm~\cite{wikipedia_en_2025_NormMathematics}.
-The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BR$.
-This definition is in accordance with the definition of the norm of the vector space over $\BC$.
+a vector~$\| x \|_1$.
+The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BZ$.
 Obviously this norm satisfies the axioms of a norm:
 \begin{description}
 \item[Subadditivity / Triangle inequality] \ \\
@@ -314,25 +349,41 @@ $ p(s \cdot x) = s \cdot p(x) \enspace  \forall s \in \BF_2, x \in \BF_2^n$,
 \item[Positive definiteness] \ \\
 $p(x) = 0 \Rightarrow x = \0$.
 \end{description}
-Please note the norm of the unit vectors $\parallel e_i \parallel = 1, \forall i \in \{1, \dots n \}$.
-
-\item[Inner product] \ \\
-We define the inner product or scalar product of two vectors as given in equation (\ref{def:innerproduct}):
+Please note the norm of the unit vectors $\| e_i \| = 1, \forall i \in \{1, \dots n \}$.
+\item[Scalar product] \ \\
+We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{flalign}
-\langle u, v \rangle := 
-\left\{ 
-\begin{array}{ll}
-0, & u \cdot v = \0, \\
-1, & else. \\
-\end{array}
-\right.
+< , > : \BF_2^n \times \BF_2^n \rightarrow \BZ,   < x , y > = z,  \| x \& y \| = \sum_i^n |x_i \cdot y_i| = z,
 \label{def:innerproduct}
 \end{flalign}
-
-\item[Orthogonality] \ \\
-If $\langle u, v \rangle = 0$, we say the two vectors are orthogonal. Note that the inner product of any vector with $\0$ is $0$.
+We can easily verify by computation the properties of the scalar product:
+\begin{description}
+\item[Distributivity]
+\begin{flalign*}
+& <x \oplus x', y > = <x, y> + <x', y>, &\\
+& <x, y \oplus y'> = <x, y> + <x, y'>, & \\
+& <\lambda x, y > = \lambda <x, y>, & \\
+& <x, \lambda y> = \lambda < x, y>, &
+\end{flalign*}
+\item[Commutativity]
+\begin{flalign*}
+& <x, y> = < y, x>, &
+\end{flalign*}
+\item[Positive definiteness]
+\begin{flalign*}
+& <x, x> \enspace \ge 0, \text{ with } <x,x> = 0 \text{ only if } x = \0, &
+\end{flalign*}
+\item[Orthogonality]
+\begin{flalign*}
+& <x, y> = 0, \text{ we say the two vectors are orthogonal.  } &
+\end{flalign*}
 \end{description}
-From this it follows $\BE$ is an orthonormal basis, and this is the only orthonormal basis of $\BF-2^n$.
+
+\item[Orthonormal Basis] \ \\
+With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal basis, and this is the only orthonormal basis of $\BF_2^n$.
+
+\end{description}
+
 
 \newpage
 
