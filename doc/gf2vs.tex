@@ -51,13 +51,15 @@ The package implements data types and functions for the vector space of bit vect
 
 \section{Introduction}
 
-Bit vectors are very common in computer science. They are used in for integers, combinatorial algorithms and cryptography. 
-Usually bit vectors are used for logical or arithmetic operations. The vector space of bit vectors is examined relatively rarely.
+Bit vectors are very common in computer science. They are used in for integers, combinatorial algorithms, error correction 
+\cite{Hamming1950}, cryptography. 
+and for logical and arithmetic operations \cite{knuth:taocp_v4_f0}. 
+All aspects of the vector space of bit vectors are examined relatively rarely.
 
-Bits are based on the the finite set of integers of order $2$. This set with the operations addition and multiplication modulo 2 satisfy the axioms of a field. This finite field is named Galois Field \cite{wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. On this field there is the vector space $\BF_2^n$. 
+Bits are based on the the finite set of integers of order $2$. This set i$\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfy the axioms of a field. This finite field is named Galois Field \cite{wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. On this field there is the vector space $\BF_2^n$. 
 
 The aim of this article is to document the properties of the vector space of bit vectors $\BF_2^n$, as implemented in the Go package~
-\texttt{gf2vs}. His is a brief reference of the properties collected from several sources.
+\texttt{gf2vs}. This is a brief reference of the properties collected from several sources.
 
 \section{Field $GF(2)$}
 
@@ -65,7 +67,7 @@ The aim of this article is to document the properties of the vector space of bit
 
 The supporting set of $GF(2) = \BF_2$ is 
 \begin{equation}
-\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ
+\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ \subset \BR
 \end{equation}
 the subset $\BZ_2$ of $\BZ$. This set is equal to $\BZ/\BZ2$ the cyclic set of order 2. This set hold the values of a bit in computer science. 
 In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
@@ -218,6 +220,7 @@ We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020}
 \right\} i = 1, \dots, n.
 \label{def:vectoroperations}
 \end{equation}
+For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
 
 We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for bit vectors of size $n$ here:
 \begin{flalign}
@@ -227,14 +230,12 @@ We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for 
 & (x \& y) | z = (x | z) \& (y | z), \quad (x | y) \& z = (x | z) \& (y | z); &\\
 & x \oplus y = (x \& y) \oplus (x | y); &\\
 & (x \& y) | x = x, \quad (x | y) \& x = x; \\
-& \sim \0 = \1, \quad \sim \1 = \0; & \\
 & x \oplus \0 = x, \quad x \& \0 = \0, \quad x | \0 = x; & \\
 & x \oplus x = \0, \quad x \& x = x, \quad x | x = x; & \\
 & x \oplus \1 = \sim x, \quad x \& \1 = x, \quad x | \1 = \1; & \\
 & x \oplus (\sim x) = \1, \quad x \& (\sim x) = \0, \quad x | (\sim x) = \1; & \\
 & - (x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y), \quad \sim ( x \& y) = (\sim x) | (\sim y), \quad \sim(x | y) = (\sim x) \& (\sim y); &
 \end{flalign}
-
 
 \subsection{Axioms of vector space}
 The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, defines a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. 

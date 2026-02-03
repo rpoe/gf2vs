@@ -60,6 +60,48 @@
       \verb :/home/ralf/Buecher/Algebra/Fischer-Springborn2020_Book_LineareAlgebra.pdf:PDF
       \endverb
     \endentry
+    \entry{Hamming1950}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=968cf20f5f546315b3e73b135d9fdc38}{%
+           family={Hamming},
+           familyi={H\bibinitperiod},
+           given={R.\bibnamedelimi W.},
+           giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{968cf20f5f546315b3e73b135d9fdc38}
+      \strng{fullhash}{968cf20f5f546315b3e73b135d9fdc38}
+      \strng{fullhashraw}{968cf20f5f546315b3e73b135d9fdc38}
+      \strng{bibnamehash}{968cf20f5f546315b3e73b135d9fdc38}
+      \strng{authorbibnamehash}{968cf20f5f546315b3e73b135d9fdc38}
+      \strng{authornamehash}{968cf20f5f546315b3e73b135d9fdc38}
+      \strng{authorfullhash}{968cf20f5f546315b3e73b135d9fdc38}
+      \strng{authorfullhashraw}{968cf20f5f546315b3e73b135d9fdc38}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Bell System Technical Journal}
+      \field{number}{2}
+      \field{title}{Error detecting and error correcting codes}
+      \field{urlday}{3}
+      \field{urlmonth}{2}
+      \field{urlyear}{2026}
+      \field{volume}{29}
+      \field{year}{1950}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{147\bibrangedash 160}
+      \range{pages}{14}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Logik/Hamming1950_ErrorDetectingCodes.pdf:PDF
+      \endverb
+      \verb{urlraw}
+      \verb https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf
+      \endverb
+      \verb{url}
+      \verb https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf
+      \endverb
+    \endentry
     \entry{knuth:taocp_v4_f0}{book}{}{}
       \name{author}{1}{}{%
         {{hash=ec08e6f01da5f3814f28a70c89c64656}{%
