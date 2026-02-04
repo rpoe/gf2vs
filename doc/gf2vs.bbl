@@ -60,6 +60,42 @@
       \verb :/home/ralf/Buecher/Algebra/Fischer-Springborn2020_Book_LineareAlgebra.pdf:PDF
       \endverb
     \endentry
+    \entry{Forster2016_Analysis_1}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=f8e53a8257ed07acdf13331b689a4e08}{%
+           family={Forster},
+           familyi={F\bibinitperiod},
+           given={Otto},
+           giveni={O\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Wiesbaden}%
+      }
+      \list{publisher}{1}{%
+        {Springer Spektrum;}%
+      }
+      \strng{namehash}{f8e53a8257ed07acdf13331b689a4e08}
+      \strng{fullhash}{f8e53a8257ed07acdf13331b689a4e08}
+      \strng{fullhashraw}{f8e53a8257ed07acdf13331b689a4e08}
+      \strng{bibnamehash}{f8e53a8257ed07acdf13331b689a4e08}
+      \strng{authorbibnamehash}{f8e53a8257ed07acdf13331b689a4e08}
+      \strng{authornamehash}{f8e53a8257ed07acdf13331b689a4e08}
+      \strng{authorfullhash}{f8e53a8257ed07acdf13331b689a4e08}
+      \strng{authorfullhashraw}{f8e53a8257ed07acdf13331b689a4e08}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9783658115449}
+      \field{title}{Analysis / Otto Forster ; 1: Differential- und Integralrechnung einer Veränderlichen}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://www.tib.eu/de/suchen/id/TIBKAT%3A842657355
+      \endverb
+      \verb{url}
+      \verb https://www.tib.eu/de/suchen/id/TIBKAT%3A842657355
+      \endverb
+    \endentry
     \entry{Hamming1950}{article}{}{}
       \name{author}{1}{}{%
         {{hash=968cf20f5f546315b3e73b135d9fdc38}{%
@@ -100,6 +136,49 @@
       \endverb
       \verb{url}
       \verb https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf
+      \endverb
+    \endentry
+    \entry{Hill2004}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=06f232e21586130d67b7dcc141ad1141}{%
+           family={Hill},
+           familyi={H\bibinitperiod},
+           given={Raymond},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Oxford}%
+      }
+      \list{publisher}{1}{%
+        {Clarendon Press;}%
+      }
+      \strng{namehash}{06f232e21586130d67b7dcc141ad1141}
+      \strng{fullhash}{06f232e21586130d67b7dcc141ad1141}
+      \strng{fullhashraw}{06f232e21586130d67b7dcc141ad1141}
+      \strng{bibnamehash}{06f232e21586130d67b7dcc141ad1141}
+      \strng{authorbibnamehash}{06f232e21586130d67b7dcc141ad1141}
+      \strng{authornamehash}{06f232e21586130d67b7dcc141ad1141}
+      \strng{authorfullhash}{06f232e21586130d67b7dcc141ad1141}
+      \strng{authorfullhashraw}{06f232e21586130d67b7dcc141ad1141}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{0198538030}
+      \field{title}{A first course in coding theory}
+      \field{urlday}{29}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2004}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Logik/Hill2004_ First Course in Coding Theory .pdf:PDF
+      \endverb
+      \verb{urlraw}
+      \verb https://sites.math.rutgers.edu/~zeilberg/akherim/RHcoding.pdf
+      \endverb
+      \verb{url}
+      \verb https://sites.math.rutgers.edu/~zeilberg/akherim/RHcoding.pdf
       \endverb
     \endentry
     \entry{knuth:taocp_v4_f0}{book}{}{}
@@ -184,6 +263,107 @@
       \endverb
       \verb{url}
       \verb https://www-cs-faculty.stanford.edu/~knuth/fasc1a.ps.gz
+      \endverb
+    \endentry
+    \entry{Lidl2000}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=e03a7c46e80c4176a35e401e9724d09c}{%
+           family={Lidl},
+           familyi={L\bibinitperiod},
+           given={Rudolf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=e6a906e10e702599bf8ddd1d74d30a77}{%
+           family={Niederreiter},
+           familyi={N\bibinitperiod},
+           given={Harald},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Cambridge}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press;}%
+      }
+      \strng{namehash}{3f186aed01576394a898479ae2354977}
+      \strng{fullhash}{3f186aed01576394a898479ae2354977}
+      \strng{fullhashraw}{3f186aed01576394a898479ae2354977}
+      \strng{bibnamehash}{3f186aed01576394a898479ae2354977}
+      \strng{authorbibnamehash}{3f186aed01576394a898479ae2354977}
+      \strng{authornamehash}{3f186aed01576394a898479ae2354977}
+      \strng{authorfullhash}{3f186aed01576394a898479ae2354977}
+      \strng{authorfullhashraw}{3f186aed01576394a898479ae2354977}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9780511525926}
+      \field{series}{Encyclopedia of mathematics and its applications, volume 20}
+      \field{title}{Finite fields}
+      \field{urlday}{29}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{volume}{20}
+      \field{year}{2000}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.1017/CBO9780511525926
+      \endverb
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Algebra/Lidl2000_Finite_fields.pdf:PDF
+      \endverb
+      \verb{urlraw}
+      \verb https://api.pageplace.de/preview/DT0400.9780511832468_A23680063/preview-9780511832468_A23680063.pdf
+      \endverb
+      \verb{url}
+      \verb https://api.pageplace.de/preview/DT0400.9780511832468_A23680063/preview-9780511832468_A23680063.pdf
+      \endverb
+    \endentry
+    \entry{Lint1988}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=5e821b5a3dcf8d7f2b3d50269ca85388}{%
+           family={Lint},
+           familyi={L\bibinitperiod},
+           given={Jacobus\bibnamedelima H.},
+           giveni={J\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Basel}%
+      }
+      \list{publisher}{1}{%
+        {Birkhäuser Basel;}%
+      }
+      \strng{namehash}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \strng{fullhash}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \strng{fullhashraw}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \strng{bibnamehash}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \strng{authorbibnamehash}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \strng{authornamehash}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \strng{authorfullhash}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \strng{authorfullhashraw}{5e821b5a3dcf8d7f2b3d50269ca85388}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9783034892865}
+      \field{series}{Oberwolfach seminars, 12}
+      \field{title}{Introduction to Coding Theory and Algebraic Geometry}
+      \field{urlday}{3}
+      \field{urlmonth}{2}
+      \field{urlyear}{2026}
+      \field{volume}{12}
+      \field{year}{1988}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.1007/978-3-0348-9286-5
+      \endverb
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Logik/Lint1988_Introduction To Coding Theory And Algebraic Geometry.pdf:PDF
+      \endverb
+      \verb{urlraw}
+      \verb https://theswissbay.ch/pdf/Gentoomen Library/Information Theory/Coding Theory/Introduction To Coding Theory And Algebraic Geometry - Jacobus Van Lint.pdf
+      \endverb
+      \verb{url}
+      \verb https://theswissbay.ch/pdf/Gentoomen%20Library/Information%20Theory/Coding%20Theory/Introduction%20To%20Coding%20Theory%20And%20Algebraic%20Geometry%20-%20Jacobus%20Van%20Lint.pdf
       \endverb
     \endentry
     \entry{rp:gopkg:gf2vs}{misc}{}{}
@@ -391,6 +571,9 @@
       \field{note}{[Online; accessed 13-January-2026]}
       \field{title}{Hamming weight --- {Wikipedia}{,} The Free Encyclopedia}
       \field{year}{2025}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Analysis/wikipedia_en_2025_HammingWeight.pdf:PDF
+      \endverb
     \endentry
     \entry{wikipedia_en_2025_LogicalConjunction}{misc}{}{}
       \name{author}{1}{}{%

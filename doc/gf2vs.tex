@@ -51,17 +51,16 @@ The package implements data types and functions for the vector space of bit vect
 
 \section{Introduction}
 
-Bit vectors are very common in computer science. They are used in for integers, combinatorial algorithms, error correction 
-\cite{Hamming1950}, cryptography. 
-and for logical and arithmetic operations \cite{knuth:taocp_v4_f0}. 
+Bit vectors are very common in computer science. They are used in for integers, combinatorial algorithms, coding theory
+and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}. 
 All aspects of the vector space of bit vectors are examined relatively rarely.
 
-Bits are based on the the finite set of integers of order $2$. This set i$\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfy the axioms of a field. This finite field is named Galois Field \cite{wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. On this field there is the vector space $\BF_2^n$. 
+Bits are based on the the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfy the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. On this field there is the vector space $\BF_2^n$. 
 
 The aim of this article is to document the properties of the vector space of bit vectors $\BF_2^n$, as implemented in the Go package~
 \texttt{gf2vs}. This is a brief reference of the properties collected from several sources.
 
-\section{Field $GF(2)$}
+\section{\texorpdfstring{Field $GF(2)$}{Field GF(2)}}
 
 \subsection{Supporting Set}
 
@@ -69,14 +68,22 @@ The supporting set of $GF(2) = \BF_2$ is
 \begin{equation}
 \BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ \subset \BR
 \end{equation}
-the subset $\BZ_2$ of $\BZ$. This set is equal to $\BZ/\BZ2$ the cyclic set of order 2. This set hold the values of a bit in computer science. 
-In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
+the subset $\BZ_2$ of $\BZ$, which is a subset of  $\BR$. This set is equal to $\BZ/\BZ2$ the cyclic set of order 2. This set hold the values of a bit in computer science. 
+In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}. 
+
 
 \subsection{Operations}
-The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2 see \cite{Fischer2020} ch. 2.2.6.
+The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2 see \cite{Fischer2020} ch. 2.2.6 and \cite{Hill2004}.
 
 The operations addition and multiplication of the field $\BF_2$ satisfies the group 
-axioms~\cite{wikipedia_en_2026_GroupMathematics}, both operations are commutative.
+axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both operations are commutative.
+
+Similarly the operations addition and multiplication of the field $\BR$ satisfies the group 
+axioms~\cite{Fischer2020}, both operations are commutative.
+
+Please note the different definition of the addition in $\BF_2$ and $\BR$.
+
+For reference we give here only the operations for $\BF_2$.
 
 \subsubsection{Negation}
 
@@ -99,10 +106,11 @@ The negation of $1$ in $\BF_2$ is computed as $(- 1)\mod 2 = 1$
 We define the mapping absolute-value $| x |$ of  an element $x$ of $\BF_2$:
 \begin{equation}
 \begin{array}{r l l l l}
-| x | : \BF_2 \rightarrow \BZ, &| 0 | = 0, & | 1  | = 1. \\
+| x | : \BF_2 \rightarrow \BR, &| 0 | = 0, & | 1  | = 1. \\
 \label{def:value}
 \end{array}
 \end{equation}
+We use this mapping for mapping values, when we need the default classical definition of the addition.
 
 \subsubsection{Addition}
 The addition is named exclusive disjunction in logic and XOR \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr} in computer science.
@@ -169,7 +177,7 @@ The operation $\vee$ does not satisfy the group axioms; there is no inverse elem
 
 \subsection{Field axioms}
 
-The set $K := \BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020} ch. 2.3.3. We use~$K$ as symbol for any field satisfying the field axioms.
+The set $K := \BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020, Hill2004}. We use~$K$ as symbol for any field satisfying the field axioms.
 \begin{description}
 \item[K1] $K$ with the addition $+$ is an abelian group.
 \item[K2] $K^* := K\setminus \{0\}$ with the multiplication $\cdot$ for every element of $K^*$ is an abelian group.
@@ -182,7 +190,7 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 \end{equation}
 \end{description}
 
-\section{Vector space $\BF_2^n$}
+\section{\texorpdfstring{Vector space $\BF_2^n$}{Vector space}}
 
 \subsection{Vectors}
 Bit vectors are the elements of the vector space.
@@ -198,10 +206,8 @@ We define the set of all bit vectors of size $n$ see \cite{Fischer2020} 2.4.1:
 
 In addition we define two distinguished constant elements of $\BF_2^n$:
 \begin{description}
-\item[Zero] \ \\
-$\0$ zero vector, all components are $0$.
-\item[Ones] \ \\
-$\1$ ones vector, all components are $1$.
+\item[Zero] $\0$ zero vector, all components are $0$.
+\item[Ones] $\1$ ones vector, all components are $1$.
 \end{description}
 
 \subsection{Operations on vectors}
@@ -211,7 +217,7 @@ We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020}
 \left.
 \begin{array}{rrcrl}
 \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
-|\ |: \BF_2^n \rightarrow \BZ^n, & |x| = y & \Leftrightarrow & x_i = y_i, \\
+|\ |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & x_i = y_i, \\
 \oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
 \& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
 | : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
@@ -220,6 +226,8 @@ We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020}
 \right\} i = 1, \dots, n.
 \label{def:vectoroperations}
 \end{equation}
+We define the operation $| \ |$ for formal mapping of a bit vector from $\BF_2^n$ to $\BR^n$.
+
 For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
 
 We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for bit vectors of size $n$ here:
@@ -240,7 +248,7 @@ We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for 
 \subsection{Axioms of vector space}
 The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, defines a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. 
 
-The axioms of a vector space are satisfied:
+The axioms of a vector space are satisfied for $\BF_2^n$:
 \begin{description}
 \item[Associativity of vector addition] \ \\
 $u \oplus (v \oplus w) = (u \oplus v) \oplus w, \enspace \forall u, v, w \in \BF_2^n$.
@@ -266,7 +274,7 @@ In the vector space $\BF_2^n$ we are not limited to the operations vector additi
 \item[Negation, Complement, Not] \ \\
 $\sim v = \1 - v = \1 \oplus v$, swap all bits.
 \item[Disjunction, Or] \ \\
-$u \vee v = (u_i) \vee (v_i) = (u_i \vee v_i)$, element-wise Or.
+$u | v = (u_i) | (v_i) = (u_i \vee v_i)$, element-wise Or.
 \item[Exclusive or, Xor] \ \\
 $u \oplus v = u \oplus v = (u_i) \oplus (v_i) = (u_i \oplus v_i)$, element-wise Xor, equal to vector addition.
 \item[Conjunction, And] \ \\
@@ -293,7 +301,7 @@ We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the 
 \end{flalign*}
 Please note the $e_i$ are linearly independent.
 
-We observe the unit vectors are identical to the unit vectors of the vector spaces $\BF_2^n, \BZ^n, \BQ^n, \BR^n, \BC^n$, all over a field $K$.
+We observe the identity elements are identical for the fields $\BF_2, \BZ, \BQ, \BR, \BC$ and the unit vectors are identical to the unit vectors of the vector spaces $\BF_2^n, \BZ^n, \BQ^n, \BR^n, \BC^n$, all over a field $K$.
 
 \item[Generating system] \ \\
 We define the subset $\BE := \{e_i\}$, $\BE \subset \BF_2^n$, of unit vectors $e_i$.
@@ -315,7 +323,7 @@ The subset $\BE$ is one basis of the vector space $\BF_2^n$ as it is a basis of 
 \item[Index] \ \\
 We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the basis.
 
-\item[Norm] \ \\
+\item[Norm via Hamming weight] \ \\
 The addition in the field $\BF_2^n$ is the addition modulo 2. Hence each summation gives one of the values 0 or 1.
 \begin{equation}
 \sum_i^n x_i = \left\{ 
@@ -328,19 +336,25 @@ The addition in the field $\BF_2^n$ is the addition modulo 2. Hence each summati
 So each sum will have either the value 0 or the value 1. From this it follows we cannot use any usual definition of a norm for computing the
 length of a vector in $\BF_1^n$.
 
-If we first apply operation $| \ |$ we map a vector from $\BF_2^n \rightarrow \BZ$. On vectors in $\BZ^n$ norms are defined. For example the  $L^1$-norm \cite{Mathworld2025:L1-Norm} of
-a vector~$\| x \|$ sometimes called absolute-value
-norm~\cite{wikipedia_en_2025_NormMathematics}.
+In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} (number of 1-entries) 
+of~ $x \in \{0, 1\}^n$ is defined as:
+\begin{equation}
+w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
+\end{equation}
+and the associated {\em Hamming distance} is:
+\begin{equation}
+d_H(x, y) = w_H(x - y), \text{ over } \BF_2^n.
+\end{equation}
 
-We define the norm as a function $p$ of a vector $v \in \BF_2^n$ to be its absolute-value norm using the absolute-value function~ (\ref{def:value}). This is called the Hamming weight~\cite{wikipedia_en_2025_HammingWeight}, see equation~(\ref{def:norm}). 
-This is the number of ones in the vector. In some programming languages like C the function is named popcount(). 
-\begin{flalign}
- p := \| v \| :  \BF_2^n \rightarrow \BZ, \enspace p = \sum_{i=1}^n | v_i |
- \label{def:norm}
-\end{flalign}
-This definition is equivalent to the definition of the $L^1$-norm \cite{Mathworld2025:L1-Norm} of
-a vector~$\| x \|_1$.
+If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$i, by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms are defined and we get:
+\begin{equation}
+\| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
+\end{equation}
+So the $l_1$-norm on $\BR^n$ see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm} equals the Hamming weight on bit vectors.
+This norm is sometimes called absolute-value
+norm~\cite{wikipedia_en_2025_NormMathematics}. In some programming languages like C the function is named popcount(). In Go it is the function  ~\texttt{OnesCount(uint x) uint} in package~\texttt{math/bits}.
 The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BZ$.
+
 Obviously this norm satisfies the axioms of a norm:
 \begin{description}
 \item[Subadditivity / Triangle inequality] \ \\
@@ -351,12 +365,19 @@ $ p(s \cdot x) = s \cdot p(x) \enspace  \forall s \in \BF_2, x \in \BF_2^n$,
 $p(x) = 0 \Rightarrow x = \0$.
 \end{description}
 Please note the norm of the unit vectors $\| e_i \| = 1, \forall i \in \{1, \dots n \}$.
+
 \item[Scalar product] \ \\
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{flalign}
-< , > : \BF_2^n \times \BF_2^n \rightarrow \BZ,   < x , y > = z,  \| x \& y \| = \sum_i^n |x_i \cdot y_i| = z,
+< , > : \BF_2^n \times \BF_2^n \rightarrow \BR,   < x , y > =  \sum_i^n |x_i \cdot y_i| =  \| x \& y \| = w_H,
 \label{def:innerproduct}
 \end{flalign}
+The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \subset \BR^n$
+\begin{flalign}
+< , > : \BR^n \times \BR^n \rightarrow \BR,   < x , y >  = \sum_i^n x_i \cdot y_i,
+\end{flalign}
+
+
 We can easily verify by computation the properties of the scalar product:
 \begin{description}
 \item[Distributivity]
@@ -378,10 +399,11 @@ We can easily verify by computation the properties of the scalar product:
 \begin{flalign*}
 & <x, y> = 0, \text{ we say the two vectors are orthogonal.  } &
 \end{flalign*}
-\end{description}
+\end{description} 
+In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
 
 \item[Orthonormal Basis] \ \\
-With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal basis, and this is the only orthonormal basis of $\BF_2^n$.
+With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal basis, and this is the only orthonormal basis of $\BF_2^n$. 
 
 \end{description}
 
