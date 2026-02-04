@@ -19,6 +19,50 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{Axler2024}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=2ef085dcf813cb6d9946f19baf038343}{%
+           family={Axler},
+           familyi={A\bibinitperiod},
+           given={Sheldon\bibnamedelima Jay},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Cham}%
+      }
+      \list{publisher}{1}{%
+        {Springer Nature;}%
+      }
+      \strng{namehash}{2ef085dcf813cb6d9946f19baf038343}
+      \strng{fullhash}{2ef085dcf813cb6d9946f19baf038343}
+      \strng{fullhashraw}{2ef085dcf813cb6d9946f19baf038343}
+      \strng{bibnamehash}{2ef085dcf813cb6d9946f19baf038343}
+      \strng{authorbibnamehash}{2ef085dcf813cb6d9946f19baf038343}
+      \strng{authornamehash}{2ef085dcf813cb6d9946f19baf038343}
+      \strng{authorfullhash}{2ef085dcf813cb6d9946f19baf038343}
+      \strng{authorfullhashraw}{2ef085dcf813cb6d9946f19baf038343}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{4}
+      \field{isbn}{9783031410260}
+      \field{title}{Linear Algebra Done Right}
+      \field{urlday}{3}
+      \field{urlmonth}{2}
+      \field{urlyear}{2026}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Algebra/Axler2024_LinearAlgebraDoneRight.pdf:PDF
+      \endverb
+      \verb{urlraw}
+      \verb https://linear.axler.net/LADR4e.pdf
+      \endverb
+      \verb{url}
+      \verb https://linear.axler.net/LADR4e.pdf
+      \endverb
+    \endentry
     \entry{Fischer2020}{book}{}{}
       \name{author}{2}{}{%
         {{hash=fad316c1ade2382d28e85754c3839cdc}{%

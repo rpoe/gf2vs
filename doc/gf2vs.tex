@@ -38,7 +38,7 @@
 
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-01-28}
+\date{2026-02-04}
 
 \begin{document}
 
@@ -103,17 +103,18 @@ The negation of $1$ in $\BF_2$ is computed as $(- 1)\mod 2 = 1$
 \end{equation}
 
 \subsubsection{Absolut-value}
-We define the mapping absolute-value $| x |$ of  an element $x$ of $\BF_2$:
+We define the mapping absolute-value $| x |$ of  an element $x$ of $\BF_2$ to $\BR$:
 \begin{equation}
 \begin{array}{r l l l l}
 | x | : \BF_2 \rightarrow \BR, &| 0 | = 0, & | 1  | = 1. \\
 \label{def:value}
 \end{array}
 \end{equation}
-We use this mapping for mapping values, when we need the default classical definition of the addition.
+We use this mapping, when we need the default classical definition of the addition as in $\BR$.
 
 \subsubsection{Addition}
-The addition is named exclusive disjunction in logic and XOR \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr} in computer science.
+The addition is named exclusive disjunction in logic and XOR \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr}
+in computer science.
 The definition of addition is given in equation \ref{def:opaddition} obeying $(1+1) \mod 2 = 0$.
 \begin{equation}
 \begin{array}{r l l l l}
@@ -181,7 +182,7 @@ The set $K := \BF_2$ with the operations addition and multiplication satisfies t
 \begin{description}
 \item[K1] $K$ with the addition $+$ is an abelian group.
 \item[K2] $K^* := K\setminus \{0\}$ with the multiplication $\cdot$ for every element of $K^*$ is an abelian group.
-\item[K3] distributive property \cite{wikipedia_en_2025_DistributiveProperty} is satisfied $\forall a, b, c \in K$
+\item[K3] distributive property \cite{Axler2024, wikipedia_en_2025_DistributiveProperty} is satisfied $\forall a, b, c \in K$
 \begin{equation}
 \begin{array}{c}
 a \cdot (b + c) = a \cdot b + a \cdot c, \\
@@ -194,7 +195,7 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 
 \subsection{Vectors}
 Bit vectors are the elements of the vector space.
-We define a bit vector $x$ of size $n$ as a tupel $(x_i)$ or vector $x$  of values $x_i \in \BF_2$:
+We define a bit vector $x$ of size $n$ as a tupel $(x_i)$ of values $x_i \in \BF_2$:
 \begin{equation}
 x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2
 \end{equation}
@@ -216,6 +217,7 @@ We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020}
 \begin{equation}
 \left.
 \begin{array}{rrcrl}
+- : \BF_2^n \rightarrow \BF_2^n, & - x = x & \Leftrightarrow & - x_i = x_i \\
 \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
 |\ |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & x_i = y_i, \\
 \oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
@@ -276,54 +278,60 @@ $\sim v = \1 - v = \1 \oplus v$, swap all bits.
 \item[Disjunction, Or] \ \\
 $u | v = (u_i) | (v_i) = (u_i \vee v_i)$, element-wise Or.
 \item[Exclusive or, Xor] \ \\
-$u \oplus v = u \oplus v = (u_i) \oplus (v_i) = (u_i \oplus v_i)$, element-wise Xor, equal to vector addition.
+$u \oplus v = u \oplus v = (u_i) \oplus (v_i) = (u_i + v_i)$, element-wise Xor, equal to vector addition.
 \item[Conjunction, And] \ \\
 $u \wedge v = (u_i) \cdot (v_i) = (u_i \cdot v_i)$, element-wise And.
 \end{description}
 
-As we apply the operations element-wise, we satisfy the laws of associativity and commutativity.
+As we apply the operations element-wise $i = 1, \dots n$,
+we satisfy the laws of associativity and commutativity inherited from the field.
 
 \subsection{Vector space base}
-We give here the definition of the basis, the norm and the scalar product implemented in the Go package.
+We give here the definition of the base, the norm and the scalar product implemented in the Go package.
+The symbol $K$ is used in definitions applicable by each of the fields $\BF_2^n, \BQ, \BR, \BC$.
 
-\begin{description}
-\item[Unit vector] \ \\
-We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the vectors where the $i$th element is $x_i = 1$ and all other elements are $0$.
-\begin{flalign*}
-& e_i = (x_k), & \\
-& x_k = \left\{
+\subsubsection{Unit vector}
+We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the vectors
+where the $i$th element is $x_i = 1$ and all other elements are $0$.
+\begin{equation}
+e_i = (x_k),
+\enspace e_i \in K^n,
+\enspace x_k \in K,
+\enspace x_k = \left\{
 \begin{array}{lll}
-1, &  k = i, & \text{identity element of multiplication},  \\
-0, & k \ne i, & \text{identity element of addition},  \\
+1, & k = i, & \text{identity element of multiplication},  \\
+0, & k \ne i, & \text{identity element of addition}. \\
 \end{array}
 \right.
-\quad x_k \in K, \enspace e_i \in K^n. &
-\end{flalign*}
+\end{equation}
 Please note the $e_i$ are linearly independent.
 
-We observe the identity elements are identical for the fields $\BF_2, \BZ, \BQ, \BR, \BC$ and the unit vectors are identical to the unit vectors of the vector spaces $\BF_2^n, \BZ^n, \BQ^n, \BR^n, \BC^n$, all over a field $K$.
+We observe the identity elements are identical for the fields and the unit vectors are
+identical for all vector spaces over a field $K$.
 
-\item[Generating system] \ \\
+\subsubsection{Generating system}
 We define the subset $\BE := \{e_i\}$, $\BE \subset \BF_2^n$, of unit vectors $e_i$.
 The subset $\BE$ forms a generating system. Each vector $v$ of $\BF_2^n$ is a linear combination of scalars $a_i$ and the $e_i$:
-\begin{flalign}
-& v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, \enspace e_i \in \BE, \quad \forall v \in \BF_2^n. &
+\begin{equation}
+v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, \enspace e_i \in \BE, \quad \forall v \in \BF_2^n.
 \label{def:genSystem}
-\end{flalign}
+\end{equation}
 Here the addition is modulo 2.
 
-Equation (\ref{def:genSystem}) is used equally for each vector space on any field $K$ using the operation addition as defined for the field~ $K$ and the $1$ the identity element of the operation multiplication.
+Equation (\ref{def:genSystem}) is used equally for each vector space on any field $K$ using
+the operation addition as defined for the field~ $K$ and the $1$ the identity element of the operation multiplication.
 
-Thus the subset $\BE$ spans $\BF_2^n$. In this vector space it is one spanning set, and the decomposition of a vector $v$ into a linear combination
+Thus the subset $\BE$ spans $\BF_2^n$. In this vector space it is one spanning set,
+and the decomposition of a vector $v$ into a linear combination
 of unit vectors $e_i$ is unique. 
 
-\item[Basis] \ \\
-The subset $\BE$ is one basis of the vector space $\BF_2^n$ as it is a basis of every vector space over a field K.
+\subsubsection{Base}
+The subset $\BE$ is one base of the vector space $\BF_2^n$. As it is a base of every vector space over a field K.
 
-\item[Index] \ \\
-We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the basis.
+\subsubsection{Index}
+We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
 
-\item[Norm via Hamming weight] \ \\
+\subsubsection{Norm via Hamming weight}
 The addition in the field $\BF_2^n$ is the addition modulo 2. Hence each summation gives one of the values 0 or 1.
 \begin{equation}
 \sum_i^n x_i = \left\{ 
@@ -336,46 +344,57 @@ The addition in the field $\BF_2^n$ is the addition modulo 2. Hence each summati
 So each sum will have either the value 0 or the value 1. From this it follows we cannot use any usual definition of a norm for computing the
 length of a vector in $\BF_1^n$.
 
-In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} (number of 1-entries) 
+In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries) 
 of~ $x \in \{0, 1\}^n$ is defined as:
 \begin{equation}
-w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
+\begin{array}{ll}
+w_H : \BF_2^n \rightarrow \BZ, & w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
+\end{array}
 \end{equation}
-and the associated {\em Hamming distance} is:
+and the associated {\em Hamming distance} $d_H$ is:
 \begin{equation}
-d_H(x, y) = w_H(x - y), \text{ over } \BF_2^n.
+\begin{array}{ll}
+d_H : \BF_2^n \times \BF_2^n \rightarrow \BZ, & d_H(x, y) = w_H(x - y).
+\end{array}
 \end{equation}
 
-If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$i, by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms are defined and we get:
+If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$,
+by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms are defined and we get:
 \begin{equation}
 \| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
 \end{equation}
 So the $l_1$-norm on $\BR^n$ see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm} equals the Hamming weight on bit vectors.
 This norm is sometimes called absolute-value
-norm~\cite{wikipedia_en_2025_NormMathematics}. In some programming languages like C the function is named popcount(). In Go it is the function  ~\texttt{OnesCount(uint x) uint} in package~\texttt{math/bits}.
-The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BZ$.
+norm~\cite{wikipedia_en_2025_NormMathematics}.
+The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BZ \subset \BR$.
+
+In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(uint~x)~uint} in package~\texttt{math/bits}.
 
 Obviously this norm satisfies the axioms of a norm:
 \begin{description}
 \item[Subadditivity / Triangle inequality] \ \\
-$p(x+y) \leq p(x)+p(y) \enspace \forall x,y \in \BF_2^n$,
+$w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
 \item[Absolute homogeneity] \ \\
-$ p(s \cdot x) = s \cdot p(x) \enspace  \forall s \in \BF_2, x \in \BF_2^n$, 
+$ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, x \in \BF_2^n$, 
 \item[Positive definiteness] \ \\
-$p(x) = 0 \Rightarrow x = \0$.
+$w_H(x) = 0 \Rightarrow x = \0$.
 \end{description}
 Please note the norm of the unit vectors $\| e_i \| = 1, \forall i \in \{1, \dots n \}$.
 
-\item[Scalar product] \ \\
+\subsubsection{Scalar product} \ \\
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
-\begin{flalign}
-< , > : \BF_2^n \times \BF_2^n \rightarrow \BR,   < x , y > =  \sum_i^n |x_i \cdot y_i| =  \| x \& y \| = w_H,
+\begin{equation}
+\begin{array}{ll}
+< , > : \BF_2^n \times \BF_2^n \rightarrow \BR, & < x , y > =  \sum_i^n |x_i \cdot y_i| =  \| x \& y \| = w_H,
+\end{array}
 \label{def:innerproduct}
-\end{flalign}
+\end{equation}
 The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \subset \BR^n$
-\begin{flalign}
-< , > : \BR^n \times \BR^n \rightarrow \BR,   < x , y >  = \sum_i^n x_i \cdot y_i,
-\end{flalign}
+\begin{equation}
+\begin{array}{ll}
+< , > : \BR^n \times \BR^n \rightarrow \BR, & < x , y >  = \sum_i^n x_i \cdot y_i,
+\end{array}
+\end{equation}
 
 
 We can easily verify by computation the properties of the scalar product:
@@ -402,13 +421,10 @@ We can easily verify by computation the properties of the scalar product:
 \end{description} 
 In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
 
-\item[Orthonormal Basis] \ \\
-With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal basis, and this is the only orthonormal basis of $\BF_2^n$. 
+\subsubsection{Orthonormal Basis}
+With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$. 
 
-\end{description}
-
-
-\newpage
+% \newpage
 
 \printbibliography
 
