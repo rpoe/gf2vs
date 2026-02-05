@@ -51,11 +51,11 @@ The package implements data types and functions for the vector space of bit vect
 
 \section{Introduction}
 
-Bit vectors are very common in computer science. They are used in for integers, combinatorial algorithms, coding theory
+Bit vectors are very common in computer science. They are used for integers, combinatorial algorithms, coding theory,
 and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}. 
 All aspects of the vector space of bit vectors are examined relatively rarely.
 
-Bits are based on the the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfy the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. On this field there is the vector space $\BF_2^n$. 
+Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$. 
 
 The aim of this article is to document the properties of the vector space of bit vectors $\BF_2^n$, as implemented in the Go package~
 \texttt{gf2vs}. This is a brief reference of the properties collected from several sources.
@@ -68,12 +68,12 @@ The supporting set of $GF(2) = \BF_2$ is
 \begin{equation}
 \BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ \subset \BR
 \end{equation}
-the subset $\BZ_2$ of $\BZ$, which is a subset of  $\BR$. This set is equal to $\BZ/\BZ2$ the cyclic set of order 2. This set hold the values of a bit in computer science. 
+the subset $\BZ_2$ of $\BZ$, which is a subset of $\BR$. This set is equal to $\BZ/\BZ2$, the cyclic group of order~2. This set holds the values of a bit in computer science. 
 In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}. 
 
 
 \subsection{Operations}
-The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2 see \cite{Fischer2020} ch. 2.2.6 and \cite{Hill2004}.
+The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite{Fischer2020} ch.~2.2.6 and \cite{Hill2004}.
 
 The operations addition and multiplication of the field $\BF_2$ satisfies the group 
 axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both operations are commutative.
@@ -102,8 +102,8 @@ The negation of $1$ in $\BF_2$ is computed as $(- 1)\mod 2 = 1$
 \end{array}
 \end{equation}
 
-\subsubsection{Absolut-value}
-We define the mapping absolute-value $| x |$ of  an element $x$ of $\BF_2$ to $\BR$:
+\subsubsection{Absolute value}
+We define the mapping absolute value $|x|$ of an element $x$ of $\BF_2$ to $\BR$:
 \begin{equation}
 \begin{array}{r l l l l}
 | x | : \BF_2 \rightarrow \BR, &| 0 | = 0, & | 1  | = 1. \\
@@ -155,8 +155,8 @@ The group axioms for the Group $G = \BF_2$ and the operation multiplication are 
 $\forall a, b, c \in G: (a \cdot b) \cdot c = a \cdot (b \cdot c)$.
 \item[Identity element $e = 1$] \ \\
 $\exists e \in G, \forall a \in G: e \cdot a = a \text{ and } a \cdot e = a$, $e= 1$, $e$ is unique.
-\item[Inverse element $a^{-1} = a$] \ \\
-$\forall a \in G, a \ne 0, \enspace \exists a^{-1} \in G : a \cdot a^{-1} = e \text{ and } a^{-1}b \cdot a = e$, $e$ identity element, $a^{-1} = 1$ is the only inverse element.
+\item[Inverse element $a^{-1}$] \ \\
+$\forall a \in G, a \ne 0, \enspace \exists a^{-1} \in G : a \cdot a^{-1} = e \text{ and } a^{-1} \cdot a = e$, $e$ is the identity element; the only invertible element is $1$, hence $a^{-1} = 1$ for $a = 1$.
 \item[Commutativity] \ \\
 $a \cdot b = b \cdot a$.
 \end{description}
@@ -195,7 +195,7 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 
 \subsection{Vectors}
 Bit vectors are the elements of the vector space.
-We define a bit vector $x$ of size $n$ as a tupel $(x_i)$ of values $x_i \in \BF_2$:
+We define a bit vector $x$ of size $n$ as a tuple $(x_i)$ of values $x_i \in \BF_2$:
 \begin{equation}
 x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2
 \end{equation}
@@ -332,17 +332,12 @@ The subset $\BE$ is one base of the vector space $\BF_2^n$. As it is a base of e
 We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
 
 \subsubsection{Norm via Hamming weight}
-The addition in the field $\BF_2^n$ is the addition modulo 2. Hence each summation gives one of the values 0 or 1.
+The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
+In particular, for $x \in \BF_2^n$ we have
 \begin{equation}
-\sum_i^n x_i = \left\{ 
-\begin{array}{lll}
-0, & n \mod 2 = 0, & n \ even, \\
-1, & n \mod 2 = 1, & n \ odd. \\
-\end{array}
-\right.
+\sum_{i=1}^n x_i = w_H(x) \bmod 2.
 \end{equation}
-So each sum will have either the value 0 or the value 1. From this it follows we cannot use any usual definition of a norm for computing the
-length of a vector in $\BF_1^n$.
+From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in $\BF_2^n$.
 
 In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries) 
 of~ $x \in \{0, 1\}^n$ is defined as:
@@ -385,7 +380,7 @@ Please note the norm of the unit vectors $\| e_i \| = 1, \forall i \in \{1, \dot
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{equation}
 \begin{array}{ll}
-< , > : \BF_2^n \times \BF_2^n \rightarrow \BR, & < x , y > =  \sum_i^n |x_i \cdot y_i| =  \| x \& y \| = w_H,
+< , > : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \& y \|_1 = w_H(x \& y),
 \end{array}
 \label{def:innerproduct}
 \end{equation}
