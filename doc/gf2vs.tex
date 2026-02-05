@@ -1,3 +1,4 @@
+
 \documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
@@ -7,17 +8,217 @@
 \usepackage{enumitem}
 \usepackage{newtxtext,newtxmath}
 
-% link to database file
-% \usepackage{natbib} not working
-\usepackage[backend=biber]{biblatex}
-\addbibresource{/home/ralf/Projekte/LitDatabase/liblatexbase.bib}
-
 \usepackage[left=1in,right=1in,top=1in,bottom=.5in,includeheadfoot]{geometry}
 \usepackage[colorlinks=true,allcolors=black]{hyperref}
 
-\setcounter{biburllcpenalty}{9000}% Kleinbuchstaben
-\setcounter{biburlucpenalty}{9000}% Großbuchstaben
+%--- biblatex ----------------------------------------------------
+\usepackage[
+    backend=biber,          % <-- biber muss verwendet werden
+    style=numeric,          % beliebiger Stil (numeric, authoryear, …)
+    sorting=nty,            % Sortierung: name‑year‑title
+    url=true,               % URL‑Felder immer ausgeben
+    urldate=long,           % Datumsformat (z. B. 5 Feb 2026)
+]{biblatex}
 
+% biblatex-specific URL linebreak penalties removed (not needed without biblatex)
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+% Bibliographie‑Datei einbinden
+\addbibresource{gf2vs.bib}
+
+%--- Literaturdatenbank (automatisch erzeugt) --------------------
+\begin{filecontents}{gf2vs.bib}
+@Book{Fischer2020,
+  author    = {Fischer, Gerd and Springborn, Boris},
+  title     = {Lineare Algebra: Eine Einf{\"u}hrung f{\"u}r Studienanf{\"a}nger},
+  edition   = {19},
+  language  = {de},
+  publisher = {Springer Spektrum},
+  address   = {Wiesbaden, Germany},
+  year      = {2020},
+}
+
+@Book{knuth:taocp_v4_f1,
+  author    = {Donald E. Knuth},
+  title     = {The Art of Computer Programming, Vol 4, Fasc 1},
+  publisher = {Addison-Wesley},
+  subtitle  = {Bitwise Tricks and Techniques},
+  volume    = {4 Fascicle 1},
+  year      = {2008},
+}
+
+@Misc{Mathworld2025:L1-Norm,
+  author       = {Weisstein, Eric W.},
+  date         = {2025-07-27},
+  title        = {$L^1-Norm$ From MathWorld--A Wolfram Resource},
+  howpublished = {\url{https://mathworld.wolfram.com/L1-Norm.html}},
+  note         = {[Online; accessed 09-October-2025]},
+}
+
+@Misc{wikipedia_en_2026_GaloisField,
+  author       = {{Wikipedia contributors}},
+  title        = {Finite field --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Finite_field&oldid=1330855394}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2026},
+}
+
+@Misc{wikipedia_en_2025_ExclusiveOr,
+  author       = {{Wikipedia contributors}},
+  title        = {Exclusive or --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Exclusive_or&oldid=1316886803}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2025_InclusiveOr,
+  author       = {{Wikipedia contributors}},
+  title        = {Logical disjunction --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Logical_disjunction&oldid=1317551960}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2025_LogicalConjunction,
+  author       = {{Wikipedia contributors}},
+  title        = {Logical conjunction --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Logical_conjunction&oldid=1324909528}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2026_GroupMathematics,
+  author       = {{Wikipedia contributors}},
+  title        = {Group (mathematics) --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Group_mathematics&oldid=1330839314}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2026},
+}
+
+@Misc{wikipedia_en_2025_VectorSpace,
+  author       = {{Wikipedia contributors}},
+  title        = {Vector space --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Vector_space&oldid=1326882436}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2025_HammingWeight,
+  author       = {{Wikipedia contributors}},
+  title        = {Hamming weight --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Hamming_weight&oldid=1306107874}},
+  note         = {[Online; accessed 13-January-2026]},
+  year         = {2025},
+}
+
+@Misc{rp:gopkg:gf2vs,
+  author       = {Ralf Poeppel},
+  date         = {2026-01-06},
+  title        = {Go package documentation gf2vs},
+  howpublished = {\url{https://pkg.go.dev/github.com/rpoe/gf2vs}},
+  note         = {[Online; accessed 10-January-2026]},
+}
+
+@Misc{wikipedia_en_2025_NormMathematics,
+  author       = {{Wikipedia contributors}},
+  title        = {Norm (mathematics) --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Norm_mathematics&oldid=1326013131}},
+  note         = {[Online; accessed 14-January-2026]},
+  year         = {2025},
+}
+
+@Book{knuth:taocp_v4_f0,
+  author    = {Donald E. Knuth},
+  title     = {The Art of Computer Programming, Vol 4, Fasc 0},
+  publisher = {Addison-Wesley},
+  subtitle  = {Introduction to Combinatorical Algorithms and Boolean Functions},
+  volume    = {4 Fascicle 0},
+  year      = {2008},
+}
+
+@Misc{wikipedia_en_2025_DistributiveProperty,
+  author       = {{Wikipedia contributors}},
+  title        = {Distributive property --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Distributive_property&oldid=1329322251}},
+  note         = {[Online; accessed 28-January-2026]},
+  year         = {2025},
+}
+
+@Book{Lidl2000,
+  author    = {Lidl, Rudolf and Niederreiter, Harald},
+  title     = {Finite fields},
+  doi       = {10.1017/CBO9780511525926},
+  isbn      = {9780511525926},
+  publisher = {Cambridge University Press;},
+  series    = {Encyclopedia of mathematics and its applications, volume 20},
+  volume    = {20},
+  address   = {Cambridge},
+  year      = {2000},
+}
+
+@Book{Hill2004,
+  author       = {Hill, Raymond},
+  title        = {A first course in coding theory},
+  isbn         = {0198538030},
+  publisher    = {Clarendon Press;},
+  address      = {Oxford},
+  year         = {2004},
+}
+
+@Misc{wikipedia_en_2025_DotProduct,
+  author       = {{Wikipedia contributors}},
+  title        = {Dot product --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Dot_product&oldid=1328631745}},
+  note         = {[Online; accessed 2-February-2026]},
+  year         = {2025},
+}
+
+@Article{Hamming1950,
+  author       = {R. W. Hamming},
+  date         = {1950},
+  journaltitle = {Bell System Technical Journal},
+  title        = {Error detecting and error correcting codes},
+  number       = {2},
+  pages        = {147-160},
+  url          = {https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf},
+  urldate      = {2026-02-03},
+  volume       = {29},
+}
+
+@Book{Lint1988,
+  author    = {Lint, Jacobus H.},
+  title     = {Introduction to Coding Theory and Algebraic Geometry},
+  doi       = {10.1007/978-3-0348-9286-5},
+  isbn      = {9783034892865},
+  publisher = {Birkhäuser Basel;},
+  series    = {Oberwolfach seminars, 12},
+  volume    = {12},
+  address   = {Basel},
+  year      = {1988},
+}
+
+@Book{Axler2024,
+  author    = {Axler, Sheldon Jay},
+  title     = {Linear Algebra Done Right},
+  edition   = {4},
+  isbn      = {9783031410260},
+  publisher = {Springer Nature;},
+  url       = {https://linear.axler.net/LADR4e.pdf},
+  urldate   = {2026-02-03},
+  address   = {Cham},
+  year      = {2024},
+}
+
+@Book{Forster2016_Analysis_1,
+  author    = {Forster, Otto},
+  title     = {Analysis / Otto Forster ; 1: Differential- und Integralrechnung einer Veränderlichen},
+  isbn      = {9783658115449},
+  publisher = {Springer Spektrum;},
+  address   = {Wiesbaden},
+  year      = {2016},
+}
+\end{filecontents}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2ex}
@@ -38,7 +239,7 @@
 
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-02-04}
+\date{2026-02-05}
 
 \begin{document}
 
@@ -335,9 +536,14 @@ We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
 The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
 In particular, for $x \in \BF_2^n$ we have
 \begin{equation}
-\sum_{i=1}^n x_i = w_H(x) \bmod 2.
+	\left( \sum_{i=1}^n x_i \right)\mod 2 = \left\{
+	\begin{array}{ll}
+		1, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is odd},  \\
+		0, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is even}.  \\
+	\end{array}
+	\right.
 \end{equation}
-From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in $\BF_2^n$.
+From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in~$\BF_2^n$.
 
 In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries) 
 of~ $x \in \{0, 1\}^n$ is defined as:
@@ -374,20 +580,20 @@ $ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, x \in \BF_2^n$,
 \item[Positive definiteness] \ \\
 $w_H(x) = 0 \Rightarrow x = \0$.
 \end{description}
-Please note the norm of the unit vectors $\| e_i \| = 1, \forall i \in \{1, \dots n \}$.
+Please note the norm of the unit vectors $\| e_i \| = 1, \quad \forall i \in \{1, \dots n \}$.
 
 \subsubsection{Scalar product} \ \\
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{equation}
 \begin{array}{ll}
-< , > : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \& y \|_1 = w_H(x \& y),
+\langle , \rangle : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \& y \|_1 = w_H(x \& y),
 \end{array}
 \label{def:innerproduct}
 \end{equation}
 The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \subset \BR^n$
 \begin{equation}
 \begin{array}{ll}
-< , > : \BR^n \times \BR^n \rightarrow \BR, & < x , y >  = \sum_i^n x_i \cdot y_i,
+\langle , \rangle : \BR^n \times \BR^n \rightarrow \BR, & \langle x , y \rangle  = \sum_i^n x_i \cdot y_i,
 \end{array}
 \end{equation}
 
@@ -396,22 +602,22 @@ We can easily verify by computation the properties of the scalar product:
 \begin{description}
 \item[Distributivity]
 \begin{flalign*}
-& <x \oplus x', y > = <x, y> + <x', y>, &\\
-& <x, y \oplus y'> = <x, y> + <x, y'>, & \\
-& <\lambda x, y > = \lambda <x, y>, & \\
-& <x, \lambda y> = \lambda < x, y>, &
+& \langle x \oplus x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
+& \langle x, y \oplus y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
+& \langle\lambda x, y \rangle = \lambda \langle x, y\rangle, & \\
+& \langle x, \lambda y\rangle = \lambda \langle x, y\rangle, &
 \end{flalign*}
 \item[Commutativity]
 \begin{flalign*}
-& <x, y> = < y, x>, &
+& \langle x, y\rangle = \langle y, x\rangle, &
 \end{flalign*}
 \item[Positive definiteness]
 \begin{flalign*}
-& <x, x> \enspace \ge 0, \text{ with } <x,x> = 0 \text{ only if } x = \0, &
+& \langle x, x\rangle \enspace \ge 0, \text{ with } \langle x,x\rangle = 0 \text{ only if } x = \0, &
 \end{flalign*}
 \item[Orthogonality]
 \begin{flalign*}
-& <x, y> = 0, \text{ we say the two vectors are orthogonal.  } &
+& \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } &
 \end{flalign*}
 \end{description} 
 In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
@@ -421,6 +627,7 @@ With the properties of the norm and the scalar product it follows $\BE$ is an or
 
 % \newpage
 
+%-------------------------------------------------
 \printbibliography
 
 \end{document}
