@@ -5,12 +5,5 @@
 *.blg
 *.log
 *.out
-<<<<<<< HEAD
-*.pdf
 *.run.xml
 *.synctex.gz
-*.tex
-=======
-*.run.xml
-*.synctex.gz
->>>>>>> doc
