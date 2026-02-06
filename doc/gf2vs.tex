@@ -7,15 +7,217 @@
 \usepackage{enumitem}
 \usepackage{newtxtext,newtxmath}
 
-% link to database file
-\usepackage[backend=biber]{biblatex}
-\addbibresource{/home/ralf/Projekte/LitDatabase/liblatexbase.bib}
-
 \usepackage[left=1in,right=1in,top=1in,bottom=.5in,includeheadfoot]{geometry}
 \usepackage[colorlinks=true,allcolors=black]{hyperref}
 
-\setcounter{biburllcpenalty}{9000}% Kleinbuchstaben
-\setcounter{biburlucpenalty}{9000}% Großbuchstaben
+%--- biblatex ----------------------------------------------------
+\usepackage[
+    backend=biber,          % <-- biber muss verwendet werden
+    style=numeric,          % beliebiger Stil (numeric, authoryear, …)
+    sorting=nty,            % Sortierung: name‑year‑title
+    url=true,               % URL‑Felder immer ausgeben
+    urldate=long,           % Datumsformat (z. B. 5 Feb 2026)
+]{biblatex}
+
+% biblatex-specific URL linebreak penalties removed (not needed without biblatex)
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+% Bibliographie‑Datei einbinden
+\addbibresource{gf2vs.bib}
+
+%--- Literaturdatenbank (automatisch erzeugt) --------------------
+\begin{filecontents}{gf2vs.bib}
+@Book{Fischer2020,
+  author    = {Fischer, Gerd and Springborn, Boris},
+  title     = {Lineare Algebra: Eine Einf{\"u}hrung f{\"u}r Studienanf{\"a}nger},
+  edition   = {19},
+  language  = {de},
+  publisher = {Springer Spektrum},
+  address   = {Wiesbaden, Germany},
+  year      = {2020},
+}
+
+@Book{knuth:taocp_v4_f1,
+  author    = {Donald E. Knuth},
+  title     = {The Art of Computer Programming, Vol 4, Fasc 1},
+  publisher = {Addison-Wesley},
+  subtitle  = {Bitwise Tricks and Techniques},
+  volume    = {4 Fascicle 1},
+  year      = {2008},
+}
+
+@Misc{Mathworld2025:L1-Norm,
+  author       = {Weisstein, Eric W.},
+  date         = {2025-07-27},
+  title        = {$L^1-Norm$ From MathWorld--A Wolfram Resource},
+  howpublished = {\url{https://mathworld.wolfram.com/L1-Norm.html}},
+  note         = {[Online; accessed 09-October-2025]},
+}
+
+@Misc{wikipedia_en_2026_GaloisField,
+  author       = {{Wikipedia contributors}},
+  title        = {Finite field --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Finite_field&oldid=1330855394}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2026},
+}
+
+@Misc{wikipedia_en_2025_ExclusiveOr,
+  author       = {{Wikipedia contributors}},
+  title        = {Exclusive or --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Exclusive_or&oldid=1316886803}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2025_InclusiveOr,
+  author       = {{Wikipedia contributors}},
+  title        = {Logical disjunction --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Logical_disjunction&oldid=1317551960}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2025_LogicalConjunction,
+  author       = {{Wikipedia contributors}},
+  title        = {Logical conjunction --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Logical_conjunction&oldid=1324909528}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2026_GroupMathematics,
+  author       = {{Wikipedia contributors}},
+  title        = {Group (mathematics) --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Group_mathematics&oldid=1330839314}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2026},
+}
+
+@Misc{wikipedia_en_2025_VectorSpace,
+  author       = {{Wikipedia contributors}},
+  title        = {Vector space --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Vector_space&oldid=1326882436}},
+  note         = {[Online; accessed 12-January-2026]},
+  year         = {2025},
+}
+
+@Misc{wikipedia_en_2025_HammingWeight,
+  author       = {{Wikipedia contributors}},
+  title        = {Hamming weight --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Hamming_weight&oldid=1306107874}},
+  note         = {[Online; accessed 13-January-2026]},
+  year         = {2025},
+}
+
+@Misc{rp:gopkg:gf2vs,
+  author       = {Ralf Poeppel},
+  date         = {2026-01-06},
+  title        = {Go package documentation gf2vs},
+  howpublished = {\url{https://pkg.go.dev/github.com/rpoe/gf2vs}},
+  note         = {[Online; accessed 10-January-2026]},
+}
+
+@Misc{wikipedia_en_2025_NormMathematics,
+  author       = {{Wikipedia contributors}},
+  title        = {Norm (mathematics) --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Norm_mathematics&oldid=1326013131}},
+  note         = {[Online; accessed 14-January-2026]},
+  year         = {2025},
+}
+
+@Book{knuth:taocp_v4_f0,
+  author    = {Donald E. Knuth},
+  title     = {The Art of Computer Programming, Vol 4, Fasc 0},
+  publisher = {Addison-Wesley},
+  subtitle  = {Introduction to Combinatorical Algorithms and Boolean Functions},
+  volume    = {4 Fascicle 0},
+  year      = {2008},
+}
+
+@Misc{wikipedia_en_2025_DistributiveProperty,
+  author       = {{Wikipedia contributors}},
+  title        = {Distributive property --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Distributive_property&oldid=1329322251}},
+  note         = {[Online; accessed 28-January-2026]},
+  year         = {2025},
+}
+
+@Book{Lidl2000,
+  author    = {Lidl, Rudolf and Niederreiter, Harald},
+  title     = {Finite fields},
+  doi       = {10.1017/CBO9780511525926},
+  isbn      = {9780511525926},
+  publisher = {Cambridge University Press;},
+  series    = {Encyclopedia of mathematics and its applications, volume 20},
+  volume    = {20},
+  address   = {Cambridge},
+  year      = {2000},
+}
+
+@Book{Hill2004,
+  author       = {Hill, Raymond},
+  title        = {A first course in coding theory},
+  isbn         = {0198538030},
+  publisher    = {Clarendon Press;},
+  address      = {Oxford},
+  year         = {2004},
+}
+
+@Misc{wikipedia_en_2025_DotProduct,
+  author       = {{Wikipedia contributors}},
+  title        = {Dot product --- {Wikipedia}{,} The Free Encyclopedia},
+  howpublished = {\url{https://en.wikipedia.org/w/index.php?title=Dot_product&oldid=1328631745}},
+  note         = {[Online; accessed 2-February-2026]},
+  year         = {2025},
+}
+
+@Article{Hamming1950,
+  author       = {R. W. Hamming},
+  date         = {1950},
+  journaltitle = {Bell System Technical Journal},
+  title        = {Error detecting and error correcting codes},
+  number       = {2},
+  pages        = {147-160},
+  url          = {https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf},
+  urldate      = {2026-02-03},
+  volume       = {29},
+}
+
+@Book{Lint1988,
+  author    = {Lint, Jacobus H.},
+  title     = {Introduction to Coding Theory and Algebraic Geometry},
+  doi       = {10.1007/978-3-0348-9286-5},
+  isbn      = {9783034892865},
+  publisher = {Birkhäuser Basel;},
+  series    = {Oberwolfach seminars, 12},
+  volume    = {12},
+  address   = {Basel},
+  year      = {1988},
+}
+
+@Book{Axler2024,
+  author    = {Axler, Sheldon Jay},
+  title     = {Linear Algebra Done Right},
+  edition   = {4},
+  isbn      = {9783031410260},
+  publisher = {Springer Nature;},
+  url       = {https://linear.axler.net/LADR4e.pdf},
+  urldate   = {2026-02-03},
+  address   = {Cham},
+  year      = {2024},
+}
+
+@Book{Forster2016_Analysis_1,
+  author    = {Forster, Otto},
+  title     = {Analysis / Otto Forster ; 1: Differential- und Integralrechnung einer Veränderlichen},
+  isbn      = {9783658115449},
+  publisher = {Springer Spektrum;},
+  address   = {Wiesbaden},
+  year      = {2016},
+}
+\end{filecontents}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2ex}
@@ -25,187 +227,404 @@
 \newcommand{\BC}{\mathbb{C}}
 \newcommand{\BE}{\mathbb{E}}
 \newcommand{\BF}{\mathbb{F}}
+\newcommand{\BQ}{\mathbb{Q}}
 \newcommand{\BR}{\mathbb{R}}
 \newcommand{\BZ}{\mathbb{Z}}
 \newcommand{\0}{\vmathbb{0}}
 \newcommand{\1}{\vmathbb{1}}
 
-\title{Vector space $\BF_2^n$}
+\title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-01-14}
+\date{2026-02-06}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-This article is a supplementary documentation to the Go package \texttt{gf2vs}~\cite{rp:gopkg:gf2vs}. The package implements data types and functions
-modeling the vector space $\BF_2^n$.
-
-The vector space $\BF_2^n$ of dimension $n$ is based on the finite field of order $2$, the Galois field $GF(2)$~\cite{wikipedia_en_2026_GaloisField}. We use $GF(2)$ to model binary values, or bits, and consider the properties of the vector space of bit vectors.
+This article is a supplementary documentation to the Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs}. 
+The package implements data types and functions for the vector space of bit vectors.
 \end{abstract}
 
-\section*{Field $\BF_2$}
+\section{Introduction}
 
-The finite field of order $2$ has two elements $\BF_2 = \{0, 1\}$ and the operations addition~$+$ and multiplication~$\cdot$. For the
-definition see equation~\eqref{def:fieldoperations}.
+Bit vectors are very common in computer science. They are used for integers, combinatorial algorithms, coding theory,
+and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}. 
+All aspects of the vector space of bit vectors are examined relatively rarely.
+
+Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$. 
+
+The aim of this article is to document the properties of the vector space of bit vectors $\BF_2^n$, as implemented in the Go package~
+\texttt{gf2vs}. This is a brief reference of the properties collected from several sources.
+
+\section{\texorpdfstring{Field $GF(2)$}{Field GF(2)}}
+
+\subsection{Supporting Set}
+
+The supporting set of $GF(2) = \BF_2$ is 
+\begin{equation}
+\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ \subset \BR
+\end{equation}
+the subset $\BZ_2$ of $\BZ$, which is a subset of $\BR$. This set is equal to $\BZ/\BZ2$, the cyclic group of order~2. This set holds the values of a bit in computer science. 
+In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}. 
+
+
+\subsection{Operations}
+The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite[ch. 2.2.6]{Fischer2020} and \cite{Hill2004}.
+
+The operations addition and multiplication of the field $\BF_2$ satisfies the group 
+axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both operations are commutative.
+
+Similarly the operations addition and multiplication of the field $\BR$ satisfies the group 
+axioms~\cite{Fischer2020}, both operations are commutative.
+
+Please note the different definition of the addition in $\BF_2$ and $\BR$.
+
+For reference we give here only the operations for $\BF_2$.
+
+\subsubsection{Negation}
 
 \begin{equation}
 \begin{array}{r l l l l}
-+ : & 0 + 0 = 0, & 0 + 1 = 1, & 1 + 0 = 1, & 1 + 1 = 0, \\
-\cdot : & 0 \cdot 0 = 0, & 0 \cdot 1 = 0, & 1 \cdot 0 = 0, & 1 \cdot 1 = 1. \\
+- : \BF_2 \rightarrow \BF_2, & - x = x, & -0 = 0, & -1 = 1. \\
 \end{array}
-\label{def:fieldoperations}
+\end{equation}
+The negation of $1$ in $\BF_2$ is computed as $(- 1)\mod 2 = 1$
+
+\subsubsection{Complement}
+
+\begin{equation}
+\begin{array}{r l l l l}
+\neg : \BF_2 \rightarrow \BF_2, & \neg x = 1 - x, & \neg 0 = 1, & \neg1 = 0. \\
+\end{array}
+\end{equation}
+
+\subsubsection{Absolute value}
+We define the mapping absolute value $|x|$ of an element $x$ of $\BF_2$ to $\BR$:
+\begin{equation}
+\begin{array}{r l l l l}
+| x | : \BF_2 \rightarrow \BR, &| 0 | = 0, & | 1  | = 1. \\
+\label{def:value}
+\end{array}
+\end{equation}
+We use this mapping, when we need the default classical definition of the addition as in $\BR$.
+
+\subsubsection{Addition}
+The addition is named exclusive disjunction in logic and XOR \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr}
+in computer science.
+The definition of addition is given in equation \ref{def:opaddition} obeying $(1+1) \mod 2 = 0$.
+\begin{equation}
+\begin{array}{r l l l l}
++ : \BF_2 \times \BF_2 \rightarrow \BF_2, & 0 + 0 = 0, & 0 + 1 = 1, & 1 + 0 = 1, & 1 + 1 = 0, \\
+\end{array}
+\label{def:opaddition}
+\end{equation}
+
+The group axioms \cite[ch. 2.2.8]{Fischer2020} for the Group $G = \BF_2$ and the operation addition are satisfied:
+\begin{description}
+\item[Associativity] \ \\
+$\forall a, b, c \in G: (a + b) + c = a + (b + c)$. 
+\item[Identity element $e = 0$] \ \\
+$\exists e \in G, \forall a \in G: e + a = a \text{ and } a + e = a$, $e = 0$, $e$ is unique.
+\item[Inverse element $(-a) = a$] \ \\
+$\forall a \in G \enspace \exists (-a) \in G : a + (-a) = e \text{ and } (-a) + a = e$, $e$ identity element, $(-a) = a$ is unique for each $a$.
+\item[Commutativity] \ \\
+$a + b = b + a$.
+\end{description}
+So $\BF_2$ with the operation addition is an abelian group.
+
+\subsubsection{Multiplication}
+The multiplication is named conjunction in logic and 
+AND \cite{knuth:taocp_v4_f0, wikipedia_en_2025_LogicalConjunction} in computer science.
+The multiplication is identically defined as in $\BZ$.
+\begin{equation}
+\begin{array}{r l l l l}
+\cdot : \BF_2 \times \BF_2 \rightarrow \BF_2, & 0 \cdot 0 = 0, & 0 \cdot 1 = 0, & 1 \cdot 0 = 0, & 1 \cdot 1 = 1. \\
+\end{array}
+\label{def:opmultiplication}
 \end{equation}
 
 We may use the notation $ab$ instead of $a \cdot b$, omitting the multiplication sign if there is no ambiguity.
 
-Each of the two operations of the field $\BF_2$ satisfies the group axioms~\cite{wikipedia_en_2026_GroupMathematics} for the groups
-$G_+ := (\BF_2, +)$ and $G_{\cdot} := (\BF_2, \cdot)$. In addition, both operations are commutative. For reference the group axioms are repeated here. We use the symbol $\circ$ to denote the binary operations $+$ or~$\cdot$.
-
+The group axioms for the Group $G = \BF_2$ and the operation multiplication are satisfied:
 \begin{description}
 \item[Associativity] \ \\
-$\forall a, b, c \in G: (a \circ b) \circ c = a \circ (b \circ c)$.
-\item[Identity element $e$] \ \\
-$\exists e \in G, \forall a \in G: e \circ a = a \text{ and } a \circ e = a$, $e$ is unique.
+$\forall a, b, c \in G: (a \cdot b) \cdot c = a \cdot (b \cdot c)$.
+\item[Identity element $e = 1$] \ \\
+$\exists e \in G, \forall a \in G: e \cdot a = a \text{ and } a \cdot e = a$, $e= 1$, $e$ is unique.
 \item[Inverse element $a^{-1}$] \ \\
-$\forall a \in G \enspace \exists b \in G : a \circ b = e \text{ and } b \circ a = e$, $e$ identity element, $b$ is unique for each $a$, notation $b = a^{-1}$.
+$\forall a \in G, a \ne 0, \enspace \exists a^{-1} \in G : a \cdot a^{-1} = e \text{ and } a^{-1} \cdot a = e$, $e$ is the identity element; the only invertible element is $1$, hence $a^{-1} = 1$ for $a = 1$.
 \item[Commutativity] \ \\
-$a \circ b = b \circ a$.
+$a \cdot b = b \cdot a$.
 \end{description}
+So $\BF_2$ with the operation multiplication is an abelian group.
 
-We can look at the field from an algebraic point of view or from a logical point of view. In logic the field can be seen as the Boolean values $F = 0$ and $T = 1$. The Boolean operations are disjunction $\vee$~\cite{wikipedia_en_2025_InclusiveOr},
-exclusive or (contravalence)~$\oplus$~\cite{wikipedia_en_2025_ExclusiveOr} and
-conjunction $\wedge$~\cite{wikipedia_en_2025_LogicalConjunction}. The definitions are repeated in equation~\eqref{def:booleanoperation}.
+
+\subsubsection{Disjunction}
+
+In boolean logic we have the operation disjunction, named OR in computer science \cite{knuth:taocp_v4_f0, wikipedia_en_2025_InclusiveOr}.
 
 \begin{equation}
 \begin{array}{r l l l l}
-\vee : & 0 \vee 0 = 0, & 0 \vee 1 = 1, & 1 \vee 0 = 1, & 1 \vee 1 = 1, \\
-\oplus : & 0 \oplus 0 = 0, & 0 \oplus 1 = 1, & 1 \oplus 0 = 1, & 1 \oplus 1 = 0, \\
-\wedge : & 0 \wedge 0 = 0, & 0 \wedge 1 = 0, & 1 \wedge 0 = 0, & 1 \wedge 1 = 1. \\
+\vee : \BF_2 \times \BF_2 \rightarrow \BF_2, & 0 \vee 0 = 0, & 0 \vee 1 = 1, & 1 \vee 0 = 1, & 1 \vee 1 = 1 \\
 \end{array}
 \label{def:booleanoperation}
 \end{equation}
 
-Please note that the operations $\oplus$ and $\wedge$ are identically defined as $+$ and $\cdot$ and hence satisfy the group axioms.
+The operation $\vee$ does not satisfy the group axioms; there is no inverse element. 
 
-The operation $\vee$ does not satisfy the group axioms; there is no inverse element. In the remaining chapters we will use the
-notation $+, \cdot, \vee$ for the operations only.
+\subsection{Field axioms}
 
-\section*{Vector space $\BF_2^n$}
-
-We define the vector space
-$\BF_2^n$ over the field $\BF_2$ as the set $V$ of vectors $v$ with $n$ elements of the field, together with the
-binary operation of vector addition and the binary function of scalar multiplication, see~\eqref{def:vectoroperations}.
-
-\begin{equation}
-u + v = w, \enspace u, v, w \in V, \quad
-a \cdot v = w, \enspace a \in \BF_2, \; v, w \in V.
-\label{def:vectoroperations}
-\end{equation}
-
-We apply the addition element-wise and we multiply the scalar with each element of the vector.
-
-This definition is similar to the one in~\cite{wikipedia_en_2025_VectorSpace}.
-
-We use the notation $v := (v_i)$ for the vector $v$ with components $v_i$.
-
-In addition we define two distinguished elements of $\BF_2^n$:
-
+The set $K := \BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020, Hill2004}. We use~$K$ as symbol for any field satisfying the field axioms.
 \begin{description}
-\item[Zero] \ \\
-$\0$ zero vector, all components are $0$.
-\item[Ones] \ \\
-$\1$ vector, all components are $1$.
+\item[K1] $K$ with the addition $+$ is an abelian group.
+\item[K2] $K^* := K\setminus \{0\}$ with the multiplication $\cdot$ for every element of $K^*$ is an abelian group.
+\item[K3] distributive property \cite{Axler2024, wikipedia_en_2025_DistributiveProperty} is satisfied $\forall a, b, c \in K$
+\begin{equation}
+\begin{array}{c}
+a \cdot (b + c) = a \cdot b + a \cdot c, \\
+(a + b) \cdot c = a \cdot c + b \cdot c. \\
+\end{array}
+\end{equation}
 \end{description}
 
-The axioms of a vector space are satisfied~\cite{wikipedia_en_2025_VectorSpace}:
+\section{\texorpdfstring{Vector space $\BF_2^n$}{Vector space}}
 
+\subsection{Vectors}
+Bit vectors are the elements of the vector space.
+We define a bit vector $x$ of size $n$ as a tuple $(x_i)$ of values $x_i \in \BF_2$:
+\begin{equation}
+x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2
+\end{equation}
+
+We define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer2020}:
+\begin{equation}
+\BF_2^n := \{x =  (x_1, \dots, x_n) : x_i \in \BF_2\}
+\end{equation}
+
+In addition we define two distinguished constant elements of $\BF_2^n$:
+\begin{description}
+\item[Zero] $\0$ zero vector, all components are $0$.
+\item[Ones] $\1$ ones vector, all components are $1$.
+\end{description}
+
+\subsection{Operations on vectors}
+
+We define bitwise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
+\begin{equation}
+\left.
+\begin{array}{rrcrl}
+- : \BF_2^n \rightarrow \BF_2^n, & - x = x & \Leftrightarrow & - x_i = x_i \\
+\sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
+|\ |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & x_i = y_i, \\
+\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
+\& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
+| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
+\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
+\end{array} 
+\right\} i = 1, \dots, n.
+\label{def:vectoroperations}
+\end{equation}
+We define the operation $| \ |$ for formal mapping of a bit vector from $\BF_2^n$ to $\BR^n$.
+
+For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
+
+We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for bit vectors of size $n$ here:
+\begin{flalign}
+& x \oplus y =  y \oplus x, \quad x \& y = y \& x, \quad x | y = y | x;  &\\
+& (x \oplus y) \oplus z = x \oplus (y \oplus z), \quad (x \& y) \& z = x \& (y \& z), \quad (x | y) | z = x | (y | z); &\\
+& (x \oplus y) \& z = (x \& z) \oplus (y \& z); &\\
+& (x \& y) | z = (x | z) \& (y | z), \quad (x | y) \& z = (x | z) \& (y | z); &\\
+& x \oplus y = (x \& y) \oplus (x | y); &\\
+& (x \& y) | x = x, \quad (x | y) \& x = x; \\
+& x \oplus \0 = x, \quad x \& \0 = \0, \quad x | \0 = x; & \\
+& x \oplus x = \0, \quad x \& x = x, \quad x | x = x; & \\
+& x \oplus \1 = \sim x, \quad x \& \1 = x, \quad x | \1 = \1; & \\
+& x \oplus (\sim x) = \1, \quad x \& (\sim x) = \0, \quad x | (\sim x) = \1; & \\
+& - (x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y), \quad \sim ( x \& y) = (\sim x) | (\sim y), \quad \sim(x | y) = (\sim x) \& (\sim y); &
+\end{flalign}
+
+\subsection{Axioms of vector space}
+The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, defines a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. 
+
+The axioms of a vector space are satisfied for $\BF_2^n$:
 \begin{description}
 \item[Associativity of vector addition] \ \\
-$u + (v + w) = (u + v) + w, \enspace \forall u, v, w \in \BF_2^n$.
+$u \oplus (v \oplus w) = (u \oplus v) \oplus w, \enspace \forall u, v, w \in \BF_2^n$.
 \item[Commutativity of vector addition] \ \\
-$u + v = v + u, \enspace \forall u, v \in \BF_2^n$.
+$u \oplus v = v \oplus u, \enspace \forall u, v \in \BF_2^n$.
 \item[Identity element of vector addition] \ \\
-$\exists \0 \in \BF_2^n : v + \0 = v, \enspace \forall v \in \BF_2^n$.
+$\exists \0 \in \BF_2^n : v \oplus \0 = v, \enspace \forall v \in \BF_2^n$.
 \item[Inverse elements of vector addition] \ \\
-$\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v + (-v) = \0$, and $-v = v$, i.e.\ each vector is its own additive inverse.
+$\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v \oplus (-v) = \0$, and $-v = v$, i.e.\ each vector is its own additive inverse.
 \item[Compatibility of scalar multiplication with field multiplication] \ \\
-$a (b v) = (ab) v, \enspace a, b \in \BF_2, \; v \in \BF_2^n$.
+$\lambda (\eta v) = (\lambda \eta) v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
 \item[Identity element of scalar multiplication] \ \\
 $1 v = v, \enspace 1 \in \BF_2, \; v \in \BF_2^n$, where $1$ is the multiplicative identity of $\BF_2$.
 \item[Distributivity of scalar multiplication with respect to vector addition] \ \\
-$a (u + v) = a u + a v, \enspace a \in \BF_2, \; u, v \in \BF_2^n$.
+$\lambda (u \oplus v) = \lambda u \oplus \lambda v, \enspace \lambda \in \BF_2, \; u, v \in \BF_2^n$.
 \item[Distributivity of scalar multiplication with respect to field addition] \ \\
-$(a + b) v = a v + b v, \enspace a, b \in \BF_2, \; v \in \BF_2^n$.
+$(\lambda + \eta) v = \lambda v + \eta v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
 \end{description}
 
-In this vector space we are not limited to the operations vector addition and scalar multiplication. We can use the Boolean operations as well.
+In the vector space $\BF_2^n$ we are not limited to the operations vector addition and scalar multiplication. We can use the Boolean operations as well.
 
 \begin{description}
-\item[Complement, Not] \ \\
-$\overline v = \1 - v = \1 + v$, swap all bits.
+\item[Negation, Complement, Not] \ \\
+$\sim v = \1 - v = \1 \oplus v$, swap all bits.
 \item[Disjunction, Or] \ \\
-$u \vee v = (u_i) \vee (v_i) = (u_i \vee v_i)$, element-wise Or.
+$u | v = (u_i) | (v_i) = (u_i \vee v_i)$, element-wise Or.
 \item[Exclusive or, Xor] \ \\
-$u \oplus v = u + v = (u_i) + (v_i) = (u_i + v_i)$, element-wise Xor, equal to vector addition.
+$u \oplus v = u \oplus v = (u_i) \oplus (v_i) = (u_i + v_i)$, element-wise Xor, equal to vector addition.
+>>>>>>> doc
 \item[Conjunction, And] \ \\
 $u \wedge v = (u_i) \cdot (v_i) = (u_i \cdot v_i)$, element-wise And.
 \end{description}
 
-As we apply the operations element-wise, we satisfy the laws of associativity and commutativity.
+As we apply the operations element-wise $i = 1, \dots n$,
+we satisfy the laws of associativity and commutativity inherited from the field.
 
-We use some more definitions to cover further properties of the vector space:
+\subsection{Vector space base}
+We give here the definition of the base, the norm and the scalar product implemented in the Go package.
+The symbol $K$ is used in definitions applicable by each of the fields $\BF_2^n, \BQ, \BR, \BC$.
 
-\begin{description}
-\item[Unit vector] \ \\
-We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the vectors where the $i$th element is $x_i = 1$ and all other elements are $0$.
-\begin{flalign*}
-& e_i = (x_k), & \\
-& x_k = \left\{
-\begin{array}{ll}
-1, & k = i, \\
-0, & k \ne i, \\
+\subsubsection{Unit vector}
+We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the vectors
+where the $i$th element is $x_i = 1$ and all other elements are $0$.
+\begin{equation}
+e_i = (x_k),
+\enspace e_i \in K^n,
+\enspace x_k \in K,
+\enspace x_k = \left\{
+\begin{array}{lll}
+1, & k = i, & \text{identity element of multiplication},  \\
+0, & k \ne i, & \text{identity element of addition}. \\
 \end{array}
 \right.
-\quad x_k \in \BF_2, \enspace e_i \in \BF_2^n. &
-\end{flalign*}
+\end{equation}
+Please note the $e_i$ are linearly independent.
 
-\item[Generating system] \ \\
+We observe the identity elements are identical for the fields and the unit vectors are
+identical for all vector spaces over a field $K$.
+
+\subsubsection{Generating system}
 We define the subset $\BE := \{e_i\}$, $\BE \subset \BF_2^n$, of unit vectors $e_i$.
 The subset $\BE$ forms a generating system. Each vector $v$ of $\BF_2^n$ is a linear combination of scalars $a_i$ and the $e_i$:
-\begin{flalign*}
-& v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, \enspace e_i \in \BE, \quad \forall v \in \BF_2^n. &
-\end{flalign*}
-Thus the subset $\BE$ spans $\BF_2^n$. In this vector space it is the only such spanning set, and the decomposition of a vector $v$ into a linear combination
-of unit vectors $e_i$ is unique.
+\begin{equation}
+v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, \enspace e_i \in \BE, \quad \forall v \in \BF_2^n.
+\label{def:genSystem}
+\end{equation}
+Here the addition is modulo 2.
 
-\item[Basis] \ \\
-The subset $\BE$ is the one and only basis of the vector space $\BF_2^n$.
+Equation (\ref{def:genSystem}) is used equally for each vector space on any field $K$ using
+the operation addition as defined for the field~ $K$ and the $1$ the identity element of the operation multiplication.
 
-\item[Index] \ \\
-We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the basis.
+Thus the subset $\BE$ spans $\BF_2^n$. In this vector space it is one spanning set,
+and the decomposition of a vector $v$ into a linear combination
+of unit vectors $e_i$ is unique. 
 
-\item[Norm] \ \\
-We define the norm $|v|$ of a vector $v \in \BF_2^n$ to be its Hamming weight~\cite{wikipedia_en_2025_HammingWeight},
-i.e.\ the number of ones in the vector. This definition is equivalent to the definition of the $L^1$-norm of
-a vector~$|x|_1$ \cite{Mathworld2025:L1-Norm} sometimes called absolute-value
+\subsubsection{Base}
+The subset $\BE$ is one base of the vector space $\BF_2^n$. As it is a base of every vector space over a field K.
+
+\subsubsection{Index}
+We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
+
+\subsubsection{Norm via Hamming weight}
+The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
+In particular, for $x \in \BF_2^n$ we have
+\begin{equation}
+	\left( \sum_{i=1}^n x_i \right)\mod 2 = \left\{
+	\begin{array}{ll}
+		1, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is odd},  \\
+		0, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is even}.  \\
+	\end{array}
+	\right.
+\end{equation}
+From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in~$\BF_2^n$.
+
+In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries) 
+of~ $x \in \{0, 1\}^n$ is defined as:
+\begin{equation}
+\begin{array}{ll}
+w_H : \BF_2^n \rightarrow \BZ, & w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
+\end{array}
+\end{equation}
+and the associated {\em Hamming distance} $d_H$ is:
+\begin{equation}
+\begin{array}{ll}
+d_H : \BF_2^n \times \BF_2^n \rightarrow \BZ, & d_H(x, y) = w_H(x - y).
+\end{array}
+\end{equation}
+
+If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$,
+by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms are defined and we get:
+\begin{equation}
+\| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
+\end{equation}
+So the $l_1$-norm on $\BR^n$ see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm} equals the Hamming weight on bit vectors.
+This norm is sometimes called absolute-value
 norm~\cite{wikipedia_en_2025_NormMathematics}.
-The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BR$.
-This definition is in accordance with the definition of the norm of the vector space over $\BC$.
+The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BZ \subset \BR$.
 
-\item[Inner product] \ \\
-We define the inner product of two vectors to be the norm of their product:
-\[
-\langle u, v \rangle := |u \cdot v|.
-\]
+In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(uint~x)~uint} in package~\texttt{math/bits}.
 
-\item[Orthogonality] \ \\
-If $\langle u, v \rangle = 0$, we say the two vectors are orthogonal. Note that the inner product of any vector with $\0$ is $0$.
+Obviously this norm satisfies the axioms of a norm:
+\begin{description}
+\item[Subadditivity / Triangle inequality] \ \\
+$w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
+\item[Absolute homogeneity] \ \\
+$ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, x \in \BF_2^n$, 
+\item[Positive definiteness] \ \\
+$w_H(x) = 0 \Rightarrow x = \0$.
 \end{description}
+Please note the norm of the unit vectors $\| e_i \| = 1, \quad \forall i \in \{1, \dots n \}$.
 
-\newpage
+\subsubsection{Scalar product} \ \\
+We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
+\begin{equation}
+\begin{array}{ll}
+\langle , \rangle : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \& y \|_1 = w_H(x \& y),
+\end{array}
+\label{def:innerproduct}
+\end{equation}
+The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \subset \BR^n$
+\begin{equation}
+\begin{array}{ll}
+\langle , \rangle : \BR^n \times \BR^n \rightarrow \BR, & \langle x , y \rangle  = \sum_i^n x_i \cdot y_i,
+\end{array}
+\end{equation}
 
+
+We can easily verify by computation the properties of the scalar product:
+\begin{description}
+\item[Distributivity]
+\begin{flalign*}
+& \langle x \oplus x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
+& \langle x, y \oplus y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
+& \langle\lambda x, y \rangle = \lambda \langle x, y\rangle, & \\
+& \langle x, \lambda y\rangle = \lambda \langle x, y\rangle, &
+\end{flalign*}
+\item[Commutativity]
+\begin{flalign*}
+& \langle x, y\rangle = \langle y, x\rangle, &
+\end{flalign*}
+\item[Positive definiteness]
+\begin{flalign*}
+& \langle x, x\rangle \enspace \ge 0, \text{ with } \langle x,x\rangle = 0 \text{ only if } x = \0, &
+\end{flalign*}
+\item[Orthogonality]
+\begin{flalign*}
+& \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } &
+\end{flalign*}
+\end{description} 
+In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
+
+\subsubsection{Orthonormal Basis}
+With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$. 
+
+% \newpage
+
+%-------------------------------------------------
 \printbibliography
 
 \end{document}
