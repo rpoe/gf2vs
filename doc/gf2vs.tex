@@ -234,12 +234,9 @@
 \newcommand{\0}{\vmathbb{0}}
 \newcommand{\1}{\vmathbb{1}}
 
-% for conversion see https://www.glukhov.org/de/post/2025/11/converting-latex-to-markdown-tools-and-workflows/
-% pandoc gf2vs.tex -t markdown_strict+tex_math_dollars+raw_tex --bibliography=/home/ralf/Projekte/LitDatabase/liblatexbase.bib --citeproc -o gf2vs.md
-
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-02-05}
+\date{2026-02-06}
 
 \begin{document}
 
@@ -274,7 +271,7 @@ In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:
 
 
 \subsection{Operations}
-The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite{Fischer2020} ch.~2.2.6 and \cite{Hill2004}.
+The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite[ch. 2.2.6]{Fischer2020} and \cite{Hill2004}.
 
 The operations addition and multiplication of the field $\BF_2$ satisfies the group 
 axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both operations are commutative.
@@ -324,7 +321,7 @@ The definition of addition is given in equation \ref{def:opaddition} obeying $(1
 \label{def:opaddition}
 \end{equation}
 
-The group axioms \cite{Fischer2020} ch. 2.2.8 for the Group $G = \BF_2$ and the operation addition are satisfied:
+The group axioms \cite[ch. 2.2.8]{Fischer2020} for the Group $G = \BF_2$ and the operation addition are satisfied:
 \begin{description}
 \item[Associativity] \ \\
 $\forall a, b, c \in G: (a + b) + c = a + (b + c)$. 
@@ -401,7 +398,7 @@ We define a bit vector $x$ of size $n$ as a tuple $(x_i)$ of values $x_i \in \BF
 x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2
 \end{equation}
 
-We define the set of all bit vectors of size $n$ see \cite{Fischer2020} 2.4.1:
+We define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer2020}:
 \begin{equation}
 \BF_2^n := \{x =  (x_1, \dots, x_n) : x_i \in \BF_2\}
 \end{equation}
@@ -414,7 +411,7 @@ In addition we define two distinguished constant elements of $\BF_2^n$:
 
 \subsection{Operations on vectors}
 
-We define bitwise operations on the bit vectors $x, y, z$ see \cite{Fischer2020} 2.4.1 and \cite{knuth:taocp_v4_f1} (1), (2), (3).
+We define bitwise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
 \begin{equation}
 \left.
 \begin{array}{rrcrl}
@@ -433,7 +430,7 @@ We define the operation $| \ |$ for formal mapping of a bit vector from $\BF_2^n
 
 For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
 
-We adopt the main identities from \cite{knuth:taocp_v4_f1} (4), \dots, (14) for bit vectors of size $n$ here:
+We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for bit vectors of size $n$ here:
 \begin{flalign}
 & x \oplus y =  y \oplus x, \quad x \& y = y \& x, \quad x | y = y | x;  &\\
 & (x \oplus y) \oplus z = x \oplus (y \oplus z), \quad (x \& y) \& z = x \& (y \& z), \quad (x | y) | z = x | (y | z); &\\
