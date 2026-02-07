@@ -265,7 +265,7 @@ The aim of this article is to document the properties of the vector space of bit
 
 The supporting set of $GF(2) = \BF_2$ is
 \begin{equation}
-\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ \subset \BR
+\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BN \subset \BZ \subset \BR
 \end{equation}
 the subset $\BZ_2$ of $\BZ$, which is a subset of $\BR$. This set is equal to $\BZ/\BZ2$, the cyclic group of order~2. This set holds the values of a bit in computer science.
 In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
@@ -412,7 +412,8 @@ In addition we define two distinguished constant elements of $\BF_2^n$:
 
 \subsection{Mapping of Integers to Bit Vectors}
 We define the mapping $\varphi$ from $\BN$ to $\BF_2^n$. 
-For mapping of an integer $a$ to a bit vector $x$ we need to compute the length $n$ of $x$ with equation~(\ref{size}).
+For mapping of an integer $a \in \BN$ to a bit vector $x \in \BF_2^n$ we need to compute
+the length $n$ of $x$ with equation~(\ref{size}).
 \begin{equation}
 	n = \lfloor \log_{2}(a) \rfloor + 1.
 	\label{size}
@@ -601,7 +602,7 @@ by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms a
 So the $l_1$-norm on $\BR^n$ see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm} equals the Hamming weight on bit vectors.
 This norm is sometimes called absolute-value
 norm~\cite{wikipedia_en_2025_NormMathematics}.
-The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BZ \subset \BR$.
+The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
 
 In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(uint~x)~uint} in package~\texttt{math/bits}.
 
