@@ -227,6 +227,7 @@
 \newcommand{\BC}{\mathbb{C}}
 \newcommand{\BE}{\mathbb{E}}
 \newcommand{\BF}{\mathbb{F}}
+\newcommand{\BN}{\mathbb{N}}
 \newcommand{\BQ}{\mathbb{Q}}
 \newcommand{\BR}{\mathbb{R}}
 \newcommand{\BZ}{\mathbb{Z}}
@@ -242,17 +243,17 @@
 \maketitle
 
 \begin{abstract}
-This article is a supplementary documentation to the Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs}. 
+This article is a supplementary documentation to the Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs}.
 The package implements data types and functions for the vector space of bit vectors.
 \end{abstract}
 
 \section{Introduction}
 
 Bit vectors are very common in computer science. They are used for integers, combinatorial algorithms, coding theory,
-and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}. 
+and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}.
 All aspects of the vector space of bit vectors are examined relatively rarely.
 
-Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$. 
+Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$.
 
 The aim of this article is to document the properties of the vector space of bit vectors $\BF_2^n$, as implemented in the Go package~
 \texttt{gf2vs}. This is a brief reference of the properties collected from several sources.
@@ -261,21 +262,21 @@ The aim of this article is to document the properties of the vector space of bit
 
 \subsection{Supporting Set}
 
-The supporting set of $GF(2) = \BF_2$ is 
+The supporting set of $GF(2) = \BF_2$ is
 \begin{equation}
-\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BZ \subset \BR
+\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BN \subset \BZ \subset \BR
 \end{equation}
-the subset $\BZ_2$ of $\BZ$, which is a subset of $\BR$. This set is equal to $\BZ/\BZ2$, the cyclic group of order~2. This set holds the values of a bit in computer science. 
-In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}. 
+the subset $\BZ_2$ of $\BZ$, which is a subset of $\BR$. This set is equal to $\BZ/\BZ2$, the cyclic group of order~2. This set holds the values of a bit in computer science.
+In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
 
 
 \subsection{Operations}
 The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite[ch. 2.2.6]{Fischer2020} and \cite{Hill2004}.
 
-The operations addition and multiplication of the field $\BF_2$ satisfies the group 
+The operations addition and multiplication of the field $\BF_2$ satisfies the group
 axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both operations are commutative.
 
-Similarly the operations addition and multiplication of the field $\BR$ satisfies the group 
+Similarly the operations addition and multiplication of the field $\BR$ satisfies the group
 axioms~\cite{Fischer2020}, both operations are commutative.
 
 Please note the different definition of the addition in $\BF_2$ and $\BR$.
@@ -323,7 +324,7 @@ The definition of addition is given in equation \ref{def:opaddition} obeying $(1
 The group axioms \cite[ch. 2.2.8]{Fischer2020} for the Group $G = \BF_2$ and the operation addition are satisfied:
 \begin{description}
 \item[Associativity] \ \\
-$\forall a, b, c \in G: (a + b) + c = a + (b + c)$. 
+$\forall a, b, c \in G: (a + b) + c = a + (b + c)$.
 \item[Identity element $e = 0$] \ \\
 $\exists e \in G, \forall a \in G: e + a = a \text{ and } a + e = a$, $e = 0$, $e$ is unique.
 \item[Inverse element $(-a) = a$] \ \\
@@ -334,7 +335,7 @@ $a + b = b + a$.
 So $\BF_2$ with the operation addition is an abelian group.
 
 \subsubsection{Multiplication}
-The multiplication is named conjunction in logic and 
+The multiplication is named conjunction in logic and
 AND \cite{knuth:taocp_v4_f0, wikipedia_en_2025_LogicalConjunction} in computer science.
 The multiplication is identically defined as in $\BZ$.
 \begin{equation}
@@ -371,7 +372,7 @@ In boolean logic we have the operation disjunction, named OR in computer science
 \label{def:booleanoperation}
 \end{equation}
 
-The operation $\vee$ does not satisfy the group axioms; there is no inverse element. 
+The operation $\vee$ does not satisfy the group axioms; there is no inverse element.
 
 \subsection{Field axioms}
 
@@ -408,6 +409,43 @@ In addition we define two distinguished constant elements of $\BF_2^n$:
 \item[Ones] $\1$ ones vector, all components are $1$.
 \end{description}
 
+\subsection{Mapping of Integers to Bit Vectors}
+We define the mapping $\varphi$ from $\BN$ to $\BF_2^n$. 
+For mapping of an integer $a \in \BN$ to a bit vector $x \in \BF_2^n$ we need to compute
+the length $n$ of $x$ with equation~(\ref{size}).
+\begin{equation}
+	n = \lfloor \log_{2}(a) \rfloor + 1.
+	\label{size}
+\end{equation}
+If we need to map multiple integers $a_i$ to the same vector space we compute $n$ from the maximum of the $a_i$
+\begin{equation}
+	n = \lfloor \log_{2}(\max(a_i)) \rfloor + 1.
+\end{equation}
+Equation~(\ref{vector}) defines the mapping for $a \in \BN, a \ge 0$.
+\begin{equation}
+\begin{array}{rr}
+\varphi : \BN \rightarrow \BF_2^n, & x = \left (
+\lfloor \frac{a}{2^0} \rfloor \text{ mod } 2, \
+\lfloor \frac{a}{2^1} \rfloor \text{ mod } 2, \ 
+\dots, \ 
+\lfloor \frac{a}{2^{n-1}} \rfloor \text{ mod } 2
+\right) .
+\end{array}
+\label{vector}
+\end{equation}
+
+The inverse mapping $\varphi^{-1}$ is given by equation~(\ref{integer})
+\begin{equation}
+\begin{array}{rr}
+\varphi^{-1} : \BF_2^n \rightarrow \BN, &
+a = \sum_{i=1}^n x_i 2 ^{i-1}.
+\end{array}
+\label{integer}
+\end{equation}
+
+In the programming language Go these mapping are used when parsing integer strings and formatting integers.
+Internally integers are stored as bit vectors.
+
 \subsection{Operations on vectors}
 
 We define bitwise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
@@ -421,7 +459,7 @@ We define bitwise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{F
 \& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
 | : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
 \cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
-\end{array} 
+\end{array}
 \right\} i = 1, \dots, n.
 \label{def:vectoroperations}
 \end{equation}
@@ -445,7 +483,7 @@ We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for
 \end{flalign}
 
 \subsection{Axioms of vector space}
-The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, defines a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. 
+The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, defines a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}.
 
 The axioms of a vector space are satisfied for $\BF_2^n$:
 \begin{description}
@@ -521,7 +559,7 @@ the operation addition as defined for the field~ $K$ and the $1$ the identity el
 
 Thus the subset $\BE$ spans $\BF_2^n$. In this vector space it is one spanning set,
 and the decomposition of a vector $v$ into a linear combination
-of unit vectors $e_i$ is unique. 
+of unit vectors $e_i$ is unique.
 
 \subsubsection{Base}
 The subset $\BE$ is one base of the vector space $\BF_2^n$. As it is a base of every vector space over a field K.
@@ -542,7 +580,7 @@ In particular, for $x \in \BF_2^n$ we have
 \end{equation}
 From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in~$\BF_2^n$.
 
-In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries) 
+In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries)
 of~ $x \in \{0, 1\}^n$ is defined as:
 \begin{equation}
 \begin{array}{ll}
@@ -564,7 +602,7 @@ by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms a
 So the $l_1$-norm on $\BR^n$ see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm} equals the Hamming weight on bit vectors.
 This norm is sometimes called absolute-value
 norm~\cite{wikipedia_en_2025_NormMathematics}.
-The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BZ \subset \BR$.
+The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
 
 In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(uint~x)~uint} in package~\texttt{math/bits}.
 
@@ -573,7 +611,7 @@ Obviously this norm satisfies the axioms of a norm:
 \item[Subadditivity / Triangle inequality] \ \\
 $w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
 \item[Absolute homogeneity] \ \\
-$ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, x \in \BF_2^n$, 
+$ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, x \in \BF_2^n$,
 \item[Positive definiteness] \ \\
 $w_H(x) = 0 \Rightarrow x = \0$.
 \end{description}
@@ -616,11 +654,11 @@ We can easily verify by computation the properties of the scalar product:
 \begin{flalign*}
 & \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } &
 \end{flalign*}
-\end{description} 
+\end{description}
 In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
 
 \subsubsection{Orthonormal Basis}
-With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$. 
+With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$.
 
 % \newpage
 
