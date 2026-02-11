@@ -1,21 +1,25 @@
-% Hinweis: Eine PDF lässt sich nicht zuverlässig automatisch zurück in LaTeX konvertieren.
-% Bitte kopiere den Text (oder exportiere ihn als .txt/.docx) und ich setze ihn dir hier sauber in LaTeX.
-\documentclass[a4paper,11pt]{article}
-\usepackage[ngerman]{babel}
-\usepackage[T1]{fontenc}
+\documentclass[a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage{lmodern}
-\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{newtxtext,newtxmath}
 
-\title{Ralf Korrekturhinweise}
-\date{}
+\usepackage[left=1in,right=1in,top=1in,bottom=.5in,includeheadfoot]{geometry}
+\usepackage[colorlinks=true,allcolors=black]{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2ex}
+
+\title{Ralf Korrekturhinweise kommentiert}
+\author{Laura Rubin, Ralf Pöppel}
+\date{2026-02-11}
 
 \begin{document}
 \maketitle
 
-\noindent
-\textbf{Laura Rubin}\\
-February 2026
 
 \section*{2.1 Supporting Set + 2.2 Operations}
 Du hattest
@@ -33,6 +37,11 @@ Reine Schreibweisekorrektur.
 Allerdings wei\ss{} ich nicht, ob du in True und False $-1$ und ``$-0$'' inkludieren kannst.
 Da bin ich kein Experte.
 
+{\bf Ralf} Ja unsauber. \\ Bits sind die Menge $\{0,1 \}$. $\mathbb{Z}_2$ ist dieselbe Menge.
+ $\mathbb{Z}/2\mathbb{Z} = \{[0], [1]\} = \{\bar{0}, \bar{1}\}$ ist die zyklische Gruppe. Die Menge Ihrer Repräsentanten ist $\{0, 1\}$.
+In diesem Artikel arbeite ich nur mit  $\{0,1 \}$. Ich werde den Absatz umformulieren. 
+Negation ist falsch als Punkt. Es ist das inverse Element. Inhalt der Negation geht zum inversen Element
+
 \section*{2.2.3 Absolute value}
 Vielleicht bessere Notation (ausf\"uhrlicher, aber optional):
 \[
@@ -46,9 +55,17 @@ Was aber eher das Problem ist in meinen Augen: Du hast das als K\"orperoperation
 weil es ein Unterkapitel von ``2.2 Operations'' ist. Es ist ja hier aber eine Abbildung.
 Vielleicht nochmal anders strukturieren, indem du ein neues Kapitel machst o.\,\"A.
 
+{\bf Ralf} Die ausführliche Notation von Dir ist für den Vektor, 2.2 ist noch kein Vektor, erst Kapitel 3. Der Hinweis mit dem Körper ist gut. \\
+Ich werde ein Kapitel Mapping noch hinzufügen und die Abbildungen verschieben.
+Operationen sind auf den Körper beschränkt. Das ist absolut value nicht.
+
 \section*{3.2 Mapping of Integers to Bit Vectors}
 Du definierst $n=\lfloor \log_2(a)\rfloor + 1$ f\"ur $a\ge 0$.
 $\log_2(0)$ ist f\"ur $a=0$ aber nicht definiert.
+
+{\bf Ralf} Ja. \\
+Ich ergänze eine Fallunterscheidung.
+
 
 \section*{3.3 Operations on vectors}
 Ist es in (19) nicht
@@ -60,16 +77,25 @@ statt
   (x \mid y)\& z = (x \mid z)\& (y \mid z)
 \]?
 Bin hier verwirrt wie die Regel ist.
+{\bf Ralf} Ja, Fehler meinerseits.\\
 
 \section*{Distributivity}
 Beachte m\"ogliche Sesquilinearit\"at mit $\lambda$, falls $\lambda\in\mathbb{C}$ ist.
 Oder definiere $\lambda$. Kommt es aus $\mathbb{R}$ oder woher? Dann kann man es auch weg lassen.
 Aber es ist nicht sichtbar, woher $\lambda$ kommt. Oder habe ich das \"ubersehen?
 
+{\bf Ralf} Ja übersehen. \\
+$\lambda \in \mathbb{F}_2$
+Ich werde schreiben Distributivity with respect of scalar multiplication of field
+
 \section*{3.5.7 Orthonormal Basis}
 Warum ist es die ``einzige orthonormale Basis''? Sehr harte Worte/sehr kurz gehaltenes Fazit,
 das man evtl.\ etwas pr\"azisieren k\"onnte. Denn ich als Leserin habe es nicht verstanden,
 warum das so sein soll. Etwas mehr ausf\"uhren f\"ur das Verst\"andnis. Vielleicht mit
 ``[Dein Text], because\ldots''
+
+{\bf Ralf} Guter Punkt. \\
+Ich werde die Begründung nachreichen. Die Vektoren der Basis sind die einzigen normierten Vektoren. Andere gibt es nicht in
+ $\mathbb{F}_2^n$.
 
 \end{document}
