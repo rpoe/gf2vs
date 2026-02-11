@@ -1,0 +1,75 @@
+% Hinweis: Eine PDF lässt sich nicht zuverlässig automatisch zurück in LaTeX konvertieren.
+% Bitte kopiere den Text (oder exportiere ihn als .txt/.docx) und ich setze ihn dir hier sauber in LaTeX.
+\documentclass[a4paper,11pt]{article}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+
+\title{Ralf Korrekturhinweise}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent
+\textbf{Laura Rubin}\\
+February 2026
+
+\section*{2.1 Supporting Set + 2.2 Operations}
+Du hattest
+\[
+  \mathbb{Z}_2 = \mathbb{Z}/\mathbb{Z}_2 = \{0,1\}.
+\]
+Das ist meine ich so nicht sauber notiert. Besser w\"are die Notation:
+\[
+  \mathbb{Z}_2 \cong \mathbb{Z}/2\mathbb{Z} = \{0,1\}.
+\]
+Auch $-1$ ist im K\"orper enthalten. Das hast du ja unten auch bei Negation beschrieben.
+Das macht man aber mit \"Uberstrich, wenn z.\,B.\ $1$ sowie $-1$ enthalten ist.
+Reine Schreibweisekorrektur.
+
+Allerdings wei\ss{} ich nicht, ob du in True und False $-1$ und ``$-0$'' inkludieren kannst.
+Da bin ich kein Experte.
+
+\section*{2.2.3 Absolute value}
+Vielleicht bessere Notation (ausf\"uhrlicher, aber optional):
+\[
+  |\cdot| : \mathbb{F}_2^n \to \mathbb{R}^n,
+  \qquad
+  |x| := (|x_1|,\ldots,|x_n|),
+  \qquad
+  |0|=0,\ |1|=1.
+\]
+Was aber eher das Problem ist in meinen Augen: Du hast das als K\"orperoperation dargestellt,
+weil es ein Unterkapitel von ``2.2 Operations'' ist. Es ist ja hier aber eine Abbildung.
+Vielleicht nochmal anders strukturieren, indem du ein neues Kapitel machst o.\,\"A.
+
+\section*{3.2 Mapping of Integers to Bit Vectors}
+Du definierst $n=\lfloor \log_2(a)\rfloor + 1$ f\"ur $a\ge 0$.
+$\log_2(0)$ ist f\"ur $a=0$ aber nicht definiert.
+
+\section*{3.3 Operations on vectors}
+Ist es in (19) nicht
+\[
+  (x \mid y)\& z = (x\& z) \mid (y \& z)
+\]
+statt
+\[
+  (x \mid y)\& z = (x \mid z)\& (y \mid z)
+\]?
+Bin hier verwirrt wie die Regel ist.
+
+\section*{Distributivity}
+Beachte m\"ogliche Sesquilinearit\"at mit $\lambda$, falls $\lambda\in\mathbb{C}$ ist.
+Oder definiere $\lambda$. Kommt es aus $\mathbb{R}$ oder woher? Dann kann man es auch weg lassen.
+Aber es ist nicht sichtbar, woher $\lambda$ kommt. Oder habe ich das \"ubersehen?
+
+\section*{3.5.7 Orthonormal Basis}
+Warum ist es die ``einzige orthonormale Basis''? Sehr harte Worte/sehr kurz gehaltenes Fazit,
+das man evtl.\ etwas pr\"azisieren k\"onnte. Denn ich als Leserin habe es nicht verstanden,
+warum das so sein soll. Etwas mehr ausf\"uhren f\"ur das Verst\"andnis. Vielleicht mit
+``[Dein Text], because\ldots''
+
+\end{document}
