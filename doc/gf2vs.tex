@@ -236,41 +236,38 @@
 
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-02-07}
+\date{2026-02-12}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-This article is a supplementary documentation to the Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs}.
-The package implements data types and functions for the vector space of bit vectors.
+The aim of this article is to document all properties of the vector space of size $n$ of bit vectors $\BF_2^n$. It is a brief summary of the properties collected from several sources. 
 \end{abstract}
 
 \section{Introduction}
 
 Bit vectors are very common in computer science. They are used for integers, combinatorial algorithms, coding theory,
 and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}.
-All aspects of the vector space of bit vectors are examined relatively rarely.
+Information of all aspects of the vector space of bit vectors are scattered over multiple documents..
 
 Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$.
 
-The aim of this article is to document the properties of the vector space of bit vectors $\BF_2^n$, as implemented in the Go package~
-\texttt{gf2vs}. This is a brief reference of the properties collected from several sources.
+The Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs} implements data types and functions for the vector space of bit vectors.
+This article is a supplementary documentation to the Go package.
 
 \section{\texorpdfstring{Field $GF(2)$}{Field GF(2)}}
 
 \subsection{Supporting Set}
 
-The supporting set of $GF(2) = \BF_2$ is
-\begin{equation}
-\BZ_2 = \BZ/\BZ2 = \{0, 1\} \subset \BN \subset \BZ \subset \BR
-\end{equation}
-the subset $\BZ_2$ of $\BZ$, which is a subset of $\BR$. This set is equal to $\BZ/\BZ2$, the cyclic group of order~2. This set holds the values of a bit in computer science.
+In computer science bits are modeled as the set $\{0, 1\}$. This is the set $\BZ_2 \subset \BN \subset \BZ \subset \BR$ . This set is equivalent to the set of representatives of the cyclic group $\BZ/\BZ2$  of order~2. 
 In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
 
+The representatives of the cyclic set $\BZ/\BZ2$ with operations modulo~2 satisfy the field axioms.
+We use the notation $\BF_2$ for the field. It is equivalent to the Galois Field $GF(2)$.
 
-\subsection{Operations}
+\subsection{Group Operations}
 The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite[ch. 2.2.6]{Fischer2020} and \cite{Hill2004}.
 
 The operations addition and multiplication of the field $\BF_2$ satisfies the group
@@ -282,33 +279,6 @@ axioms~\cite{Fischer2020}, both operations are commutative.
 Please note the different definition of the addition in $\BF_2$ and $\BR$.
 
 For reference we give here only the operations for $\BF_2$.
-
-\subsubsection{Negation}
-
-\begin{equation}
-\begin{array}{r l l l l}
-- : \BF_2 \rightarrow \BF_2, & - x = x, & -0 = 0, & -1 = 1. \\
-\end{array}
-\end{equation}
-The negation of $1$ in $\BF_2$ is computed as $(- 1)\mod 2 = 1$
-
-\subsubsection{Complement}
-
-\begin{equation}
-\begin{array}{r l l l l}
-\neg : \BF_2 \rightarrow \BF_2, & \neg x = 1 - x, & \neg 0 = 1, & \neg1 = 0. \\
-\end{array}
-\end{equation}
-
-\subsubsection{Absolute value}
-We define the mapping absolute value $|x|$ of an element $x$ of $\BF_2$ to $\BR$:
-\begin{equation}
-\begin{array}{r l l l l}
-| x | : \BF_2 \rightarrow \BR, &| 0 | = 0, & | 1  | = 1. \\
-\label{def:value}
-\end{array}
-\end{equation}
-We use this mapping, when we need the default classical definition of the addition as in $\BR$.
 
 \subsubsection{Addition}
 The addition is named exclusive disjunction in logic and XOR \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr}
@@ -328,7 +298,8 @@ $\forall a, b, c \in G: (a + b) + c = a + (b + c)$.
 \item[Identity element $e = 0$] \ \\
 $\exists e \in G, \forall a \in G: e + a = a \text{ and } a + e = a$, $e = 0$, $e$ is unique.
 \item[Inverse element $(-a) = a$] \ \\
-$\forall a \in G \enspace \exists (-a) \in G : a + (-a) = e \text{ and } (-a) + a = e$, $e$ identity element, $(-a) = a$ is unique for each $a$.
+$\forall a \in G \enspace \exists (-a) \in G : a + (-a) = e \text{ and } (-a) + a = e$, $e$ identity element, $(-a) = a$ is unique for each $a$. \\
+The elements of the set $\{0, 1\}$ are their own inverses, see equation (\ref{def:opaddition}).
 \item[Commutativity] \ \\
 $a + b = b + a$.
 \end{description}
@@ -360,6 +331,17 @@ $a \cdot b = b \cdot a$.
 \end{description}
 So $\BF_2$ with the operation multiplication is an abelian group.
 
+\subsection{Mappings}
+
+In addition to the group operations we define some mappings, applicable to $\BF_2$.
+
+\subsubsection{Complement}
+
+\begin{equation}
+\begin{array}{r l l l l}
+\neg : \BF_2 \rightarrow \BF_2, & \neg x = 1 - x, & \neg 0 = 1, & \neg1 = 0. \\
+\end{array}
+\end{equation}
 
 \subsubsection{Disjunction}
 
@@ -374,7 +356,17 @@ In boolean logic we have the operation disjunction, named OR in computer science
 
 The operation $\vee$ does not satisfy the group axioms; there is no inverse element.
 
-\subsection{Field axioms}
+\subsubsection{Absolute Value}
+Absolute value $| \cdot |$ maps an element $x$ of $\BF_2$ to $\BR$:
+\begin{equation}
+\begin{array}{r l l l l}
+| \cdot | : \BF_2 \rightarrow \BR, &| 0 | = 0, & | 1  | = 1. \\
+\label{def:value}
+\end{array}
+\end{equation}
+After application of this mapping, we can use the default classical definition of the addition as in $\BR$.
+
+\subsection{Field Axioms}
 
 The set $K := \BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020, Hill2004}. We use~$K$ as symbol for any field satisfying the field axioms.
 \begin{description}
@@ -389,18 +381,18 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 \end{equation}
 \end{description}
 
-\section{\texorpdfstring{Vector space $\BF_2^n$}{Vector space}}
+\section{\texorpdfstring{Vector Space $\BF_2^n$}{Vector Space}}
 
 \subsection{Vectors}
 Bit vectors are the elements of the vector space.
 We define a bit vector $x$ of size $n$ as a tuple $(x_i)$ of values $x_i \in \BF_2$:
 \begin{equation}
-x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2
+x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2,
 \end{equation}
 
-We define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer2020}:
+and we define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer2020} as the vector space $\BF_2^n$:
 \begin{equation}
-\BF_2^n := \{x =  (x_1, \dots, x_n) : x_i \in \BF_2\}
+\BF_2^n := \{x =  (x_1, \dots, x_n) : x_i \in \BF_2\}.
 \end{equation}
 
 In addition we define two distinguished constant elements of $\BF_2^n$:
@@ -410,18 +402,19 @@ In addition we define two distinguished constant elements of $\BF_2^n$:
 \end{description}
 
 \subsection{Mapping of Integers to Bit Vectors}
-We define the mapping $\varphi$ from $\BN$ to $\BF_2^n$. 
-For mapping of an integer $a \in \BN$ to a bit vector $x \in \BF_2^n$ we need to compute
-the length $n$ of $x$ with equation~(\ref{size}).
+All vectors in a vector space have the same length $n$. Obviously we do not have a vector space if $n = 0$.
+
+We use bit vectors as representatives of integers $a_i \in \BN$.
+We compute the order $n$ of the target vector space from the maximum of the $\max(a_i) > 0$, using equation~(\ref{size}).
+If $\max(a_i) \le 0$ the $a_i$ cannot be represented with the vector space as defined here. 
+Regarding the special considerations for $a_i < 0$ see \cite{knuth:taocp_v4_f1}.
+
 \begin{equation}
-	n = \lfloor \log_{2}(a) \rfloor + 1.
-	\label{size}
+n = \lfloor \log_{2}(\max(a_i)) \rfloor + 1.
+\label{size}
 \end{equation}
-If we need to map multiple integers $a_i$ to the same vector space we compute $n$ from the maximum of the $a_i$
-\begin{equation}
-	n = \lfloor \log_{2}(\max(a_i)) \rfloor + 1.
-\end{equation}
-Equation~(\ref{vector}) defines the mapping for $a \in \BN, a \ge 0$.
+
+Knowing $n$ we can use equation~(\ref{vector}) to map $a \in \BN, a \ge 0$.
 \begin{equation}
 \begin{array}{rr}
 \varphi : \BN \rightarrow \BF_2^n, & x = \left (
@@ -443,49 +436,61 @@ a = \sum_{i=1}^n x_i 2 ^{i-1}.
 \label{integer}
 \end{equation}
 
-In the programming language Go these mapping are used when parsing integer strings and formatting integers.
-Internally integers are stored as bit vectors.
+In the programming language Go, as in most programming languages these mapping are
+used when parsing integer strings and formatting integers.
+Internally integers are stored as bit vectors compatible with the hardware word size of the target computer for the programming language. This limits on most hardware architectures the vector size to a power of 2.
 
-\subsection{Operations on vectors}
-
-We define bitwise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
+\subsection{Mappings of Bit Vectors}
+Equation (\ref{def:vecMapping}) defines the mapping of bit vectors.
 \begin{equation}
 \left.
-\begin{array}{rrcrl}
-- : \BF_2^n \rightarrow \BF_2^n, & - x = x & \Leftrightarrow & - x_i = x_i \\
-\sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
-|\ |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & x_i = y_i, \\
-\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
-\& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
-| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
-\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
+\begin{array}{lrrcrl}
+\text{Complement} & \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
+\text{Absolut value}&| \cdot |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & | x_i | = | y_i |,
+\end{array}
+\right\} i = 1, \dots, n.
+\label{def:vecMapping}
+\end{equation}
+We define the mapping $| \cdot |$ for formal mapping of a bit vector from $\BF_2^n$ to $\BR^n$.
+
+For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
+
+\subsection{Operations on Bit Vectors}
+
+We define bit-wise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
+\begin{equation}
+\left.
+\begin{array}{lrrcrl}
+&\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
+&\& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
+&| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
+&\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
 \end{array}
 \right\} i = 1, \dots, n.
 \label{def:vectoroperations}
 \end{equation}
-We define the operation $| \ |$ for formal mapping of a bit vector from $\BF_2^n$ to $\BR^n$.
-
-For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
 
 We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for bit vectors of size $n$ here:
 \begin{flalign}
-& x \oplus y =  y \oplus x, \quad x \& y = y \& x, \quad x | y = y | x;  &\\
-& (x \oplus y) \oplus z = x \oplus (y \oplus z), \quad (x \& y) \& z = x \& (y \& z), \quad (x | y) | z = x | (y | z); &\\
-& (x \oplus y) \& z = (x \& z) \oplus (y \& z); &\\
-& (x \& y) | z = (x | z) \& (y | z), \quad (x | y) \& z = (x | z) \& (y | z); &\\
-& x \oplus y = (x \& y) \oplus (x | y); &\\
-& (x \& y) | x = x, \quad (x | y) \& x = x; \\
-& x \oplus \0 = x, \quad x \& \0 = \0, \quad x | \0 = x; & \\
+& x \oplus y =  y \oplus x, \quad x \& y = y \& x, \quad x | y = y | x,  & \text{commutativity;} \\
+& (x \oplus y) \oplus z = x \oplus (y \oplus z), \quad (x \& y) \& z = x \& (y \& z), \quad (x | y) | z = x | (y | z), & \text{associativity}; \\
+& (x \oplus y) \& z = (x \& z) \oplus (y \& z); & \text{distributivity AND over XOR};\\
+& (x \& y) | z = (x | z) \& (y | z), \quad (x | y) \& z = (x \& z) | (y \& z), & \text{mutual distributivity AND, OR};\\
+& (x \& y) \oplus (x | y) = x \oplus y; &\\
+& (x \& y) | x = x, \quad (x | y) \& x = x & \text{idempotence}; \\
+& x \oplus \0 = x, \quad x \& \0 = \0, \quad x | \0 = x; &  \\
 & x \oplus x = \0, \quad x \& x = x, \quad x | x = x; & \\
 & x \oplus \1 = \sim x, \quad x \& \1 = x, \quad x | \1 = \1; & \\
 & x \oplus (\sim x) = \1, \quad x \& (\sim x) = \0, \quad x | (\sim x) = \1; & \\
-& - (x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y), \quad \sim ( x \& y) = (\sim x) | (\sim y), \quad \sim(x | y) = (\sim x) \& (\sim y); &
+& \sim(x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y), & \\
+& \sim ( x \& y) = (\sim x) | (\sim y), \quad \sim(x | y) = (\sim x) \& (\sim y), & \text{De Morgan};
 \end{flalign}
 
-\subsection{Axioms of vector space}
-The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, defines a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}.
+\subsection{Axioms of Vector Space}
+The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, define a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}.
 
-The axioms of a vector space are satisfied for $\BF_2^n$:
+\subsubsection{Vector Addition}
+Addition of two vectors of the vector space.
 \begin{description}
 \item[Associativity of vector addition] \ \\
 $u \oplus (v \oplus w) = (u \oplus v) \oplus w, \enspace \forall u, v, w \in \BF_2^n$.
@@ -494,7 +499,13 @@ $u \oplus v = v \oplus u, \enspace \forall u, v \in \BF_2^n$.
 \item[Identity element of vector addition] \ \\
 $\exists \0 \in \BF_2^n : v \oplus \0 = v, \enspace \forall v \in \BF_2^n$.
 \item[Inverse elements of vector addition] \ \\
-$\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v \oplus (-v) = \0$, and $-v = v$, i.e.\ each vector is its own additive inverse.
+$\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v \oplus (-v) = \0$, and $-v = v$, i.e.\ each vector is its own additive inverse, 
+see equation (\ref{def:opaddition}).
+\end{description}
+
+\subsubsection{Scalar Multiplication}
+Multiplication of a scalar of the field with a vector of the vector space.
+\begin{description}
 \item[Compatibility of scalar multiplication with field multiplication] \ \\
 $\lambda (\eta v) = (\lambda \eta) v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
 \item[Identity element of scalar multiplication] \ \\
@@ -505,28 +516,13 @@ $\lambda (u \oplus v) = \lambda u \oplus \lambda v, \enspace \lambda \in \BF_2, 
 $(\lambda + \eta) v = \lambda v + \eta v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
 \end{description}
 
-In the vector space $\BF_2^n$ we are not limited to the operations vector addition and scalar multiplication. We can use the Boolean operations as well.
+The axioms of a vector space are satisfied for $\BF_2^n$
 
-\begin{description}
-\item[Negation, Complement, Not] \ \\
-$\sim v = \1 - v = \1 \oplus v$, swap all bits.
-\item[Disjunction, Or] \ \\
-$u | v = (u_i) | (v_i) = (u_i \vee v_i)$, element-wise Or.
-\item[Exclusive or, Xor] \ \\
-$u \oplus v = u \oplus v = (u_i) \oplus (v_i) = (u_i + v_i)$, element-wise Xor, equal to vector addition.
->>>>>>> doc
-\item[Conjunction, And] \ \\
-$u \wedge v = (u_i) \cdot (v_i) = (u_i \cdot v_i)$, element-wise And.
-\end{description}
-
-As we apply the operations element-wise $i = 1, \dots n$,
-we satisfy the laws of associativity and commutativity inherited from the field.
-
-\subsection{Vector space base}
+\subsection{Vector Space Base}
 We give here the definition of the base, the norm and the scalar product implemented in the Go package.
 The symbol $K$ is used in definitions applicable by each of the fields $\BF_2^n, \BQ, \BR, \BC$.
 
-\subsubsection{Unit vector}
+\subsubsection{Unit Vector}
 We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the vectors
 where the $i$th element is $x_i = 1$ and all other elements are $0$.
 \begin{equation}
@@ -545,7 +541,7 @@ Please note the $e_i$ are linearly independent.
 We observe the identity elements are identical for the fields and the unit vectors are
 identical for all vector spaces over a field $K$.
 
-\subsubsection{Generating system}
+\subsubsection{Generating System}
 We define the subset $\BE := \{e_i\}$, $\BE \subset \BF_2^n$, of unit vectors $e_i$.
 The subset $\BE$ forms a generating system. Each vector $v$ of $\BF_2^n$ is a linear combination of scalars $a_i$ and the $e_i$:
 \begin{equation}
@@ -567,7 +563,7 @@ The subset $\BE$ is one base of the vector space $\BF_2^n$. As it is a base of e
 \subsubsection{Index}
 We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
 
-\subsubsection{Norm via Hamming weight}
+\subsubsection{Norm via Hamming Weight}
 The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
 In particular, for $x \in \BF_2^n$ we have
 \begin{equation}
@@ -615,9 +611,14 @@ $ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, x \in \BF_2^n$,
 \item[Positive definiteness] \ \\
 $w_H(x) = 0 \Rightarrow x = \0$.
 \end{description}
-Please note the norm of the unit vectors $\| e_i \| = 1, \quad \forall i \in \{1, \dots n \}$.
+Please note the norm of the unit vectors 
+\begin{equation}
+\| e_i \| = 1, \quad \forall i \in \{1, \dots n \}.
+\label{normUnitVector}
+\end{equation}
+These are the only vectors with norm 1 in the vector space.
 
-\subsubsection{Scalar product} \ \\
+\subsubsection{Scalar Product} \ \\
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{equation}
 \begin{array}{ll}
@@ -632,8 +633,7 @@ The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \s
 \end{array}
 \end{equation}
 
-
-We can easily verify by computation the properties of the scalar product:
+We can easily verify by computation the properties of the scalar product, for $x, y \in \BF_2^n$ and $\lambda \in \BF_2$:
 \begin{description}
 \item[Distributivity]
 \begin{flalign*}
@@ -652,13 +652,19 @@ We can easily verify by computation the properties of the scalar product:
 \end{flalign*}
 \item[Orthogonality]
 \begin{flalign*}
-& \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } &
+& \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } & \\
+& \langle x, \sim x \rangle = 0, \text{ a vector is orthogonal to its complement.}
 \end{flalign*}
 \end{description}
 In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
 
-\subsubsection{Orthonormal Basis}
-With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$.
+\subsubsection{Orthonormal Base}
+With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$, as the unit vectors are the only vectors in $\BF_2^n$ with a length of 1 in the vector space, see equation (\ref{normUnitVector}).
+
+
+\section*{Acknowledgements}
+
+A heartfelt thank you goes to my prior fellow student Laura Rubin for the content review and helpful comments, as well as to my wife for her tireless support.
 
 % \newpage
 
