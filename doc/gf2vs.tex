@@ -7,19 +7,19 @@
 \usepackage{enumitem}
 \usepackage{newtxtext,newtxmath}
 
-\usepackage[left=1in,right=1in,top=1in,bottom=.5in,includeheadfoot]{geometry}
+\usepackage[left=1in,right=1in,top=1in,bottom=.7in,includefoot]{geometry}
 \usepackage[colorlinks=true,allcolors=black]{hyperref}
 
 %--- biblatex ----------------------------------------------------
 \usepackage[
-    backend=biber,          % <-- biber muss verwendet werden
-    style=numeric,          % beliebiger Stil (numeric, authoryear, …)
-    sorting=nty,            % Sortierung: name‑year‑title
-    url=true,               % URL‑Felder immer ausgeben
-    urldate=long,           % Datumsformat (z. B. 5 Feb 2026)
+    backend=biber,          % <-- biber required
+    style=numeric,  
+    sorting=nty,            % sorting: name‑year‑title
+    url=true,
+   urldate=long, 
 ]{biblatex}
 
-% biblatex-specific URL linebreak penalties removed (not needed without biblatex)
+%--- line break penalties
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
 
@@ -180,8 +180,8 @@
   title        = {Error detecting and error correcting codes},
   number       = {2},
   pages        = {147-160},
-  url          = {https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf},
-  urldate      = {2026-02-03},
+  url = {https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf},
+  urldate         = {2026-02-03},
   volume       = {29},
 }
 
@@ -203,8 +203,8 @@
   edition   = {4},
   isbn      = {9783031410260},
   publisher = {Springer Nature;},
-  url       = {https://linear.axler.net/LADR4e.pdf},
-  urldate   = {2026-02-03},
+  url = {https://linear.axler.net/LADR4e.pdf},
+  urldate         = {2026-02-03},
   address   = {Cham},
   year      = {2024},
 }
@@ -249,15 +249,15 @@ The aim of this article is to document all properties of the vector space of siz
 \section{Introduction}
 
 Bit vectors are very common in computer science. They are used for integers, combinatorial algorithms, coding theory,
-and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}.
-Information of all aspects of the vector space of bit vectors are scattered over multiple documents..
+and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}. A set of bit vectors of the same length forms a vector space.
+Information of all aspects of the vector space of bit vectors are scattered over multiple documents. This article is a collection of the properties of the vector space of bit vectors of the same length.
 
 Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$.
 
 The Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs} implements data types and functions for the vector space of bit vectors.
 This article is a supplementary documentation to the Go package.
 
-\section{\texorpdfstring{Field $GF(2)$}{Field GF(2)}}
+\section{\texorpdfstring{Field $\BF_2$}{Field F2}}
 
 \subsection{Supporting Set}
 
@@ -270,7 +270,7 @@ We use the notation $\BF_2$ for the field. It is equivalent to the Galois Field 
 \subsection{Group Operations}
 The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite[ch. 2.2.6]{Fischer2020} and \cite{Hill2004}.
 
-The operations addition and multiplication of the field $\BF_2$ satisfies the group
+The operations addition and multiplication of the field $\BF_2$ satisfy the group
 axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both operations are commutative.
 
 Similarly the operations addition and multiplication of the field $\BR$ satisfies the group
@@ -364,7 +364,7 @@ Absolute value $| \cdot |$ maps an element $x$ of $\BF_2$ to $\BR$:
 \label{def:value}
 \end{array}
 \end{equation}
-After application of this mapping, we can use the default classical definition of the addition as in $\BR$.
+After application of this mapping, we can use the classical definition of the addition as in $\BR$.
 
 \subsection{Field Axioms}
 
@@ -380,6 +380,7 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 \end{array}
 \end{equation}
 \end{description}
+Obviously $\BF_2$ satisfies the field axioms.
 
 \section{\texorpdfstring{Vector Space $\BF_2^n$}{Vector Space}}
 
@@ -404,9 +405,9 @@ In addition we define two distinguished constant elements of $\BF_2^n$:
 \subsection{Mapping of Integers to Bit Vectors}
 All vectors in a vector space have the same length $n$. Obviously we do not have a vector space if $n = 0$.
 
-We use bit vectors as representatives of integers $a_i \in \BN$.
-We compute the order $n$ of the target vector space from the maximum of the $\max(a_i) > 0$, using equation~(\ref{size}).
-If $\max(a_i) \le 0$ the $a_i$ cannot be represented with the vector space as defined here. 
+Bit vectors are representatives of integers $a_i \in \BN$.
+For mapping of a set of integers we compute the order $n$ of the target vector space from the maximum of the $\max(a_i) > 0$, using equation~(\ref{size}).
+If $\max(a_i) \le 0$ the $a_i$ cannot be represented with the vector space as defined in this article.
 Regarding the special considerations for $a_i < 0$ see \cite{knuth:taocp_v4_f1}.
 
 \begin{equation}
@@ -457,14 +458,14 @@ For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
 
 \subsection{Operations on Bit Vectors}
 
-We define bit-wise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
+Equation (\ref{def:vectoroperations}) defines bit-wise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
 \begin{equation}
 \left.
 \begin{array}{lrrcrl}
-&\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
-&\& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
-&| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
-&\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
+\text{Addition, XOR} &\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
+\text{Multiplication, AND} &\& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
+\text{Disjunction, OR} &| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
+\text{Scalar multiplication} &\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
 \end{array}
 \right\} i = 1, \dots, n.
 \label{def:vectoroperations}
@@ -477,7 +478,7 @@ We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for
 & (x \oplus y) \& z = (x \& z) \oplus (y \& z); & \text{distributivity AND over XOR};\\
 & (x \& y) | z = (x | z) \& (y | z), \quad (x | y) \& z = (x \& z) | (y \& z), & \text{mutual distributivity AND, OR};\\
 & (x \& y) \oplus (x | y) = x \oplus y; &\\
-& (x \& y) | x = x, \quad (x | y) \& x = x & \text{idempotence}; \\
+& (x \& y) | x = x, \quad (x | y) \& x = x, & \text{idempotence}; \\
 & x \oplus \0 = x, \quad x \& \0 = \0, \quad x | \0 = x; &  \\
 & x \oplus x = \0, \quad x \& x = x, \quad x | x = x; & \\
 & x \oplus \1 = \sim x, \quad x \& \1 = x, \quad x | \1 = \1; & \\
@@ -487,7 +488,7 @@ We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for
 \end{flalign}
 
 \subsection{Axioms of Vector Space}
-The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, define a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}.
+The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, define a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. We repeat here the axioms of a vector space and leave the proof to the reader.
 
 \subsubsection{Vector Addition}
 Addition of two vectors of the vector space.
@@ -519,7 +520,7 @@ $(\lambda + \eta) v = \lambda v + \eta v, \enspace \lambda, \eta \in \BF_2, \; v
 The axioms of a vector space are satisfied for $\BF_2^n$
 
 \subsection{Vector Space Base}
-We give here the definition of the base, the norm and the scalar product implemented in the Go package.
+For the vector space $\BF_2^n$ we give here the definition of the base, the norm and the scalar product as  implemented in the Go package.
 The symbol $K$ is used in definitions applicable by each of the fields $\BF_2^n, \BQ, \BR, \BC$.
 
 \subsubsection{Unit Vector}
@@ -548,7 +549,7 @@ The subset $\BE$ forms a generating system. Each vector $v$ of $\BF_2^n$ is a li
 v = \sum_{i=1}^n a_i e_i, \enspace a_i \in \BF_2, \enspace e_i \in \BE, \quad \forall v \in \BF_2^n.
 \label{def:genSystem}
 \end{equation}
-Here the addition is modulo 2.
+For the vector space $\BF_2^n$ the addition is modulo 2.
 
 Equation (\ref{def:genSystem}) is used equally for each vector space on any field $K$ using
 the operation addition as defined for the field~ $K$ and the $1$ the identity element of the operation multiplication.
@@ -595,14 +596,15 @@ by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms a
 \begin{equation}
 \| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
 \end{equation}
-So the $l_1$-norm on $\BR^n$ see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm} equals the Hamming weight on bit vectors.
+In $\BR^n$ $\| x \|_1$ is named $\ell_1$-norm see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm}.
+Obviously it equals the Hamming weight on bit vectors.
 This norm is sometimes called absolute-value
 norm~\cite{wikipedia_en_2025_NormMathematics}.
-The value of the norm is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
+The value of the norm of a vector of $\BF_2^n$ is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
 
 In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(uint~x)~uint} in package~\texttt{math/bits}.
 
-Obviously this norm satisfies the axioms of a norm:
+This norm satisfies the axioms of a norm:
 \begin{description}
 \item[Subadditivity / Triangle inequality] \ \\
 $w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
@@ -622,33 +624,33 @@ These are the only vectors with norm 1 in the vector space.
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{equation}
 \begin{array}{ll}
-\langle , \rangle : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \& y \|_1 = w_H(x \& y),
+\langle , \rangle : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \& y \|_1 = w_H(x \& y).
 \end{array}
 \label{def:innerproduct}
 \end{equation}
 The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \subset \BR^n$
 \begin{equation}
 \begin{array}{ll}
-\langle , \rangle : \BR^n \times \BR^n \rightarrow \BR, & \langle x , y \rangle  = \sum_i^n x_i \cdot y_i,
+\langle , \rangle : \BR^n \times \BR^n \rightarrow \BR, & \langle x , y \rangle  = \sum_i^n x_i \cdot y_i.
 \end{array}
 \end{equation}
 
-We can easily verify by computation the properties of the scalar product, for $x, y \in \BF_2^n$ and $\lambda \in \BF_2$:
+By computation we can easily verify the properties of the scalar product, for $x, y \in \BF_2^n$ and $\lambda \in \BF_2$:
 \begin{description}
 \item[Distributivity]
 \begin{flalign*}
 & \langle x \oplus x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
 & \langle x, y \oplus y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
 & \langle\lambda x, y \rangle = \lambda \langle x, y\rangle, & \\
-& \langle x, \lambda y\rangle = \lambda \langle x, y\rangle, &
+& \langle x, \lambda y\rangle = \lambda \langle x, y\rangle. &
 \end{flalign*}
 \item[Commutativity]
 \begin{flalign*}
-& \langle x, y\rangle = \langle y, x\rangle, &
+& \langle x, y\rangle = \langle y, x\rangle. &
 \end{flalign*}
 \item[Positive definiteness]
 \begin{flalign*}
-& \langle x, x\rangle \enspace \ge 0, \text{ with } \langle x,x\rangle = 0 \text{ only if } x = \0, &
+& \langle x, x\rangle \enspace \ge 0, \text{ with } \langle x,x\rangle = 0 \text{ only if } x = \0. &
 \end{flalign*}
 \item[Orthogonality]
 \begin{flalign*}
