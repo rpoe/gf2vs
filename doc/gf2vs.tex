@@ -236,7 +236,7 @@
 
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-02-12}
+\date{2026-02-16}
 
 \begin{document}
 
@@ -281,9 +281,10 @@ Please note the different definition of the addition in $\BF_2$ and $\BR$.
 For reference we give here only the operations for $\BF_2$.
 
 \subsubsection{Addition}
-The addition is named exclusive disjunction in logic and XOR \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr}
-in computer science.
-The definition of addition is given in equation \ref{def:opaddition} obeying $(1+1) \mod 2 = 0$.
+The addition is named exclusive disjunction in logic and XOR 
+in computer science
+\cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr}.
+The definition of addition is given in equation (\ref{def:opaddition}) obeying $(1+1) \mod 2 = 0$.
 \begin{equation}
 \begin{array}{r l l l l}
 + : \BF_2 \times \BF_2 \rightarrow \BF_2, & 0 + 0 = 0, & 0 + 1 = 1, & 1 + 0 = 1, & 1 + 1 = 0, \\
@@ -307,7 +308,8 @@ So $\BF_2$ with the operation addition is an abelian group.
 
 \subsubsection{Multiplication}
 The multiplication is named conjunction in logic and
-AND \cite{knuth:taocp_v4_f0, wikipedia_en_2025_LogicalConjunction} in computer science.
+AND in computer science
+\cite{knuth:taocp_v4_f0, wikipedia_en_2025_LogicalConjunction}.
 The multiplication is identically defined as in $\BZ$.
 \begin{equation}
 \begin{array}{r l l l l}
@@ -345,7 +347,7 @@ In addition to the group operations we define some mappings, applicable to $\BF_
 
 \subsubsection{Disjunction}
 
-In boolean logic we have the operation disjunction, named OR in computer science \cite{knuth:taocp_v4_f0, wikipedia_en_2025_InclusiveOr}.
+In boolean algebra we have the operation disjunction, named OR in computer science \cite{knuth:taocp_v4_f0, wikipedia_en_2025_InclusiveOr}.
 
 \begin{equation}
 \begin{array}{r l l l l}
@@ -398,8 +400,8 @@ and we define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer
 
 In addition we define two distinguished constant elements of $\BF_2^n$:
 \begin{description}
-\item[Zero] $\0$ zero vector, all components are $0$.
-\item[Ones] $\1$ ones vector, all components are $1$.
+\item[Zero] $\0$ zero vector, all components are $0$, identity element of vector addition (\ref{def:vectoroperations}).
+\item[Ones] $\1$ ones vector, all components are $1$, identity element of vector multiplication.
 \end{description}
 
 \subsection{Mapping of Integers to Bit Vectors}
@@ -459,6 +461,7 @@ For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
 \subsection{Operations on Bit Vectors}
 
 Equation (\ref{def:vectoroperations}) defines bit-wise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
+As we have a vector space over a field the vector operations defined bit-wise inherit the group properties of the field $\BF_2$.
 \begin{equation}
 \left.
 \begin{array}{lrrcrl}
@@ -609,9 +612,9 @@ This norm satisfies the axioms of a norm:
 \item[Subadditivity / Triangle inequality] \ \\
 $w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
 \item[Absolute homogeneity] \ \\
-$ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, x \in \BF_2^n$,
+$ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, \enspace x \in \BF_2^n$,
 \item[Positive definiteness] \ \\
-$w_H(x) = 0 \Rightarrow x = \0$.
+$w_H(x) \ge 0$, and $w_H(x) = 0 \Leftrightarrow x = \0$.
 \end{description}
 Please note the norm of the unit vectors 
 \begin{equation}
