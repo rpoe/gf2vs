@@ -55,7 +55,7 @@ The aim of this article is to document all properties of the vector space of siz
 
 \section{Introduction}
 
-Bit vectors are very common in computer science. They are used for integers, combinatorial algorithms, coding theory,
+Bit vectors are frequently used in computer science. They are used for integers, combinatorial algorithms, coding theory,
 and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}. A set of bit vectors of the same length forms a vector space.
 Information of all aspects of the vector space of bit vectors are scattered over multiple documents. This article is a collection of the properties of the vector space of bit vectors of the same length.
 
@@ -83,7 +83,7 @@ axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both op
 Similarly the operations addition and multiplication of the field $\BR$ satisfy the group
 axioms~\cite{Fischer2020}, both operations are commutative.
 
-Please note the different definition of the addition in $\BF_2$ and $\BR$.
+{\bf Remark:} Please note the different definition of the addition in $\BF_2$ and $\BR$.
 
 For reference we give here only the operations for $\BF_2$.
 
@@ -93,8 +93,11 @@ in computer science
 \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr}.
 The definition of addition is given in equation (\ref{def:opaddition}) obeying $(1+1) \mod 2 = 0$.
 \begin{equation}
-\begin{array}{r l l l l}
-+ : \BF_2 \times \BF_2 \rightarrow \BF_2, & 0 + 0 = 0, & 0 + 1 = 1, & 1 + 0 = 1, & 1 + 1 = 0, \\
+\begin{array}{ll}
++ : \BF_2 \times \BF_2 \to \BF_2, & (a,b) \mapsto (a + b) \mod 2, \\
+& \begin{array}{l l l l}
+0 + 0 = 0, & 0 + 1 = 1, & 1 + 0 = 1, & 1 + 1 = 0.
+\end{array}
 \end{array}
 \label{def:opaddition}
 \end{equation}
@@ -119,8 +122,11 @@ AND in computer science
 \cite{knuth:taocp_v4_f0, wikipedia_en_2025_LogicalConjunction}.
 The multiplication is identically defined as in $\BZ$.
 \begin{equation}
-\begin{array}{r l l l l}
-\cdot : \BF_2 \times \BF_2 \rightarrow \BF_2, & 0 \cdot 0 = 0, & 0 \cdot 1 = 0, & 1 \cdot 0 = 0, & 1 \cdot 1 = 1. \\
+\begin{array}{ll}
+\cdot : \BF_2 \times \BF_2 \rightarrow \BF_2, & (a,b) \mapsto (a \cdot b) \mod 2, \\
+& \begin{array}{l l l l}
+0 \cdot 0 = 0, & 0 \cdot 1 = 0, & 1 \cdot 0 = 0, & 1 \cdot 1 = 1. \\
+\end{array}
 \end{array}
 \label{def:opmultiplication}
 \end{equation}
@@ -145,20 +151,23 @@ So $\BF_2$ with the operation multiplication is an abelian group.
 In addition to the group operations we define some mappings, applicable to $\BF_2$.
 
 \subsubsection{Complement}
-
 \begin{equation}
-\begin{array}{r l l l l}
-\neg : \BF_2 \rightarrow \BF_2, & \neg x = 1 - x, & \neg 0 = 1, & \neg1 = 0. \\
+\begin{array}{ll}
+\neg : \BF_2 \rightarrow \BF_2, & \neg x = 1 + x, \\
+& \begin{array}{l l l l}
+\neg 0 = 1, & \neg 1 = 0. \\
+\end{array}
 \end{array}
 \end{equation}
 
 \subsubsection{Disjunction}
-
 In boolean algebra we have the operation disjunction, named OR in computer science \cite{knuth:taocp_v4_f0, wikipedia_en_2025_InclusiveOr}.
-
 \begin{equation}
-\begin{array}{r l l l l}
-\vee : \BF_2 \times \BF_2 \rightarrow \BF_2, & 0 \vee 0 = 0, & 0 \vee 1 = 1, & 1 \vee 0 = 1, & 1 \vee 1 = 1 \\
+\begin{array}{ll}
+\vee : \BF_2 \times \BF_2 \rightarrow \BF_2, & (a, b) \mapsto a \vee b, \\
+& \begin{array}{l l l l}
+0 \vee 0 = 0, & 0 \vee 1 = 1, & 1 \vee 0 = 1, & 1 \vee 1 = 1. \\
+\end{array}
 \end{array}
 \label{def:booleanoperation}
 \end{equation}
@@ -168,16 +177,19 @@ The operation $\vee$ does not satisfy the group axioms; there is no inverse elem
 \subsubsection{Absolute Value}
 Absolute value $| \cdot |$ maps an element $x$ of $\BF_2$ to $\BR$:
 \begin{equation}
-\begin{array}{r l l l l}
-| \cdot | : \BF_2 \rightarrow \BR, &| 0 | = 0, & | 1  | = 1. \\
-\label{def:value}
+\begin{array}{ll}
+	| \cdot | : \BF_2 \rightarrow \BR, & x \mapsto y, \\
+& \begin{array}{l l l l}
+| 0 | = 0, & | 1  | = 1. \\
 \end{array}
+\end{array}
+\label{def:value}
 \end{equation}
 After application of this mapping, we can use the classical definition of the addition as in $\BR$.
 
 \subsection{Field Axioms}
 
-The set $K := \BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020, Hill2004}. We use~$K$ as symbol for any field satisfying the field axioms.
+The set $\BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020, Hill2004}. We use~$K$ as symbol for any field satisfying the field axioms.
 \begin{description}
 \item[K1] $K$ with the addition $+$ is an abelian group.
 \item[K2] $K^* := K\setminus \{0\}$ with the multiplication $\cdot$ for every element of $K^*$ is an abelian group.
@@ -207,7 +219,7 @@ and we define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer
 
 In addition we define two distinguished constant elements of $\BF_2^n$:
 \begin{description}
-\item[Zero] $\0$ zero vector, all components are $0$, identity element of vector addition (\ref{def:vectoroperations}).
+\item[Zero] $\0$ zero vector, all components are $0$, identity element of vector addition equation (\ref{def:vectoroperations}).
 \item[Ones] $\1$ ones vector, all components are $1$, identity element of vector multiplication.
 \end{description}
 
@@ -259,7 +271,7 @@ Equation (\ref{def:vecMapping}) defines the mapping of bit vectors.
 \left.
 \begin{array}{lrrcrl}
 \text{Complement} & \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
-\text{Absolut value}&| \cdot |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & | x_i | = | y_i |,
+\text{Absolut value} & | \cdot |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & | x_i | = | y_i |,
 \end{array}
 \right\} i = 1, \dots, n.
 \label{def:vecMapping}
@@ -276,7 +288,7 @@ As we have a vector space over a field the vector operations defined bit-wise in
 \left.
 \begin{array}{lrrcrl}
 \text{Addition, XOR} &\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
-\text{Multiplication, AND} &\& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
+\text{Multiplication, AND} & \& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
 \text{Disjunction, OR} &| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
 \text{Scalar multiplication} &\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
 \end{array}
@@ -301,10 +313,9 @@ We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for
 \end{flalign}
 
 \subsection{Axioms of Vector Space}
-The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$, as given in~\eqref{def:vectoroperations}, define a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. We repeat here the axioms of a vector space and leave the proof to the reader.
+The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$,
+as given ini equation~\eqref{def:vectoroperations}, define a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. We repeat here the axioms of a vector space and leave the proof to the reader.
 
-\subsubsection{Vector Addition}
-Addition of two vectors of the vector space.
 \begin{description}
 \item[Associativity of vector addition] \ \\
 $u \oplus (v \oplus w) = (u \oplus v) \oplus w, \enspace \forall u, v, w \in \BF_2^n$.
@@ -317,8 +328,6 @@ $\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v \oplus (-v) = \0$, an
 see equation (\ref{def:opaddition}).
 \end{description}
 
-\subsubsection{Scalar Multiplication}
-Multiplication of a scalar of the field with a vector of the vector space.
 \begin{description}
 \item[Compatibility of scalar multiplication with field multiplication] \ \\
 $\lambda (\eta v) = (\lambda \eta) v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
@@ -337,8 +346,12 @@ For the vector space $\BF_2^n$ we give here the definition of the base, the norm
 The symbol $K$ is used in definitions applicable by each of the fields $\BF_2^n, \BQ, \BR, \BC$.
 
 \subsubsection{Unit Vector}
-We define the unit vectors $e_i$, $i = 1, \dots, n$, of the vector space as the vectors
-where the $i$th element is $x_i = 1$ and all other elements are $0$.
+We define the unit vectors
+\begin{equation}
+e_i = (0, \dots 0, 1, 0, \dots, 0), \quad i = 1, \dots, n,
+\end{equation}
+of the vector space as the vectors
+where the $i$th element is $1$ and all other elements are $0$.
 \begin{equation}
 e_i = (x_k),
 \enspace e_i \in K^n,
@@ -394,18 +407,18 @@ In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Ha
 of~ $x \in \{0, 1\}^n$ is defined as:
 \begin{equation}
 \begin{array}{ll}
-w_H : \BF_2^n \rightarrow \BZ, & w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
+w_H : \BF_2^n \rightarrow \BN, & w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
 \end{array}
 \end{equation}
 and the associated {\em Hamming distance} $d_H$ is:
 \begin{equation}
 \begin{array}{ll}
-d_H : \BF_2^n \times \BF_2^n \rightarrow \BZ, & d_H(x, y) = w_H(x - y).
+d_H : \BF_2^n \times \BF_2^n \rightarrow \BN, & d_H(x, y) = w_H(x - y).
 \end{array}
 \end{equation}
 
 If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$,
-by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors in $\BR^n$ norms are defined and we get:
+by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors $x = (x_i)$ in $\BR^n$ norms are defined and we get:
 \begin{equation}
 \| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
 \end{equation}
@@ -428,7 +441,7 @@ $w_H(x) \ge 0$, and $w_H(x) = 0 \Leftrightarrow x = \0$.
 \end{description}
 Please note the norm of the unit vectors 
 \begin{equation}
-\| e_i \| = 1, \quad \forall i \in \{1, \dots n \}.
+\| e_i \|_1 = 1, \quad \forall i \in \{1, \dots n \}.
 \label{normUnitVector}
 \end{equation}
 These are the only vectors with norm 1 in the vector space.
@@ -479,7 +492,7 @@ With the properties of the norm and the scalar product it follows $\BE$ is an or
 
 \section*{Acknowledgements}
 
-A duly thank you goes to my prior fellow student Laura Rubin for the content review and helpful comments, as well as to my wife for her tireless support.
+A sincere thank‑you goes to my prior fellow student Laura Rubin for the content review and helpful comments, as well as to my wife for her tireless support.
 
 % \newpage
 
