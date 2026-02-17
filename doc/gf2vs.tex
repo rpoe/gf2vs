@@ -236,7 +236,7 @@
 
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-02-16}
+\date{2026-02-17}
 
 \begin{document}
 
@@ -441,7 +441,10 @@ a = \sum_{i=1}^n x_i 2 ^{i-1}.
 
 In the programming language Go, as in most programming languages these mapping are
 used when parsing integer strings and formatting integers.
-Internally integers are stored as bit vectors compatible with the hardware word size of the target computer for the programming language. This limits on most hardware architectures the vector size to a power of 2.
+Internally integers are stored as bit vectors compatible with the hardware word size of the target
+computer for the programming language. This limits on most hardware architectures the vector size to a power of 2
+of the vectors used to represent integers. 
+The Go package~\texttt{gf2vs} supports vector spaces of arbitrary length, up to 64 bit.
 
 \subsection{Mappings of Bit Vectors}
 Equation (\ref{def:vecMapping}) defines the mapping of bit vectors.
@@ -476,18 +479,18 @@ As we have a vector space over a field the vector operations defined bit-wise in
 
 We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for bit vectors of size $n$ here:
 \begin{flalign}
-& x \oplus y =  y \oplus x, \quad x \& y = y \& x, \quad x | y = y | x,  & \text{commutativity;} \\
-& (x \oplus y) \oplus z = x \oplus (y \oplus z), \quad (x \& y) \& z = x \& (y \& z), \quad (x | y) | z = x | (y | z), & \text{associativity}; \\
-& (x \oplus y) \& z = (x \& z) \oplus (y \& z); & \text{distributivity AND over XOR};\\
-& (x \& y) | z = (x | z) \& (y | z), \quad (x | y) \& z = (x \& z) | (y \& z), & \text{mutual distributivity AND, OR};\\
+& x \oplus y =  y \oplus x, \enspace x \& y = y \& x, \enspace x | y = y | x: & \text{commutativity;} \\
+& (x \oplus y) \oplus z = x \oplus (y \oplus z), \enspace (x \& y) \& z = x \& (y \& z), \enspace (x | y) | z = x | (y | z): & \text{associativity}; \\
+& (x \oplus y) \& z = (x \& z) \oplus (y \& z): & \text{distributivity AND over XOR};\\
+& (x \& y) | z = (x | z) \& (y | z), \enspace (x | y) \& z = (x \& z) | (y \& z): & \text{mutual distributivity AND, OR};\\
 & (x \& y) \oplus (x | y) = x \oplus y; &\\
-& (x \& y) | x = x, \quad (x | y) \& x = x, & \text{idempotence}; \\
-& x \oplus \0 = x, \quad x \& \0 = \0, \quad x | \0 = x; &  \\
-& x \oplus x = \0, \quad x \& x = x, \quad x | x = x; & \\
-& x \oplus \1 = \sim x, \quad x \& \1 = x, \quad x | \1 = \1; & \\
-& x \oplus (\sim x) = \1, \quad x \& (\sim x) = \0, \quad x | (\sim x) = \1; & \\
-& \sim(x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y), & \\
-& \sim ( x \& y) = (\sim x) | (\sim y), \quad \sim(x | y) = (\sim x) \& (\sim y), & \text{De Morgan};
+& (x \& y) | x = x, \enspace (x | y) \& x = x: & \text{idempotence}; \\
+& x \oplus \0 = x, \enspace x \& \0 = \0, \enspace x | \0 = x; &  \\
+& x \oplus \1 = \sim x, \enspace x \& \1 = x, \enspace x | \1 = \1; & \\
+& x \oplus x = \0, \enspace x \& x = x, \enspace x | x = x; & \\
+& x \oplus (\sim x) = \1, \enspace x \& (\sim x) = \0, \enspace x | (\sim x) = \1; & \\
+& \sim(x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y); & \\
+& \sim ( x \& y) = (\sim x) | (\sim y), \enspace \sim(x | y) = (\sim x) \& (\sim y): & \text{De Morgan}.
 \end{flalign}
 
 \subsection{Axioms of Vector Space}
@@ -653,7 +656,7 @@ By computation we can easily verify the properties of the scalar product, for $x
 \end{flalign*}
 \item[Positive definiteness]
 \begin{flalign*}
-& \langle x, x\rangle \enspace \ge 0, \text{ with } \langle x,x\rangle = 0 \text{ only if } x = \0. &
+& \langle x, x\rangle \enspace \ge 0, \text{ and } \langle x,x\rangle = 0 \Leftrightarrow x = \0. &
 \end{flalign*}
 \item[Orthogonality]
 \begin{flalign*}
@@ -669,7 +672,7 @@ With the properties of the norm and the scalar product it follows $\BE$ is an or
 
 \section*{Acknowledgements}
 
-A heartfelt thank you goes to my prior fellow student Laura Rubin for the content review and helpful comments, as well as to my wife for her tireless support.
+A duly thank you goes to my prior fellow student Laura Rubin for the content review and helpful comments, as well as to my wife for her tireless support.
 
 % \newpage
 
