@@ -22,7 +22,6 @@ import (
 type GF2VectorSpace struct {
 	dim        uint          // dimension of the vector space
 	ones       uint          // bitvector where all bit are set, no zeros as allways 0
-	baseIndex  map[uint]uint // base of the vector space, map[bitvector] to index, 1 based of coordinate
 	baseVector map[uint]uint // base of the vector space, map[index 1 based] of coordinate to bitvector
 }
 
@@ -40,25 +39,22 @@ func NewGF2VectorSpace(n uint) *GF2VectorSpace {
 	bit := uint(1)
 	ones := uint(1)
 	index := uint(1)
-	baseIndex := make(map[uint]uint, n)
 	baseVector := make(map[uint]uint, n)
-	baseIndex[bit] = index
 	baseVector[index] = bit
 	for i := uint(1); i < n; i++ {
 		bit <<= 1
 		ones <<= 1
 		ones += 1
 		index++
-		baseIndex[bit] = index
 		baseVector[index] = bit
 	}
 
-	sp := GF2VectorSpace{n, ones, baseIndex, baseVector}
+	sp := GF2VectorSpace{n, ones, baseVector}
 	return &sp
 }
 
 func (sp *GF2VectorSpace) String() string {
-	return fmt.Sprintf("GF(2)sp {%v %v %v %v}", sp.dim, sp.ones, sp.baseIndex, sp.baseVector)
+	return fmt.Sprintf("GF(2)sp {%v %v %v}", sp.dim, sp.ones, sp.baseVector)
 }
 
 // GF2vector represents a vector in GF(2^n) a bitvector of len n,
@@ -133,16 +129,8 @@ func (v *GF2Vector) IsOnes() bool {
 	return v.val == v.sp.ones
 }
 
-// IndexMap return the index of the coordinate of a base vector.
-// Implementation uses Map.
-// Index is zero and isBase is false if v is no base vector.
-func (v *GF2Vector) IndexMap() (index uint, isBase bool) {
-	index, isBase = v.sp.baseIndex[v.val]
-	return index, isBase
-}
-
 // Index return the index of the coordinate of a base vector.
-// Use bit trick https://graphics.stanford.edu/~seander/bithacks.html#DetermineIfPowerOf2
+// Use https://graphics.stanford.edu/~seander/bithacks.html#DetermineIfPowerOf2
 // Index is zero and isBase is false if v is no base vector.
 func (v *GF2Vector) Index() (index uint, isBase bool) {
 	c := v.val
@@ -153,6 +141,7 @@ func (v *GF2Vector) Index() (index uint, isBase bool) {
 }
 
 // IsBaseVector return true if v is a base vector.
+// Use https://graphics.stanford.edu/~seander/bithacks.html#DetermineIfPowerOf2
 func (v *GF2Vector) IsBaseVector() bool {
 	c := v.val
 	return (c > 0) && (c&(c-1)) == 0

@@ -71,18 +71,6 @@ func BenchmarkVectorSpaceNewVector(b *testing.B) {
 	}
 }
 
-func BenchmarkVectorSpaceVectorIndexMap(b *testing.B) {
-	var j uint
-	for b.Loop() {
-		for j = 1; j < N; j <<= 1 {
-			vs := V[j]
-			for _, v := range vs {
-				v.IndexMap()
-			}
-		}
-	}
-}
-
 func BenchmarkVectorSpaceVectorIndex(b *testing.B) {
 	var j uint
 	for b.Loop() {

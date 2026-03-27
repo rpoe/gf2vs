@@ -11,8 +11,8 @@ import (
 )
 
 func TestGF2VectorSpace(t *testing.T) {
-	v := GF2VectorSpace{3, 7, map[uint]uint{1: 1, 2: 2, 4: 3}, map[uint]uint{1: 1, 2: 2, 3: 4}}
-	want := "{3 7 map[1:1 2:2 4:3] map[1:1 2:2 3:4]}"
+	v := GF2VectorSpace{3, 7, map[uint]uint{1: 1, 2: 2, 3: 4}}
+	want := "{3 7 map[1:1 2:2 3:4]}"
 	got := fmt.Sprintf("%v", v)
 	if got != want {
 		t.Errorf("GF2VectorSpace{3, 7, [1, 2, 4]} =\n%v, want\n%v", got, want)
@@ -50,10 +50,10 @@ func TestNewGF2VectorSpaceString(t *testing.T) {
 		in   uint
 		want string
 	}{
-		{1, "GF(2)sp {1 1 map[1:1] map[1:1]}"},
-		{2, "GF(2)sp {2 3 map[1:1 2:2] map[1:1 2:2]}"},
-		{3, "GF(2)sp {3 7 map[1:1 2:2 4:3] map[1:1 2:2 3:4]}"},
-		{4, "GF(2)sp {4 15 map[1:1 2:2 4:3 8:4] map[1:1 2:2 3:4 4:8]}"},
+		{1, "GF(2)sp {1 1 map[1:1]}"},
+		{2, "GF(2)sp {2 3 map[1:1 2:2]}"},
+		{3, "GF(2)sp {3 7 map[1:1 2:2 3:4]}"},
+		{4, "GF(2)sp {4 15 map[1:1 2:2 3:4 4:8]}"},
 	}
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.in)
