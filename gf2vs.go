@@ -20,9 +20,8 @@ import (
 
 // GF2VectorSpace represents a vector space of size n over GF(2).
 type GF2VectorSpace struct {
-	dim        uint          // dimension of the vector space
-	ones       uint          // bitvector where all bit are set, no zeros as allways 0
-	baseVector map[uint]uint // base of the vector space, map[index 1 based] of coordinate to bitvector
+	dim  uint // dimension of the vector space
+	ones uint // bitvector where all bit are set, no zeros as allways 0
 }
 
 // NewGF2VectorSpace create a vector space of dimension n.
@@ -36,25 +35,18 @@ func NewGF2VectorSpace(n uint) *GF2VectorSpace {
 		panic(fmt.Sprintf("NewGF2VectorSpace(dim): dim = %v > %v = bits.UintSize", n, bits.UintSize))
 	}
 
-	bit := uint(1)
 	ones := uint(1)
-	index := uint(1)
-	baseVector := make(map[uint]uint, n)
-	baseVector[index] = bit
 	for i := uint(1); i < n; i++ {
-		bit <<= 1
 		ones <<= 1
 		ones += 1
-		index++
-		baseVector[index] = bit
 	}
 
-	sp := GF2VectorSpace{n, ones, baseVector}
+	sp := GF2VectorSpace{n, ones}
 	return &sp
 }
 
 func (sp *GF2VectorSpace) String() string {
-	return fmt.Sprintf("GF(2)sp {%v %v %v}", sp.dim, sp.ones, sp.baseVector)
+	return fmt.Sprintf("GF(2)sp {%v %v}", sp.dim, sp.ones)
 }
 
 // GF2vector represents a vector in GF(2^n) a bitvector of len n,
@@ -81,8 +73,7 @@ func (v *GF2Vector) String() string {
 // NewGF2Vector create a vector with value in vector space,
 // value must be greater equal 0.
 func (s *GF2VectorSpace) NewGF2Vector(value uint) *GF2Vector {
-	vmx := s.baseVector[s.dim]
-	vmx = 2*vmx - 1
+	vmx := (uint(1) << s.dim) - 1
 	if value > vmx {
 		panic(fmt.Sprintf("NewGF2Vector(value): value = %v > %v", value, vmx))
 	}
@@ -94,10 +85,10 @@ func (s *GF2VectorSpace) NewGF2Vector(value uint) *GF2Vector {
 // GF2BaseVector return a GF2Vector representing the base with index i.
 // Panic if i is out of range.
 func (s *GF2VectorSpace) GF2BaseVector(i uint) *GF2Vector {
-	v, ok := s.baseVector[i]
-	if !ok {
+	if i == 0 || s.dim < i {
 		panic(fmt.Sprintf("GF2BaseVector(i): i = %v out of range [1, %v]", i, s.dim))
 	}
+	v := uint(1) << (i - 1)
 	b := GF2Vector{s, v}
 	return &b
 }

@@ -11,8 +11,8 @@ import (
 )
 
 func TestGF2VectorSpace(t *testing.T) {
-	v := GF2VectorSpace{3, 7, map[uint]uint{1: 1, 2: 2, 3: 4}}
-	want := "{3 7 map[1:1 2:2 3:4]}"
+	v := GF2VectorSpace{3, 7}
+	want := "{3 7}"
 	got := fmt.Sprintf("%v", v)
 	if got != want {
 		t.Errorf("GF2VectorSpace{3, 7, [1, 2, 4]} =\n%v, want\n%v", got, want)
@@ -50,10 +50,10 @@ func TestNewGF2VectorSpaceString(t *testing.T) {
 		in   uint
 		want string
 	}{
-		{1, "GF(2)sp {1 1 map[1:1]}"},
-		{2, "GF(2)sp {2 3 map[1:1 2:2]}"},
-		{3, "GF(2)sp {3 7 map[1:1 2:2 3:4]}"},
-		{4, "GF(2)sp {4 15 map[1:1 2:2 3:4 4:8]}"},
+		{1, "GF(2)sp {1 1}"},
+		{2, "GF(2)sp {2 3}"},
+		{3, "GF(2)sp {3 7}"},
+		{4, "GF(2)sp {4 15}"},
 	}
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.in)
@@ -93,7 +93,7 @@ func TestNewGF2VectorString(t *testing.T) {
 		vin  uint
 		want string
 	}{
-		//{1, -1, "NewGF2Vector(value): value = -1 < 0"},
+		//{1, -1, "NewGF2Vector(value): value = -1 < 0"}, invalid, test, vin is uint
 		{1, 2, "NewGF2Vector(value): value = 2 > 1"},
 		{2, 4, "NewGF2Vector(value): value = 4 > 3"},
 	}
@@ -238,7 +238,7 @@ func TestGF2Zeros(t *testing.T) {
 		v := sp.GF2Zeros()
 		got := fmt.Sprint(v)
 		if got != c.want {
-			t.Errorf("%v.GF2Ones() = %v, want %v", c.dim, got, c.want)
+			t.Errorf("%v.GF2Zeros() = %v, want %v", c.dim, got, c.want)
 		}
 	}
 }

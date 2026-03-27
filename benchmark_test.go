@@ -1,6 +1,6 @@
 // Ralf Poeppel, 2026
 
-// Bnechmark tests to select library functions for implementation
+// Benchmark tests to select library functions for implementation
 package gf2vs
 
 import (
@@ -61,9 +61,7 @@ func BenchmarkVectorSpaceNewVector(b *testing.B) {
 	var sp *GF2VectorSpace
 	for b.Loop() {
 		for j = 1; j < N; j <<= 1 {
-			//sp := NewGF2VectorSpace(j)
 			sp = VSP[j]
-			//fmt.Println(sp)
 			for i = 1; i < j; i++ {
 				sp.NewGF2Vector(i)
 			}
