@@ -133,17 +133,29 @@ func (v *GF2Vector) IsOnes() bool {
 	return v.val == v.sp.ones
 }
 
-// Index return the index of the coordinate of a base vector.
+// IndexMap return the index of the coordinate of a base vector.
+// Implementation uses Map.
 // Index is zero and isBase is false if v is no base vector.
-func (v *GF2Vector) Index() (index uint, isBase bool) {
+func (v *GF2Vector) IndexMap() (index uint, isBase bool) {
 	index, isBase = v.sp.baseIndex[v.val]
 	return index, isBase
 }
 
+// Index return the index of the coordinate of a base vector.
+// Use bit trick https://graphics.stanford.edu/~seander/bithacks.html#DetermineIfPowerOf2
+// Index is zero and isBase is false if v is no base vector.
+func (v *GF2Vector) Index() (index uint, isBase bool) {
+	c := v.val
+	if (c > 0) && (c&(c-1)) == 0 {
+		return uint(bits.Len(c)), true
+	}
+	return
+}
+
 // IsBaseVector return true if v is a base vector.
 func (v *GF2Vector) IsBaseVector() bool {
-	_, isBase := v.sp.baseIndex[v.val]
-	return isBase
+	c := v.val
+	return (c > 0) && (c&(c-1)) == 0
 }
 
 // Zeros return the zero value of x, sharing the same vector space.
