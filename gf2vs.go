@@ -255,3 +255,18 @@ func ScalarProduct(a, b *GF2Vector) int {
 	prod := And(a, b)
 	return OnesCount(prod)
 }
+
+// SpanOfSubspace returns true and the subspace of a set of vectors the
+// vectors of s are the span of a subspace. For true the dimension of
+// s must be greater or equal the Norm of sp.
+func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2VectorSpace) {
+	span := Or(s...)
+	norm := OnesCount(span)
+	sp = NewGF2VectorSpace((*s[0].sp).dim)
+	if norm <= len(s) {
+		// we have a subspace
+		sp.ones = span.val
+		return true, sp
+	}
+	return
+}

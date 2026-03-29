@@ -1397,7 +1397,6 @@ func TestScalarProduct(t *testing.T) {
 		{3, 7, 6, 2},
 		{3, 7, 7, 3},
 	}
-
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.dim)
 		a := sp.NewGF2Vector(c.a)
@@ -1405,6 +1404,118 @@ func TestScalarProduct(t *testing.T) {
 		got := ScalarProduct(a, b)
 		if got != c.want {
 			t.Errorf("Scalarproduct(%v, %v) = %v, want %v", a, b, got, c.want)
+		}
+	}
+}
+
+func TestSpanOfSupspace(t *testing.T) {
+	cases := []struct {
+		dim  uint
+		a    []uint
+		ones uint
+	}{
+		{1, []uint{0}, 0},
+		{1, []uint{1}, 1},
+		{2, []uint{2}, 2},
+		{3, []uint{4}, 4},
+		{3, []uint{7}, 0},
+		{1, []uint{0, 0}, 0},
+		{1, []uint{0, 1}, 1},
+		{1, []uint{1, 0}, 1},
+		{1, []uint{1, 1}, 1},
+		{2, []uint{0, 0}, 0},
+		{2, []uint{0, 1}, 1},
+		{2, []uint{0, 2}, 2},
+		{2, []uint{0, 3}, 3},
+		{2, []uint{1, 0}, 1},
+		{2, []uint{1, 1}, 1},
+		{2, []uint{1, 2}, 3},
+		{2, []uint{1, 3}, 3},
+		{2, []uint{2, 0}, 2},
+		{2, []uint{2, 1}, 3},
+		{2, []uint{2, 2}, 2},
+		{2, []uint{2, 3}, 3},
+		{2, []uint{3, 0}, 3},
+		{2, []uint{3, 1}, 3},
+		{2, []uint{3, 2}, 3},
+		{2, []uint{3, 3}, 3},
+		{3, []uint{0, 0}, 0},
+		{3, []uint{0, 1}, 1},
+		{3, []uint{0, 2}, 2},
+		{3, []uint{0, 3}, 3},
+		{3, []uint{0, 4}, 4},
+		{3, []uint{0, 5}, 5},
+		{3, []uint{0, 6}, 6},
+		{3, []uint{0, 7}, 0},
+		{3, []uint{1, 0}, 1},
+		{3, []uint{1, 1}, 1},
+		{3, []uint{1, 2}, 3},
+		{3, []uint{1, 3}, 3},
+		{3, []uint{1, 4}, 5},
+		{3, []uint{1, 5}, 5},
+		{3, []uint{1, 7}, 0},
+		{3, []uint{2, 0}, 2},
+		{3, []uint{2, 1}, 3},
+		{3, []uint{2, 2}, 2},
+		{3, []uint{2, 3}, 3},
+		{3, []uint{2, 4}, 6},
+		{3, []uint{2, 5}, 0},
+		{3, []uint{2, 6}, 6},
+		{3, []uint{2, 7}, 0},
+		{3, []uint{3, 0}, 3},
+		{3, []uint{3, 1}, 3},
+		{3, []uint{3, 2}, 3},
+		{3, []uint{3, 3}, 3},
+		{3, []uint{3, 4}, 0},
+		{3, []uint{3, 5}, 0},
+		{3, []uint{3, 6}, 0},
+		{3, []uint{3, 7}, 0},
+		{3, []uint{4, 0}, 4},
+		{3, []uint{4, 1}, 5},
+		{3, []uint{4, 2}, 6},
+		{3, []uint{4, 3}, 0},
+		{3, []uint{4, 4}, 4},
+		{3, []uint{4, 5}, 5},
+		{3, []uint{4, 6}, 6},
+		{3, []uint{4, 7}, 0},
+		{3, []uint{5, 0}, 5},
+		{3, []uint{5, 1}, 5},
+		{3, []uint{5, 2}, 0},
+		{3, []uint{5, 3}, 0},
+		{3, []uint{5, 4}, 5},
+		{3, []uint{5, 5}, 5},
+		{3, []uint{5, 6}, 0},
+		{3, []uint{5, 7}, 0},
+		{3, []uint{6, 0}, 6},
+		{3, []uint{6, 1}, 0},
+		{3, []uint{6, 2}, 6},
+		{3, []uint{6, 3}, 0},
+		{3, []uint{6, 4}, 6},
+		{3, []uint{6, 5}, 0},
+		{3, []uint{6, 6}, 6},
+		{3, []uint{6, 7}, 0},
+		{3, []uint{7, 0}, 0},
+		{3, []uint{7, 1}, 0},
+		{3, []uint{7, 2}, 0},
+		{3, []uint{7, 3}, 0},
+		{3, []uint{7, 4}, 0},
+		{3, []uint{7, 5}, 0},
+		{3, []uint{7, 6}, 0},
+		{3, []uint{7, 7}, 0},
+		{3, []uint{2, 7, 7}, 7},
+		{3, []uint{1, 2, 3}, 3},
+		{3, []uint{2, 4, 6}, 6},
+		{3, []uint{1, 4, 5}, 5},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.dim)
+		s := make([]*GF2Vector, len(c.a))
+		for i := range c.a {
+			s[i] = sp.NewGF2Vector(c.a[i])
+		}
+		ok, got := SpanOfSubspace(s)
+		if ok && got.ones != c.ones || !ok && c.ones != 0 {
+			t.Errorf("SpanOfSubspace(%v) =\n%v, %v, %v,\nwant %v", s, ok, got, got.ones, c.ones)
 		}
 	}
 }
