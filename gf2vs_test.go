@@ -50,16 +50,84 @@ func TestNewGF2VectorSpaceString(t *testing.T) {
 		in   uint
 		want string
 	}{
-		{1, "GF(2)sp {1 1}"},
-		{2, "GF(2)sp {2 3}"},
-		{3, "GF(2)sp {3 7}"},
-		{4, "GF(2)sp {4 15}"},
+		{1, "GF(2)sp{1: 1}"},
+		{2, "GF(2)sp{2: 3}"},
+		{3, "GF(2)sp{3: 7}"},
+		{4, "GF(2)sp{4: 15}"},
 	}
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.in)
 		got := fmt.Sprint(sp)
 		if got != c.want {
 			t.Errorf("NewGF2VectorSpace(%v) = %v, want %v", c.in, got, c.want)
+		}
+	}
+}
+
+// TestNewGF2SubVectorSpaceString test NewGF2SubVectorSpace and String
+func TestNewGF2SubVectorSpaceString(t *testing.T) {
+	cases := []struct {
+		n    uint
+		b    uint
+		want string
+	}{
+		// panic from NewGF2VectorSpace
+		{0, 0, "NewGF2VectorSpace(dim): dim = 0 < 1"},
+		{bits.UintSize + 1, 2, "NewGF2VectorSpace(dim): dim = 65 > 64 = bits.UintSize"},
+		// panic from NewGF2SubVectorSpace
+		{1, 2, "NewGF2SubVectorSpace(dim): base 2 not in space with dim = 1"},
+		{3, 5, "NewGF2SubVectorSpace(dim): base 5 not in space with dim = 3"},
+	}
+	for _, c := range cases[0:2] {
+		func(in, b uint, want string) {
+			defer func(in uint, want string) {
+				r := recover()
+				if r == nil {
+					t.Errorf("NewGF2SubVectorSpace(%v) did not panic with %v",
+						in, want)
+				} else {
+					if r != want {
+						t.Errorf("NewGF2SubVectorSpace(%v) == Panic(%v),"+
+							" want Panic(%v)", in, r, want)
+					}
+				}
+			}(in, want)
+			NewGF2SubVectorSpace(c.n, c.b)
+		}(c.n, c.b, c.want)
+	}
+	for _, c := range cases[2:] {
+		func(in, b uint, want string) {
+			defer func(in, b uint, want string) {
+				r := recover()
+				if r == nil {
+					t.Errorf("NewGF2SubVectorSpace(%v) did not panic with %v",
+						in, want)
+				} else {
+					if r != want {
+						t.Errorf("NewGF2SubVectorSpace(%v) == Panic(%v),"+
+							" want Panic(%v)", in, r, want)
+					}
+				}
+			}(in, b, want)
+			NewGF2SubVectorSpace(c.n, c.b)
+		}(c.n, c.b, c.want)
+	}
+
+	cases = []struct {
+		n    uint
+		b    uint
+		want string
+	}{
+		{1, 0, "GF(2)ssp{1: 1, 0}"},
+		{2, 1, "GF(2)ssp{2: 3, 1}"},
+		{3, 2, "GF(2)ssp{3: 7, 2}"},
+		{4, 3, "GF(2)ssp{4: 15, 3}"},
+	}
+	for _, c := range cases {
+		sp := NewGF2SubVectorSpace(c.n, c.b)
+		got := fmt.Sprint(sp)
+		if got != c.want {
+			t.Errorf("NewGF2SubVectorSpace(%v) = %v, want %v", c.n, got, c.want)
 		}
 	}
 }
@@ -1514,8 +1582,8 @@ func TestSpanOfSupspace(t *testing.T) {
 			s[i] = sp.NewGF2Vector(c.a[i])
 		}
 		ok, got := SpanOfSubspace(s)
-		if ok && got.ones != c.ones || !ok && c.ones != 0 {
-			t.Errorf("SpanOfSubspace(%v) =\n%v, %v, %v,\nwant %v", s, ok, got, got.ones, c.ones)
+		if ok && got.subOnes != c.ones || !ok && c.ones != 0 {
+			t.Errorf("SpanOfSubspace(%v) =\n%v, %v, %v,\nwant %v", s, ok, got, got.subOnes, c.ones)
 		}
 	}
 }

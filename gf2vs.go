@@ -46,7 +46,30 @@ func NewGF2VectorSpace(n uint) *GF2VectorSpace {
 }
 
 func (sp *GF2VectorSpace) String() string {
-	return fmt.Sprintf("GF(2)sp {%v %v}", sp.dim, sp.ones)
+	return fmt.Sprintf("GF(2)sp{%v: %v}", sp.dim, sp.ones)
+}
+
+// GF2SubVectorSpace represents a sub vector space
+type GF2SubVectorSpace struct {
+	GF2VectorSpace
+	subOnes uint // bitvector where the bits of the base are set
+}
+
+// NewGF2SubVectorSpace create a sub vector space with base bits b as sub space
+// of a vector space with dimension n.
+// Panic if b > n.
+// We call internally NewGF2VectorSpace which may panic for n iut of range.
+func NewGF2SubVectorSpace(n, b uint) *GF2SubVectorSpace {
+	if b > n {
+		panic(fmt.Sprintf("NewGF2SubVectorSpace(dim): base %v not in space with dim = %v", b, n))
+	}
+	vs := NewGF2VectorSpace(n)
+	svs := GF2SubVectorSpace{*vs, b}
+	return &svs
+}
+
+func (sp *GF2SubVectorSpace) String() string {
+	return fmt.Sprintf("GF(2)ssp{%v: %v, %v}", sp.dim, sp.ones, sp.subOnes)
 }
 
 // GF2vector represents a vector in GF(2^n) a bitvector of len n,
@@ -259,14 +282,13 @@ func ScalarProduct(a, b *GF2Vector) int {
 // SpanOfSubspace returns true and the subspace of a set of vectors if the
 // vectors of s are the span of a subspace. For true the dimension of
 // s must be greater or equal the Norm of sp.
-func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2VectorSpace) {
+func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2SubVectorSpace) {
 	span := Or(s...)
 	norm := OnesCount(span)
-	sp = NewGF2VectorSpace((*s[0].sp).dim)
 	if norm <= len(s) {
 		// we have a subspace
-		sp.ones = span.val
-		return true, sp
+		svs := GF2SubVectorSpace{(*s[0].sp), span.val}
+		return true, &svs
 	}
 	return
 }
