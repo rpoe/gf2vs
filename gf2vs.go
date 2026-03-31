@@ -11,6 +11,8 @@
 // a base vector. The boolean operations and the vector operations are implemented.
 // The count of ones is considered the norm of the vectors. It is the l_1 norm, or hamming weight
 // of the vector. Some times this function is named popcount. It is the result of the scalar product.
+// Sub vector spaces are supported too. A set of vectors may be a span of a sub vector space. This
+// property is verified.
 package gf2vs
 
 import (
@@ -58,7 +60,7 @@ type GF2SubVectorSpace struct {
 // NewGF2SubVectorSpace create a sub vector space with base bits b as sub space
 // of a vector space with dimension n.
 // Panic if b > n.
-// We call internally NewGF2VectorSpace which may panic for n iut of range.
+// We call internally NewGF2VectorSpace which may panic for n out of range.
 func NewGF2SubVectorSpace(n, b uint) *GF2SubVectorSpace {
 	if b > n {
 		panic(fmt.Sprintf("NewGF2SubVectorSpace(dim): base %v not in space with dim = %v", b, n))
@@ -279,9 +281,13 @@ func ScalarProduct(a, b *GF2Vector) int {
 	return OnesCount(prod)
 }
 
-// SpanOfSubspace returns true and the subspace of a set of vectors if the
-// vectors of s are the span of a subspace. For true the dimension of
-// s must be greater or equal the Norm of sp.
+// SpanOfSubspace returns true and the subspace of a set of vectors s if the
+// vectors span a subspace. For true the dimension of the set s must be
+// greater or equal the Norm of the union of the set.
+// Steinitz exchange lemma:
+// https://en.wikipedia.org/w/index.php?title=Steinitz_exchange_lemma&oldid=1336271854
+// The dimension of each span of a vector space is greater or equal to the
+// dimension of the base of the vector space.
 func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2SubVectorSpace) {
 	span := Or(s...)
 	norm := OnesCount(span)
