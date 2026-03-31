@@ -11,6 +11,8 @@
 // a base vector. The boolean operations and the vector operations are implemented.
 // The count of ones is considered the norm of the vectors. It is the l_1 norm, or hamming weight
 // of the vector. Some times this function is named popcount. It is the result of the scalar product.
+// Sub vector spaces are supported too. A set of vectors may be a span of a sub vector space. This
+// property is verified.
 package gf2vs
 
 import (
@@ -20,10 +22,8 @@ import (
 
 // GF2VectorSpace represents a vector space of size n over GF(2).
 type GF2VectorSpace struct {
-	dim        uint          // dimension of the vector space
-	ones       uint          // bitvector where all bit are set, no zeros as allways 0
-	baseIndex  map[uint]uint // base of the vector space, map[bitvector] to index, 1 based of coordinate
-	baseVector map[uint]uint // base of the vector space, map[index 1 based] of coordinate to bitvector
+	dim  uint // dimension of the vector space
+	ones uint // bitvector where all bit are set, no zeros as allways 0
 }
 
 // NewGF2VectorSpace create a vector space of dimension n.
@@ -37,28 +37,41 @@ func NewGF2VectorSpace(n uint) *GF2VectorSpace {
 		panic(fmt.Sprintf("NewGF2VectorSpace(dim): dim = %v > %v = bits.UintSize", n, bits.UintSize))
 	}
 
-	bit := uint(1)
 	ones := uint(1)
-	index := uint(1)
-	baseIndex := make(map[uint]uint, n)
-	baseVector := make(map[uint]uint, n)
-	baseIndex[bit] = index
-	baseVector[index] = bit
 	for i := uint(1); i < n; i++ {
-		bit <<= 1
 		ones <<= 1
 		ones += 1
-		index++
-		baseIndex[bit] = index
-		baseVector[index] = bit
 	}
 
-	sp := GF2VectorSpace{n, ones, baseIndex, baseVector}
+	sp := GF2VectorSpace{n, ones}
 	return &sp
 }
 
 func (sp *GF2VectorSpace) String() string {
-	return fmt.Sprintf("GF(2)sp {%v %v %v %v}", sp.dim, sp.ones, sp.baseIndex, sp.baseVector)
+	return fmt.Sprintf("GF(2)sp{%v: %v}", sp.dim, sp.ones)
+}
+
+// GF2SubVectorSpace represents a sub vector space
+type GF2SubVectorSpace struct {
+	GF2VectorSpace
+	subOnes uint // bitvector where the bits of the base are set
+}
+
+// NewGF2SubVectorSpace create a sub vector space with base bits b as sub space
+// of a vector space with dimension n.
+// Panic if b > n.
+// We call internally NewGF2VectorSpace which may panic for n out of range.
+func NewGF2SubVectorSpace(n, b uint) *GF2SubVectorSpace {
+	if b > n {
+		panic(fmt.Sprintf("NewGF2SubVectorSpace(dim): base %v not in space with dim = %v", b, n))
+	}
+	vs := NewGF2VectorSpace(n)
+	svs := GF2SubVectorSpace{*vs, b}
+	return &svs
+}
+
+func (sp *GF2SubVectorSpace) String() string {
+	return fmt.Sprintf("GF(2)ssp{%v: %v, %v}", sp.dim, sp.ones, sp.subOnes)
 }
 
 // GF2vector represents a vector in GF(2^n) a bitvector of len n,
@@ -85,8 +98,7 @@ func (v *GF2Vector) String() string {
 // NewGF2Vector create a vector with value in vector space,
 // value must be greater equal 0.
 func (s *GF2VectorSpace) NewGF2Vector(value uint) *GF2Vector {
-	vmx := s.baseVector[s.dim]
-	vmx = 2*vmx - 1
+	vmx := (uint(1) << s.dim) - 1
 	if value > vmx {
 		panic(fmt.Sprintf("NewGF2Vector(value): value = %v > %v", value, vmx))
 	}
@@ -98,10 +110,10 @@ func (s *GF2VectorSpace) NewGF2Vector(value uint) *GF2Vector {
 // GF2BaseVector return a GF2Vector representing the base with index i.
 // Panic if i is out of range.
 func (s *GF2VectorSpace) GF2BaseVector(i uint) *GF2Vector {
-	v, ok := s.baseVector[i]
-	if !ok {
+	if i == 0 || s.dim < i {
 		panic(fmt.Sprintf("GF2BaseVector(i): i = %v out of range [1, %v]", i, s.dim))
 	}
+	v := uint(1) << (i - 1)
 	b := GF2Vector{s, v}
 	return &b
 }
@@ -134,16 +146,21 @@ func (v *GF2Vector) IsOnes() bool {
 }
 
 // Index return the index of the coordinate of a base vector.
+// Use https://graphics.stanford.edu/~seander/bithacks.html#DetermineIfPowerOf2
 // Index is zero and isBase is false if v is no base vector.
 func (v *GF2Vector) Index() (index uint, isBase bool) {
-	index, isBase = v.sp.baseIndex[v.val]
-	return index, isBase
+	c := v.val
+	if (c > 0) && (c&(c-1)) == 0 {
+		return uint(bits.Len(c)), true
+	}
+	return
 }
 
 // IsBaseVector return true if v is a base vector.
+// Use https://graphics.stanford.edu/~seander/bithacks.html#DetermineIfPowerOf2
 func (v *GF2Vector) IsBaseVector() bool {
-	_, isBase := v.sp.baseIndex[v.val]
-	return isBase
+	c := v.val
+	return (c > 0) && (c&(c-1)) == 0
 }
 
 // Zeros return the zero value of x, sharing the same vector space.
@@ -262,4 +279,22 @@ func OnesCount(x *GF2Vector) int {
 func ScalarProduct(a, b *GF2Vector) int {
 	prod := And(a, b)
 	return OnesCount(prod)
+}
+
+// SpanOfSubspace returns true and the subspace of a set of vectors s if the
+// vectors span a subspace. For true the dimension of the set s must be
+// greater or equal the Norm of the union of the set.
+// Steinitz exchange lemma:
+// https://en.wikipedia.org/w/index.php?title=Steinitz_exchange_lemma&oldid=1336271854
+// The dimension of each span of a vector space is greater or equal to the
+// dimension of the base of the vector space.
+func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2SubVectorSpace) {
+	span := Or(s...)
+	norm := OnesCount(span)
+	if norm <= len(s) {
+		// we have a subspace
+		svs := GF2SubVectorSpace{(*s[0].sp), span.val}
+		return true, &svs
+	}
+	return
 }

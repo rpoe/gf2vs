@@ -11,8 +11,8 @@ import (
 )
 
 func TestGF2VectorSpace(t *testing.T) {
-	v := GF2VectorSpace{3, 7, map[uint]uint{1: 1, 2: 2, 4: 3}, map[uint]uint{1: 1, 2: 2, 3: 4}}
-	want := "{3 7 map[1:1 2:2 4:3] map[1:1 2:2 3:4]}"
+	v := GF2VectorSpace{3, 7}
+	want := "{3 7}"
 	got := fmt.Sprintf("%v", v)
 	if got != want {
 		t.Errorf("GF2VectorSpace{3, 7, [1, 2, 4]} =\n%v, want\n%v", got, want)
@@ -50,16 +50,84 @@ func TestNewGF2VectorSpaceString(t *testing.T) {
 		in   uint
 		want string
 	}{
-		{1, "GF(2)sp {1 1 map[1:1] map[1:1]}"},
-		{2, "GF(2)sp {2 3 map[1:1 2:2] map[1:1 2:2]}"},
-		{3, "GF(2)sp {3 7 map[1:1 2:2 4:3] map[1:1 2:2 3:4]}"},
-		{4, "GF(2)sp {4 15 map[1:1 2:2 4:3 8:4] map[1:1 2:2 3:4 4:8]}"},
+		{1, "GF(2)sp{1: 1}"},
+		{2, "GF(2)sp{2: 3}"},
+		{3, "GF(2)sp{3: 7}"},
+		{4, "GF(2)sp{4: 15}"},
 	}
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.in)
 		got := fmt.Sprint(sp)
 		if got != c.want {
 			t.Errorf("NewGF2VectorSpace(%v) = %v, want %v", c.in, got, c.want)
+		}
+	}
+}
+
+// TestNewGF2SubVectorSpaceString test NewGF2SubVectorSpace and String
+func TestNewGF2SubVectorSpaceString(t *testing.T) {
+	cases := []struct {
+		n    uint
+		b    uint
+		want string
+	}{
+		// panic from NewGF2VectorSpace
+		{0, 0, "NewGF2VectorSpace(dim): dim = 0 < 1"},
+		{bits.UintSize + 1, 2, "NewGF2VectorSpace(dim): dim = 65 > 64 = bits.UintSize"},
+		// panic from NewGF2SubVectorSpace
+		{1, 2, "NewGF2SubVectorSpace(dim): base 2 not in space with dim = 1"},
+		{3, 5, "NewGF2SubVectorSpace(dim): base 5 not in space with dim = 3"},
+	}
+	for _, c := range cases[0:2] {
+		func(in, b uint, want string) {
+			defer func(in uint, want string) {
+				r := recover()
+				if r == nil {
+					t.Errorf("NewGF2SubVectorSpace(%v) did not panic with %v",
+						in, want)
+				} else {
+					if r != want {
+						t.Errorf("NewGF2SubVectorSpace(%v) == Panic(%v),"+
+							" want Panic(%v)", in, r, want)
+					}
+				}
+			}(in, want)
+			NewGF2SubVectorSpace(c.n, c.b)
+		}(c.n, c.b, c.want)
+	}
+	for _, c := range cases[2:] {
+		func(in, b uint, want string) {
+			defer func(in, b uint, want string) {
+				r := recover()
+				if r == nil {
+					t.Errorf("NewGF2SubVectorSpace(%v) did not panic with %v",
+						in, want)
+				} else {
+					if r != want {
+						t.Errorf("NewGF2SubVectorSpace(%v) == Panic(%v),"+
+							" want Panic(%v)", in, r, want)
+					}
+				}
+			}(in, b, want)
+			NewGF2SubVectorSpace(c.n, c.b)
+		}(c.n, c.b, c.want)
+	}
+
+	cases = []struct {
+		n    uint
+		b    uint
+		want string
+	}{
+		{1, 0, "GF(2)ssp{1: 1, 0}"},
+		{2, 1, "GF(2)ssp{2: 3, 1}"},
+		{3, 2, "GF(2)ssp{3: 7, 2}"},
+		{4, 3, "GF(2)ssp{4: 15, 3}"},
+	}
+	for _, c := range cases {
+		sp := NewGF2SubVectorSpace(c.n, c.b)
+		got := fmt.Sprint(sp)
+		if got != c.want {
+			t.Errorf("NewGF2SubVectorSpace(%v) = %v, want %v", c.n, got, c.want)
 		}
 	}
 }
@@ -93,7 +161,7 @@ func TestNewGF2VectorString(t *testing.T) {
 		vin  uint
 		want string
 	}{
-		//{1, -1, "NewGF2Vector(value): value = -1 < 0"},
+		//{1, -1, "NewGF2Vector(value): value = -1 < 0"}, invalid, test, vin is uint
 		{1, 2, "NewGF2Vector(value): value = 2 > 1"},
 		{2, 4, "NewGF2Vector(value): value = 4 > 3"},
 	}
@@ -238,7 +306,7 @@ func TestGF2Zeros(t *testing.T) {
 		v := sp.GF2Zeros()
 		got := fmt.Sprint(v)
 		if got != c.want {
-			t.Errorf("%v.GF2Ones() = %v, want %v", c.dim, got, c.want)
+			t.Errorf("%v.GF2Zeros() = %v, want %v", c.dim, got, c.want)
 		}
 	}
 }
@@ -1397,7 +1465,6 @@ func TestScalarProduct(t *testing.T) {
 		{3, 7, 6, 2},
 		{3, 7, 7, 3},
 	}
-
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.dim)
 		a := sp.NewGF2Vector(c.a)
@@ -1405,6 +1472,118 @@ func TestScalarProduct(t *testing.T) {
 		got := ScalarProduct(a, b)
 		if got != c.want {
 			t.Errorf("Scalarproduct(%v, %v) = %v, want %v", a, b, got, c.want)
+		}
+	}
+}
+
+func TestSpanOfSupspace(t *testing.T) {
+	cases := []struct {
+		dim  uint
+		a    []uint
+		ones uint
+	}{
+		{1, []uint{0}, 0},
+		{1, []uint{1}, 1},
+		{2, []uint{2}, 2},
+		{3, []uint{4}, 4},
+		{3, []uint{7}, 0},
+		{1, []uint{0, 0}, 0},
+		{1, []uint{0, 1}, 1},
+		{1, []uint{1, 0}, 1},
+		{1, []uint{1, 1}, 1},
+		{2, []uint{0, 0}, 0},
+		{2, []uint{0, 1}, 1},
+		{2, []uint{0, 2}, 2},
+		{2, []uint{0, 3}, 3},
+		{2, []uint{1, 0}, 1},
+		{2, []uint{1, 1}, 1},
+		{2, []uint{1, 2}, 3},
+		{2, []uint{1, 3}, 3},
+		{2, []uint{2, 0}, 2},
+		{2, []uint{2, 1}, 3},
+		{2, []uint{2, 2}, 2},
+		{2, []uint{2, 3}, 3},
+		{2, []uint{3, 0}, 3},
+		{2, []uint{3, 1}, 3},
+		{2, []uint{3, 2}, 3},
+		{2, []uint{3, 3}, 3},
+		{3, []uint{0, 0}, 0},
+		{3, []uint{0, 1}, 1},
+		{3, []uint{0, 2}, 2},
+		{3, []uint{0, 3}, 3},
+		{3, []uint{0, 4}, 4},
+		{3, []uint{0, 5}, 5},
+		{3, []uint{0, 6}, 6},
+		{3, []uint{0, 7}, 0},
+		{3, []uint{1, 0}, 1},
+		{3, []uint{1, 1}, 1},
+		{3, []uint{1, 2}, 3},
+		{3, []uint{1, 3}, 3},
+		{3, []uint{1, 4}, 5},
+		{3, []uint{1, 5}, 5},
+		{3, []uint{1, 7}, 0},
+		{3, []uint{2, 0}, 2},
+		{3, []uint{2, 1}, 3},
+		{3, []uint{2, 2}, 2},
+		{3, []uint{2, 3}, 3},
+		{3, []uint{2, 4}, 6},
+		{3, []uint{2, 5}, 0},
+		{3, []uint{2, 6}, 6},
+		{3, []uint{2, 7}, 0},
+		{3, []uint{3, 0}, 3},
+		{3, []uint{3, 1}, 3},
+		{3, []uint{3, 2}, 3},
+		{3, []uint{3, 3}, 3},
+		{3, []uint{3, 4}, 0},
+		{3, []uint{3, 5}, 0},
+		{3, []uint{3, 6}, 0},
+		{3, []uint{3, 7}, 0},
+		{3, []uint{4, 0}, 4},
+		{3, []uint{4, 1}, 5},
+		{3, []uint{4, 2}, 6},
+		{3, []uint{4, 3}, 0},
+		{3, []uint{4, 4}, 4},
+		{3, []uint{4, 5}, 5},
+		{3, []uint{4, 6}, 6},
+		{3, []uint{4, 7}, 0},
+		{3, []uint{5, 0}, 5},
+		{3, []uint{5, 1}, 5},
+		{3, []uint{5, 2}, 0},
+		{3, []uint{5, 3}, 0},
+		{3, []uint{5, 4}, 5},
+		{3, []uint{5, 5}, 5},
+		{3, []uint{5, 6}, 0},
+		{3, []uint{5, 7}, 0},
+		{3, []uint{6, 0}, 6},
+		{3, []uint{6, 1}, 0},
+		{3, []uint{6, 2}, 6},
+		{3, []uint{6, 3}, 0},
+		{3, []uint{6, 4}, 6},
+		{3, []uint{6, 5}, 0},
+		{3, []uint{6, 6}, 6},
+		{3, []uint{6, 7}, 0},
+		{3, []uint{7, 0}, 0},
+		{3, []uint{7, 1}, 0},
+		{3, []uint{7, 2}, 0},
+		{3, []uint{7, 3}, 0},
+		{3, []uint{7, 4}, 0},
+		{3, []uint{7, 5}, 0},
+		{3, []uint{7, 6}, 0},
+		{3, []uint{7, 7}, 0},
+		{3, []uint{2, 7, 7}, 7},
+		{3, []uint{1, 2, 3}, 3},
+		{3, []uint{2, 4, 6}, 6},
+		{3, []uint{1, 4, 5}, 5},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.dim)
+		s := make([]*GF2Vector, len(c.a))
+		for i := range c.a {
+			s[i] = sp.NewGF2Vector(c.a[i])
+		}
+		ok, got := SpanOfSubspace(s)
+		if ok && got.subOnes != c.ones || !ok && c.ones != 0 {
+			t.Errorf("SpanOfSubspace(%v) =\n%v, %v, %v,\nwant %v", s, ok, got, got.subOnes, c.ones)
 		}
 	}
 }
