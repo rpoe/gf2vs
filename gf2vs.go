@@ -289,9 +289,9 @@ func ScalarProduct(a, b *GF2Vector) int {
 // The dimension of each span of a vector space is greater or equal to the
 // dimension of the base of the vector space.
 func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2SubVectorSpace) {
-	span := Or(s...)
-	norm := OnesCount(span)
-	if norm <= len(s) {
+	span := Or(s...) // demands all s are in same vectorspace
+	dim := OnesCount(span)
+	if dim <= len(s) {
 		// we have a subspace
 		svs := GF2SubVectorSpace{(*s[0].sp), span.val}
 		return true, &svs
