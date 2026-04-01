@@ -19,6 +19,43 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{Anderson2011}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=bfda6d7d5ae465404d023a20781181c9}{%
+           family={Anderson},
+           familyi={A\bibinitperiod},
+           given={Sean\bibnamedelima Eron},
+           giveni={S\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{bfda6d7d5ae465404d023a20781181c9}
+      \strng{fullhash}{bfda6d7d5ae465404d023a20781181c9}
+      \strng{fullhashraw}{bfda6d7d5ae465404d023a20781181c9}
+      \strng{bibnamehash}{bfda6d7d5ae465404d023a20781181c9}
+      \strng{authorbibnamehash}{bfda6d7d5ae465404d023a20781181c9}
+      \strng{authornamehash}{bfda6d7d5ae465404d023a20781181c9}
+      \strng{authorfullhash}{bfda6d7d5ae465404d023a20781181c9}
+      \strng{authorfullhashraw}{bfda6d7d5ae465404d023a20781181c9}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Bit Twiddling Hacks}
+      \field{urlday}{24}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{year}{2011}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Numerische_Mathematik/Anderson2011_Bit Twiddling Hacks.html:URL
+      \endverb
+      \verb{urlraw}
+      \verb https://graphics.stanford.edu/~seander/bithacks.html
+      \endverb
+      \verb{url}
+      \verb https://graphics.stanford.edu/~seander/bithacks.html
+      \endverb
+    \endentry
     \entry{Axler2024}{book}{}{}
       \name{author}{1}{}{%
         {{hash=2ef085dcf813cb6d9946f19baf038343}{%
@@ -165,6 +202,43 @@
       \endverb
       \verb{url}
       \verb https://dn710109.ca.archive.org/0/items/bstj29-2-147/bstj29-2-147.pdf
+      \endverb
+    \endentry
+    \entry{Warren2013}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=68324829a64311e66a046b373fe082e2}{%
+           family={Henry\bibnamedelimb S.\bibnamedelimi Warren},
+           familyi={H\bibinitperiod\bibinitdelim S\bibinitperiod\bibinitdelim W\bibinitperiod},
+           given={Jr\bibnamedelima .},
+           giveni={J\bibinitperiod\bibinitdelim .\bibinitperiod}}}%
+      }
+      \strng{namehash}{68324829a64311e66a046b373fe082e2}
+      \strng{fullhash}{68324829a64311e66a046b373fe082e2}
+      \strng{fullhashraw}{68324829a64311e66a046b373fe082e2}
+      \strng{bibnamehash}{68324829a64311e66a046b373fe082e2}
+      \strng{authorbibnamehash}{68324829a64311e66a046b373fe082e2}
+      \strng{authornamehash}{68324829a64311e66a046b373fe082e2}
+      \strng{authorfullhash}{68324829a64311e66a046b373fe082e2}
+      \strng{authorfullhashraw}{68324829a64311e66a046b373fe082e2}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Hacker’s Delight}
+      \field{urlday}{24}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{year}{2013}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb :/home/ralf/Projekte/Mathematik_Studium/Buecher_Mathe/Numerische_Mathematik/Warren2013_Hacker's Delight 2nd Edition.pdf:PDF
+      \endverb
+      \verb{urlraw}
+      \verb https://github.com/jyfc/ebook/blob/master/02_algorithm/Hacker's Delight 2nd Edition.pdf
+      \endverb
+      \verb{url}
+      \verb https://github.com/jyfc/ebook/blob/master/02_algorithm/Hacker's%20Delight%202nd%20Edition.pdf
       \endverb
     \endentry
     \entry{Hill2004}{book}{}{}

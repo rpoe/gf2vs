@@ -236,7 +236,7 @@ n = \lfloor \log_{2}(\max(a_i)) \rfloor + 1.
 \label{size}
 \end{equation}
 
-Knowing $n$ we can use equation~(\ref{vector}) to map $a \in \BN, a \ge 0$.
+Knowing $n$ we can use equation~(\ref{vector}) to map $a \in \BN, 0 \le a \le n$.
 \begin{equation}
 \begin{array}{rr}
 \varphi : \BN \rightarrow \BF_2^n, & x = \left (
@@ -365,6 +365,17 @@ e_i = (x_k),
 \end{equation}
 Please note the $e_i$ are linearly independent.
 
+In the vector space $\BF_2^n$ each vector $x$ satisfies the equation (\ref{powerOf2})
+iff $x$ is a unit vector
+given by 
+\cite{Anderson2011, Warren2013}
+\begin{equation}
+	(x \ne \0) \&\& ((x \& (x \oplus e_1))) == \0
+	\label{powerOf2}
+\end{equation}
+The equation (\ref{powerOf2}) is used in the function~\texttt{IsBaseVector(x)} of \texttt{gf2vs.go}.
+The algorithm is the fastest test to verify a vector is a base vector of $\BF_2^n$.
+
 We observe the identity elements are identical for the fields and the unit vectors are
 identical for all vector spaces over a field $K$.
 
@@ -386,6 +397,11 @@ of unit vectors $e_i$ is unique.
 
 \subsubsection{Base}
 The subset $\BE$ is one base of the vector space $\BF_2^n$. As it is a base of every vector space over a field K.
+
+For the vector space $\BF_2^n$ the sum of the base vectors is $\1$.
+\begin{equation}
+	\sum_{i=1}^n e_i = \1
+\end{equation}
 
 \subsubsection{Index}
 We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
@@ -488,6 +504,50 @@ In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual co
 
 \subsubsection{Orthonormal Base}
 With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$, as the unit vectors are the only vectors in $\BF_2^n$ with a length of 1 in the vector space, see equation (\ref{normUnitVector}).
+
+\subsection{Subspaces}
+
+\subsubsection{Definition}
+As for other vector spaces, we can define subspaces. A subset $U$ of $\BF_2^n$ is a subspace iff 
+$U$ satisfies the three conditions \cite[Theorem 1.34]{Axler2024}.
+\begin{description}
+\item[additive identity] \ \\
+	$\0 \in U$.
+\item[closed under addition] \ \\
+	$u, w \in U \Rightarrow u + w \in U$.
+\item[closed under scalar multiplication] \ \\
+	$a \in \BF, u \in U \Rightarrow a u \in U$.
+\end{description}
+
+For $\BF_2^n$ every subset of $\BE$ spans a subspace. The conditions can be easily verified. 
+
+\subsubsection{Direct Sum of Subspaces}
+
+Every subspace $U$ of $\BF_2^n$ is part of a direct sum equal to $V$ as described by \cite[Theorem 2.33]{Axler2024}.
+As per definition $\BF_2^n$ is a finite-dimensional vector space. Let $U$ be a subspace of $\BF_2^n$. Then there exists a
+subspace $W$ of $\BF_2^n$ such that $V = U \oplus W$. 
+
+Let $B_V$ be the canonical base of $V$ so $B_V \subseteq \BE$ then $B_W= \BE \setminus B$ is a base and we have
+$B_V \cup B_W = \BE$.
+Let $W$ be the subspace spanned by $B_W$, then $V \cap W = \{\0\}$ and $V \oplus W = \BF_2^n$. For the proof see \cite{Axler2024}.
+
+Suppose we have two sets of vectors $V, U$ of vector space $\BF_2^n$ and $V$ is a subspace with base $B_V$ of $\BF_2^n$.
+Assume without loss of generality $B_V = \{e_1, ..., e_k\}$ and $U = \{u_1, ... u_l\}$.
+We compute the base $B_W$ of $W$ with equation (\ref{baseComplement})
+\begin{equation}
+	B_W = \BE \setminus B_V
+	\label{baseComplement}
+\end{equation}
+With the base $B_W$ we can restrict the set of vectors $U$ to a set of vectors $W = \{w_1, ..., w_l\}$
+so $W$ is a subspace with base $B_W$ simply by filtering the bit vectors with a bit mask $m$
+\begin{equation}
+	m = \bigoplus_{i=1}^l e_l, \quad e_l \in B_w,
+\end{equation}
+using equation (\ref{complement}) we get
+\begin{equation}
+	w_i = u_i \& m, \quad \forall u_i \in U.
+	\label{complement}
+\end{equation}
 
 %
 %Axler 2.33
