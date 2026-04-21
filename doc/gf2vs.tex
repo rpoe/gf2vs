@@ -541,7 +541,7 @@ each with corresponding bases $B_V, B_U$. The bases do not necessarily have to b
 
 If the $\operatorname{span}V = B_V$ of one
 subset~$V$, then $V$ is a subspace of $\BF_2^n$. In this situation we can create a subspace $W$ out of $U$ so that the direct sum
-$U + W = \BF_2^n$.
+$U + W = \BF_2^n$. This is an application of the Steinitz exchange lemma \cite{Fischer2020, wikipedia_en_2026_SteinitzExchangeLemma}.
 
 Assume without loss of generality $B_V = \{e_1, ..., e_k\}$ and $U = \{u_1, ... u_l\}$.
 We compute the base $B_W$ of $W$ with equation (\ref{baseComplement})
@@ -552,7 +552,7 @@ We compute the base $B_W$ of $W$ with equation (\ref{baseComplement})
 With the base $B_W$ we can restrict the set of vectors $U$ to a set of vectors $W = \{w_1, ..., w_l\}$
 making $W$ a subspace with base $B_W$ simply by filtering the bit vectors of $U$ with a bit mask $m$
 \begin{equation}
-	m = \sum_{i=1}^l e_l, \quad e_l \in B_w,
+	m = \sum_{i=1}^l e_i, \quad e_i \in B_w,
 \end{equation}
 using equation (\ref{complement}) we get
 \begin{equation}
