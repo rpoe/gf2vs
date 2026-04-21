@@ -68,14 +68,15 @@ This article is a supplementary documentation to the Go package.
 
 \subsection{Supporting Set}
 
-In computer science bits are modeled as the set $\{0, 1\}$. This is the set $\BZ_2 \subset \BN \subset \BZ \subset \BR$. This set is equivalent to the set of representatives of the cyclic group $\BZ/\BZ2$ of order~2.
+In computer science bits are modeled as the set $\{0, 1\}$. This is the set $\BZ_2 \subset \BN \subset \BZ \subset \BR$.
+This set is equivalent to the set of representatives of the cyclic group $\BZ/2\BZ$ of order~2.
 In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
 
-The representatives of the cyclic set $\BZ/\BZ2$ with operations modulo~2 satisfy the field axioms.
+The representatives of the cyclic set $\BZ/2\BZ$ with operations modulo~2 satisfy the field axioms.
 We use the notation $\BF_2$ for the field. It is equivalent to the Galois Field $GF(2)$.
 
 \subsection{Group Operations}
-The operations of $\BF_2 = \BZ/\BZ2$ are defined modulo~2; see \cite[ch. 2.2.6]{Fischer2020} and \cite{Hill2004}.
+The operations of $\BF_2 = \BZ/2\BZ$ are defined modulo~2; see \cite[ch. 2.2.6]{Fischer2020} and \cite{Hill2004}.
 
 The operations addition and multiplication of the field $\BF_2$ satisfy the group
 axioms~\cite{Fischer2020, Lidl2000, wikipedia_en_2026_GroupMathematics}, both operations are commutative.
@@ -91,10 +92,10 @@ For reference we give here only the operations for $\BF_2$.
 The addition is named exclusive disjunction in logic and XOR 
 in computer science
 \cite{knuth:taocp_v4_f0, wikipedia_en_2025_ExclusiveOr}.
-The definition of addition is given in equation (\ref{def:opaddition}) obeying $(1+1) \mod 2 = 0$.
+The definition of addition is given in equation (\ref{def:opaddition}) obeying $(1+1) \bmod 2 = 0$.
 \begin{equation}
 \begin{array}{ll}
-+ : \BF_2 \times \BF_2 \to \BF_2, & (a,b) \mapsto (a + b) \mod 2, \\
++ : \BF_2 \times \BF_2 \to \BF_2, & (a,b) \mapsto (a + b) \bmod 2, \\
 & \begin{array}{l l l l}
 0 + 0 = 0, & 0 + 1 = 1, & 1 + 0 = 1, & 1 + 1 = 0.
 \end{array}
@@ -123,7 +124,7 @@ AND in computer science
 The multiplication is identically defined as in $\BZ$.
 \begin{equation}
 \begin{array}{ll}
-\cdot : \BF_2 \times \BF_2 \rightarrow \BF_2, & (a,b) \mapsto (a \cdot b) \mod 2, \\
+\cdot : \BF_2 \times \BF_2 \rightarrow \BF_2, & (a,b) \mapsto (a \cdot b) \bmod 2, \\
 & \begin{array}{l l l l}
 0 \cdot 0 = 0, & 0 \cdot 1 = 0, & 1 \cdot 0 = 0, & 1 \cdot 1 = 1. \\
 \end{array}
@@ -289,8 +290,8 @@ As we have a vector space over a field the vector operations defined bit-wise in
 \begin{equation}
 \left.
 \begin{array}{lrrcrl}
-\text{Addition, XOR} &\oplus : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \oplus y = z & \Leftrightarrow & x_i + y_i = z_i, \\
-\text{Multiplication, AND} & \& : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \& y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
+\text{Addition, XOR} &+ : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x + y = z & \Leftrightarrow & x_i + y_i = z_i, \\
+\text{Multiplication, AND} & \cdot : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \cdot y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
 \text{Disjunction, OR} &| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
 \text{Scalar multiplication} &\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
 \end{array}
@@ -300,33 +301,33 @@ As we have a vector space over a field the vector operations defined bit-wise in
 
 We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for bit vectors of size $n$ here:
 \begin{flalign}
-& x \oplus y =  y \oplus x, \enspace x \& y = y \& x, \enspace x | y = y | x: & \text{commutativity;} \\
-& (x \oplus y) \oplus z = x \oplus (y \oplus z), \enspace (x \& y) \& z = x \& (y \& z), \enspace (x | y) | z = x | (y | z): & \text{associativity}; \\
-& (x \oplus y) \& z = (x \& z) \oplus (y \& z): & \text{distributivity AND over XOR};\\
-& (x \& y) | z = (x | z) \& (y | z), \enspace (x | y) \& z = (x \& z) | (y \& z): & \text{mutual distributivity AND, OR};\\
-& (x \& y) \oplus (x | y) = x \oplus y; &\\
-& (x \& y) | x = x, \enspace (x | y) \& x = x: & \text{idempotence}; \\
-& x \oplus \0 = x, \enspace x \& \0 = \0, \enspace x | \0 = x; &  \\
-& x \oplus \1 = \sim x, \enspace x \& \1 = x, \enspace x | \1 = \1; & \\
-& x \oplus x = \0, \enspace x \& x = x, \enspace x | x = x; & \\
-& x \oplus (\sim x) = \1, \enspace x \& (\sim x) = \0, \enspace x | (\sim x) = \1; & \\
-& \sim(x \oplus y) = (\sim x) \oplus y = x \oplus (\sim y); & \\
-& \sim ( x \& y) = (\sim x) | (\sim y), \enspace \sim(x | y) = (\sim x) \& (\sim y): & \text{De Morgan}.
+& x + y =  y + x, \enspace x \cdot y = y \cdot x, \enspace x | y = y | x: & \text{commutativity;} \\
+& (x + y) + z = x + (y + z), \enspace (x \cdot y) \cdot z = x \cdot (y \cdot z), \enspace (x | y) | z = x | (y | z): & \text{associativity}; \\
+& (x + y) \cdot z = (x \cdot z) + (y \cdot z): & \text{distributivity AND over XOR};\\
+& (x \cdot y) | z = (x | z) \cdot (y | z), \enspace (x | y) \cdot z = (x \cdot z) | (y \cdot z): & \text{mutual distributivity AND, OR};\\
+& (x \cdot y) + (x | y) = x + y; &\\
+& (x \cdot y) | x = x, \enspace (x | y) \cdot x = x: & \text{idempotence}; \\
+& x + \0 = x, \enspace x \cdot \0 = \0, \enspace x | \0 = x; &  \\
+& x + \1 = \sim x, \enspace x \cdot \1 = x, \enspace x | \1 = \1; & \\
+& x + x = \0, \enspace x \cdot x = x, \enspace x | x = x; & \\
+& x + (\sim x) = \1, \enspace x \cdot (\sim x) = \0, \enspace x | (\sim x) = \1; & \\
+& \sim(x + y) = (\sim x) + y = x + (\sim y); & \\
+& \sim ( x \cdot y) = (\sim x) | (\sim y), \enspace \sim(x | y) = (\sim x) \cdot (\sim y): & \text{De Morgan}.
 \end{flalign}
 
 \subsection{Axioms of Vector Space}
-The set $\BF_2^n$ with the binary operation of vector addition $\oplus$ and the binary function of scalar multiplication $\cdot$,
+The set $\BF_2^n$ with the binary operation of vector addition $+$ and the binary function of scalar multiplication $\cdot$,
 as given in equation~\eqref{def:vectoroperations}, define a vector space see \cite{Fischer2020, wikipedia_en_2025_VectorSpace}. We repeat here the axioms of a vector space and leave the proof to the reader.
 
 \begin{description}
 \item[Associativity of vector addition] \ \\
-$u \oplus (v \oplus w) = (u \oplus v) \oplus w, \enspace \forall u, v, w \in \BF_2^n$.
+$u + (v + w) = (u + v) + w, \enspace \forall u, v, w \in \BF_2^n$.
 \item[Commutativity of vector addition] \ \\
-$u \oplus v = v \oplus u, \enspace \forall u, v \in \BF_2^n$.
+$u + v = v + u, \enspace \forall u, v \in \BF_2^n$.
 \item[Identity element of vector addition] \ \\
-$\exists \0 \in \BF_2^n : v \oplus \0 = v, \enspace \forall v \in \BF_2^n$.
+$\exists \0 \in \BF_2^n : v + \0 = v, \enspace \forall v \in \BF_2^n$.
 \item[Inverse elements of vector addition] \ \\
-$\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v \oplus (-v) = \0$, and $-v = v$, i.e.\ each vector is its own additive inverse, 
+$\forall v \in \BF_2^n \enspace \exists -v \in \BF_2^n : v + (-v) = \0$, and $-v = v$, i.e.\ each vector is its own additive inverse, 
 see equation (\ref{def:opaddition}).
 \end{description}
 
@@ -336,7 +337,7 @@ $\lambda (\eta v) = (\lambda \eta) v, \enspace \lambda, \eta \in \BF_2, \; v \in
 \item[Identity element of scalar multiplication] \ \\
 $1 v = v, \enspace 1 \in \BF_2, \; v \in \BF_2^n$, where $1$ is the multiplicative identity of $\BF_2$.
 \item[Distributivity of scalar multiplication with respect to vector addition] \ \\
-$\lambda (u \oplus v) = \lambda u \oplus \lambda v, \enspace \lambda \in \BF_2, \; u, v \in \BF_2^n$.
+$\lambda (u + v) = \lambda u + \lambda v, \enspace \lambda \in \BF_2, \; u, v \in \BF_2^n$.
 \item[Distributivity of scalar multiplication with respect to field addition] \ \\
 $(\lambda + \eta) v = \lambda v + \eta v, \enspace \lambda, \eta \in \BF_2, \; v \in \BF_2^n$.
 \end{description}
@@ -368,18 +369,23 @@ e_i = (x_k),
 Please note the $e_i$ are linearly independent.
 
 In the vector space $\BF_2^n$ each vector $x$ satisfies the equation (\ref{powerOf2})
-iff $x$ is a unit vector
-given by 
+iff $x$ is a unit vector 
 \cite{Anderson2011, Warren2013}
 \begin{equation}
-	(x \ne \0) \&\& ((x \& (x \oplus e_1))) == \0
+	(x \ne \0) \wedge ((x \cdot (x + e_1))) = \0.
 	\label{powerOf2}
 \end{equation}
-The equation (\ref{powerOf2}) is used in the function~\texttt{IsBaseVector(x)} of \texttt{gf2vs.go}.
-The algorithm is the fastest test to verify a vector is a base vector of $\BF_2^n$.
+The equation (\ref{powerOf2}) is used in the function~\texttt{x.IsBaseVector()} of \texttt{gf2vs.go}.
+The algorithm is the fastest test to verify a vector is a unit vector of $\BF_2^n$.
 
 We observe the identity elements are identical for the fields and the unit vectors are
 identical for all vector spaces over a field $K$.
+
+\subsubsection{Index}
+We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
+In the software package \texttt{gf2vs.go} we use the Go library function~\texttt{math/bits.Len(x uint)} for computing the
+index of a given unit vector. The function~\texttt{math/bits.Len(x)} computes the number of bits required to represent
+an unsigned integer. This is an optimized implementation of equation (\ref{size}).
 
 \subsubsection{Generating System}
 We define the subset $\BE := \{e_i\}$, $\BE \subset \BF_2^n$, of unit vectors $e_i$.
@@ -405,14 +411,11 @@ For the vector space $\BF_2^n$ the sum of the base vectors is $\1$ the ones vect
 	\sum_{i=1}^n e_i = \1
 \end{equation}
 
-\subsubsection{Index}
-We call $i = 1, \dots, n$ the index of the unit vector $e_i$ in the base.
-
 \subsubsection{Norm via Hamming Weight}
 The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
 In particular, for $x \in \BF_2^n$ we have
 \begin{equation}
-	\left( \sum_{i=1}^n x_i \right)\mod 2 = \left\{
+	\left( \sum_{i=1}^n x_i \right)\bmod 2 = \left\{
 	\begin{array}{ll}
 		1, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is odd},  \\
 		0, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is even}.  \\
@@ -446,7 +449,7 @@ This norm is sometimes called absolute-value
 norm~\cite{wikipedia_en_2025_NormMathematics}.
 The value of the norm of a vector of $\BF_2^n$ is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
 
-In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(uint~x)~uint} in package~\texttt{math/bits}.
+In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(x~uint)~uint} in package~\texttt{math/bits}.
 
 This norm satisfies the axioms of a norm:
 \begin{description}
@@ -468,7 +471,7 @@ These are the only vectors with norm 1 in the vector space.
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{equation}
 \begin{array}{ll}
-\langle , \rangle : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \& y \|_1 = w_H(x \& y).
+\langle , \rangle : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \cdot y \|_1 = w_H(x \cdot y).
 \end{array}
 \label{def:innerproduct}
 \end{equation}
@@ -483,8 +486,8 @@ By computation we can easily verify the properties of the scalar product, for $x
 \begin{description}
 \item[Distributivity]
 \begin{flalign*}
-& \langle x \oplus x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
-& \langle x, y \oplus y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
+& \langle x + x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
+& \langle x, y + y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
 & \langle\lambda x, y \rangle = \lambda \langle x, y\rangle, & \\
 & \langle x, \lambda y\rangle = \lambda \langle x, y\rangle. &
 \end{flalign*}
@@ -527,13 +530,19 @@ For $\BF_2^n$ every subset of $\BE$ spans a subspace. The conditions can be easi
 
 Every subspace $U$ of $\BF_2^n$ is part of a direct sum equal to $V$ as described by \cite[Theorem 2.33]{Axler2024}.
 As per definition $\BF_2^n$ is a finite-dimensional vector space. Let $U$ be a subspace of $\BF_2^n$. Then there exists a
-subspace $W$ of $\BF_2^n$ such that $V = U \oplus W$. 
+subspace $W$ of $\BF_2^n$ such that $V = U + W$. 
 
 Let $B_V$ be the canonical base of $V$ so $B_V \subseteq \BE$ then $B_W= \BE \setminus B$ is a base and we have
 $B_V \cup B_W = \BE$.
-Let $W$ be the subspace spanned by $B_W$, then $V \cap W = \{\0\}$ and $V \oplus W = \BF_2^n$. For the proof see \cite{Axler2024}.
+Let $W$ be the subspace spanned by $B_W$, then $V \cap W = \{\0\}$ and $V + W = \BF_2^n$. For the proof see \cite{Axler2024}.
 
-Suppose we have two sets of vectors $V, U$ of vector space $\BF_2^n$ and $V$ is a subspace with base $B_V$ of $\BF_2^n$.
+Suppose we have two disjunctive sets of vectors $V, U, V \cap U = \emptyset$ of vector space $\BF_2^n$,
+each with corresponding bases $B_V, B_U$. The bases do not necessarily have to be disjoint.
+
+If the $\operatorname{span}V = B_V$ of one
+subset~$V$, then $V$ is a subspace of $\BF_2^n$. In this situation we can create a subspace $W$ out of $U$ so that the direct sum
+$U + W = \BF_2^n$.
+
 Assume without loss of generality $B_V = \{e_1, ..., e_k\}$ and $U = \{u_1, ... u_l\}$.
 We compute the base $B_W$ of $W$ with equation (\ref{baseComplement})
 \begin{equation}
@@ -541,13 +550,13 @@ We compute the base $B_W$ of $W$ with equation (\ref{baseComplement})
 	\label{baseComplement}
 \end{equation}
 With the base $B_W$ we can restrict the set of vectors $U$ to a set of vectors $W = \{w_1, ..., w_l\}$
-so $W$ is a subspace with base $B_W$ simply by filtering the bit vectors with a bit mask $m$
+making $W$ a subspace with base $B_W$ simply by filtering the bit vectors of $U$ with a bit mask $m$
 \begin{equation}
-	m = \bigoplus_{i=1}^l e_l, \quad e_l \in B_w,
+	m = \sum_{i=1}^l e_l, \quad e_l \in B_w,
 \end{equation}
 using equation (\ref{complement}) we get
 \begin{equation}
-	w_i = u_i \& m, \quad \forall u_i \in U.
+	w_i = u_i \cdot m, \quad \forall u_i \in U.
 	\label{complement}
 \end{equation}
 
