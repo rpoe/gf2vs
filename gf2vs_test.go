@@ -451,48 +451,6 @@ func TestCopy(t *testing.T) {
 	}
 }
 
-func TestZeros(t *testing.T) {
-	cases := []struct {
-		dim  uint
-		val  uint
-		want uint
-	}{
-		{1, 0, 0},
-		{1, 1, 0},
-		{2, 0, 0},
-		{2, 1, 0},
-		{2, 2, 0},
-		{2, 3, 0},
-	}
-	for _, c := range cases {
-		sp := NewGF2VectorSpace(c.dim)
-		v := sp.NewGF2Vector(c.val)
-		vs1 := fmt.Sprint(v)
-		w := sp.NewGF2Vector(c.want)
-		ws := fmt.Sprint(w)
-		zo := v.Zeros()
-		zs1 := fmt.Sprint(zo)
-		if zs1 != ws {
-			t.Errorf("%v.Zero() = %v, want %v", vs1, zo, ws)
-		}
-		// make sure change of source is not affecting copy
-		v.val++
-		zs2 := fmt.Sprint(zo)
-		if zs2 != zs1 {
-			t.Errorf("%v.Zero() source changed to %v", zs1, zs2)
-		}
-		// make sure change of copy is not affecting source
-		v = sp.NewGF2Vector(c.val)
-		vs1 = fmt.Sprint(v)
-		zo = v.Zeros()
-		zo.val++
-		vs2 := fmt.Sprint(v)
-		if vs2 != vs1 {
-			t.Errorf("%v.Zero() copy changed to %v", vs1, vs2)
-		}
-	}
-}
-
 func TestNot(t *testing.T) {
 	cases := []struct {
 		dim  uint

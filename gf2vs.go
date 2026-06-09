@@ -163,12 +163,6 @@ func (v *GF2Vector) IsBaseVector() bool {
 	return (c > 0) && (c&(c-1)) == 0
 }
 
-// Zeros return the zero value of x, sharing the same vector space.
-func (x *GF2Vector) Zeros() *GF2Vector {
-	c := GF2Vector{x.sp, 0}
-	return &c
-}
-
 // Copy return a copy of x, sharing the same vector space.
 func (x *GF2Vector) Copy() *GF2Vector {
 	// we allow zero value
@@ -297,4 +291,12 @@ func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2SubVectorSpace) {
 		return true, &svs
 	}
 	return
+}
+
+// SubSpaceOfSet check all combinations of subsets of a set of bit vectors
+// to see wether a subset is confined to a subspace.
+// Check only bit vectors with more than 1 bit set.
+// All bit vectors with one bit for a subset.
+// Return the first subsets and subspaces found.
+func SubSpaceOfSets() {
 }
