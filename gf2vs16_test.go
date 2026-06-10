@@ -1332,8 +1332,7 @@ func TestOnesCount16(t *testing.T) {
 	}
 }
 
-/*
-func TestScalarProduct(t *testing.T) {
+func TestScalarProduct16(t *testing.T) {
 	cases := []struct {
 		dim  uint16
 		a    uint16
@@ -1428,14 +1427,14 @@ func TestScalarProduct(t *testing.T) {
 		sp := NewGF2VectorSpace16(c.dim)
 		a := sp.NewGF2Vector16(c.a)
 		b := sp.NewGF2Vector16(c.b)
-		got := ScalarProduct(a, b)
+		got := ScalarProduct16(a, b)
 		if got != c.want {
-			t.Errorf("Scalarproduct(%v, %v) = %v, want %v", a, b, got, c.want)
+			t.Errorf("Scalarproduct16(%v, %v) = %v, want %v", a, b, got, c.want)
 		}
 	}
 }
 
-func TestSpanOfSupspace(t *testing.T) {
+func TestSpanOfSupspace16(t *testing.T) {
 	cases := []struct {
 		dim  uint16
 		a    []uint16
@@ -1540,10 +1539,9 @@ func TestSpanOfSupspace(t *testing.T) {
 		for i := range c.a {
 			s[i] = sp.NewGF2Vector16(c.a[i])
 		}
-		ok, got := SpanOfSubspace(s)
+		ok, got := SpanOfSubspace16(s)
 		if ok && got.subOnes != c.ones || !ok && c.ones != 0 {
-			t.Errorf("SpanOfSubspace(%v) =\n%v, %v, %v,\nwant %v", s, ok, got, got.subOnes, c.ones)
+			t.Errorf("SpanOfSubspace16(%v) =\n%v, %v, %v,\nwant %v", s, ok, got, got.subOnes, c.ones)
 		}
 	}
 }
-*/
