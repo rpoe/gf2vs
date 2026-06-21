@@ -43,14 +43,18 @@
 
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-04-19}
+\date{2026-06-21}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-The aim of this article is to document all properties of the vector space of size $n$ of bit vectors $\BF_2^n$. It is a brief summary of the properties collected from several sources. 
+The aim of this article is to document all properties of the vector space of size $n$ of bit vectors $\BF_2^n$
+conscisly in one place.
+We include the properties usually only documented for the vector spaces $\BQ^n, \BR^n, \BC^n$, like base, span, dimension,
+norm, scalar product and inner sum. For the properties norm and scalar product we provide definitions with similar properties 
+satisfying the axioms.
 \end{abstract}
 
 \section{Introduction}
@@ -207,7 +211,6 @@ Obviously $\BF_2$ satisfies the field axioms.
 \section{\texorpdfstring{Vector Space $\BF_2^n$}{Vector Space}}
 
 \subsection{Vectors}
-Bit vectors are the elements of the vector space.
 We define a bit vector $x$ of size $n$ as a tuple $(x_i)$ of values $x_i \in \BF_2$:
 \begin{equation}
 x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2,
@@ -220,17 +223,19 @@ and we define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer
 
 In addition we define two distinguished constant elements of $\BF_2^n$:
 \begin{description}
-\item[Zero] $\0$ zero vector, all components are $0$, identity element of vector addition equation (\ref{def:vectoroperations}).
-\item[Ones] $\1$ ones vector, all components are $1$, identity element of vector multiplication.
+\item[Zero $\0$, zero vector] all components are $0$, identity element of vector addition equation (\ref{def:vectoroperations}).
+\item[Ones $\1$, ones vector] all components are $1$, identity element of vector multiplication.
 \end{description}
 
 \subsection{Mapping of Integers to Bit Vectors}
 All vectors in a vector space have the same length $n$. Obviously we do not have a vector space if $n = 0$.
 
-Bit vectors are representatives of integers $a_i \in \BN$.
-For mapping of a set of integers we compute the order $n$ of the target vector space from the maximum of the $\max(a_i) > 0$, using equation~(\ref{size}).
-If $\max(a_i) \le 0$ the $a_i$ cannot be represented with the vector space as defined in this article.
-Regarding the special considerations for $a_i < 0$ see \cite{knuth:taocp_v4_f1}.
+Bit vectors are representatives of unsigned integers $a_i \in \BN$.
+For mapping of a set of unsigned integers we compute the order $n$ of thei
+target vector space from the maximum of the $\max(a_i) > 0$, using equation~(\ref{size}).
+We restrict the vector space to positive integers. If $\max(a_i) \le 0$ the $a_i$ cannot be
+represented with the vector space as defined in this article.
+Regarding the special considerations for representation of integers $a_i < 0$ as bit vectors see \cite{knuth:taocp_v4_f1}.
 
 \begin{equation}
 n = \lfloor \log_{2}(\max(a_i)) \rfloor + 1.
@@ -266,14 +271,17 @@ computer for the programming language. This limits on most hardware architecture
 of the vectors used to represent integers. 
 The Go package~\texttt{gf2vs} supports vector spaces of arbitrary length, up to 64 bit.
 
-\subsection{Sets of Bit Vectors}
+\subsection{Operations on Bit Vectors}
 
-\subsection{Mappings of Bit Vectors}
+On bit vectors we have mappingis defining the operations of the vector space and additional mappings ususally not present in 
+definitions of a vector space.
+
+\subsubsection{Mappings of Bit Vectors}
 Equation (\ref{def:vecMapping}) defines the mapping of bit vectors.
 \begin{equation}
 \left.
-\begin{array}{lrrcrl}
-\text{Complement} & \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = y_i \\
+\begin{array}{lrrcc}
+\text{Complement} & \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = \ y_i \ , \\
 \text{Absolut value} & | \cdot |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & | x_i | = | y_i |,
 \end{array}
 \right\} i = 1, \dots, n.
@@ -283,7 +291,7 @@ We define the mapping $| \cdot |$ for formal mapping of a bit vector from $\BF_2
 
 For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
 
-\subsection{Operations on Bit Vectors}
+\subsubsection{Operations on Bit Vectors}
 
 Equation (\ref{def:vectoroperations}) defines bit-wise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
 As we have a vector space over a field the vector operations defined bit-wise inherit the group properties of the field $\BF_2$.
@@ -346,7 +354,6 @@ The axioms of a vector space are satisfied for $\BF_2^n$
 
 \subsection{Vector Space Base}
 For the vector space $\BF_2^n$ we give here the definition of the base, the norm and the scalar product as  implemented in the Go package.
-The symbol $K$ is used in definitions applicable by each of the fields $\BF_2^n, \BQ, \BR, \BC$.
 
 \subsubsection{Unit Vector}
 We define the unit vectors
@@ -357,8 +364,8 @@ of the vector space as the vectors
 where the $i$th element is $1$ and all other elements are $0$.
 \begin{equation}
 e_i = (x_k),
-\enspace e_i \in K^n,
-\enspace x_k \in K,
+\enspace e_i \in \BF^n,
+\enspace x_k \in \BF,
 \enspace x_k = \left\{
 \begin{array}{lll}
 1, & k = i, & \text{identity element of multiplication},  \\
@@ -376,7 +383,7 @@ iff $x$ is a unit vector
 	\label{powerOf2}
 \end{equation}
 The equation (\ref{powerOf2}) is used in the function~\texttt{x.IsBaseVector()} of \texttt{gf2vs.go}.
-The algorithm is the fastest test to verify a vector is a unit vector of $\BF_2^n$.
+The algorithm is the fastest test to verify a vector is a unit vector of $\BF_2^n$ for arbitrary $n$.
 
 We observe the identity elements are identical for the fields and the unit vectors are
 identical for all vector spaces over a field $K$.
@@ -509,6 +516,8 @@ In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual co
 
 \subsubsection{Orthonormal Base}
 With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$, as the unit vectors are the only vectors in $\BF_2^n$ with a length of 1 in the vector space, see equation (\ref{normUnitVector}).
+
+\subsection{Sets of Bit Vectors}
 
 \subsection{Subspaces}
 
