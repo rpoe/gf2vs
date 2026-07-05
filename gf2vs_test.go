@@ -7,6 +7,7 @@ package gf2vs
 import (
 	"fmt"
 	"math/bits"
+	"reflect"
 	"testing"
 )
 
@@ -64,8 +65,8 @@ func TestNewGF2VectorSpaceString(t *testing.T) {
 	}
 }
 
-// TestNewGF2SubVectorSpaceString test NewGF2SubVectorSpace and String
-func TestNewGF2SubVectorSpaceString(t *testing.T) {
+// TestNewGF2VectorSubspaceString test NewGF2VectorSubspace and String
+func TestNewGF2VectorSubspaceString(t *testing.T) {
 	cases := []struct {
 		n    uint
 		b    uint
@@ -74,25 +75,25 @@ func TestNewGF2SubVectorSpaceString(t *testing.T) {
 		// panic from NewGF2VectorSpace
 		{0, 0, "NewGF2VectorSpace(dim): dim = 0 < 1"},
 		{bits.UintSize + 1, 2, "NewGF2VectorSpace(dim): dim = 65 > 64 = bits.UintSize"},
-		// panic from NewGF2SubVectorSpace
-		{1, 2, "NewGF2SubVectorSpace(dim): base 2 not in space with dim = 1"},
-		{3, 5, "NewGF2SubVectorSpace(dim): base 5 not in space with dim = 3"},
+		// panic from NewGF2VectorSubspace
+		{1, 2, "NewGF2VectorSubspace(dim): base 2 not in space with dim = 1"},
+		{3, 5, "NewGF2VectorSubspace(dim): base 5 not in space with dim = 3"},
 	}
 	for _, c := range cases[0:2] {
 		func(in, b uint, want string) {
 			defer func(in uint, want string) {
 				r := recover()
 				if r == nil {
-					t.Errorf("NewGF2SubVectorSpace(%v) did not panic with %v",
+					t.Errorf("NewGF2VectorSubspace(%v) did not panic with %v",
 						in, want)
 				} else {
 					if r != want {
-						t.Errorf("NewGF2SubVectorSpace(%v) == Panic(%v),"+
+						t.Errorf("NewGF2VectorSubspace(%v) == Panic(%v),"+
 							" want Panic(%v)", in, r, want)
 					}
 				}
 			}(in, want)
-			NewGF2SubVectorSpace(c.n, c.b)
+			NewGF2VectorSubspace(c.n, c.b)
 		}(c.n, c.b, c.want)
 	}
 	for _, c := range cases[2:] {
@@ -100,16 +101,16 @@ func TestNewGF2SubVectorSpaceString(t *testing.T) {
 			defer func(in, b uint, want string) {
 				r := recover()
 				if r == nil {
-					t.Errorf("NewGF2SubVectorSpace(%v) did not panic with %v",
+					t.Errorf("NewGF2VectorSubspace(%v) did not panic with %v",
 						in, want)
 				} else {
 					if r != want {
-						t.Errorf("NewGF2SubVectorSpace(%v) == Panic(%v),"+
+						t.Errorf("NewGF2VectorSubspace(%v) == Panic(%v),"+
 							" want Panic(%v)", in, r, want)
 					}
 				}
 			}(in, b, want)
-			NewGF2SubVectorSpace(c.n, c.b)
+			NewGF2VectorSubspace(c.n, c.b)
 		}(c.n, c.b, c.want)
 	}
 
@@ -124,10 +125,10 @@ func TestNewGF2SubVectorSpaceString(t *testing.T) {
 		{4, 3, "GF(2)ssp{4: 15, 3}"},
 	}
 	for _, c := range cases {
-		sp := NewGF2SubVectorSpace(c.n, c.b)
+		sp := NewGF2VectorSubspace(c.n, c.b)
 		got := fmt.Sprint(sp)
 		if got != c.want {
-			t.Errorf("NewGF2SubVectorSpace(%v) = %v, want %v", c.n, got, c.want)
+			t.Errorf("NewGF2VectorSubspace(%v) = %v, want %v", c.n, got, c.want)
 		}
 	}
 }
@@ -1434,114 +1435,341 @@ func TestScalarProduct(t *testing.T) {
 	}
 }
 
-func TestSpanOfSupspace(t *testing.T) {
+func TestOnesOfSet(t *testing.T) {
 	cases := []struct {
-		dim  uint
-		a    []uint
-		ones uint
+		dim   uint
+		a     []uint
+		ones  uint
+		spDim int
 	}{
-		{1, []uint{0}, 0},
-		{1, []uint{1}, 1},
-		{2, []uint{2}, 2},
-		{3, []uint{4}, 4},
-		{3, []uint{7}, 0},
-		{1, []uint{0, 0}, 0},
-		{1, []uint{0, 1}, 1},
-		{1, []uint{1, 0}, 1},
-		{1, []uint{1, 1}, 1},
-		{2, []uint{0, 0}, 0},
-		{2, []uint{0, 1}, 1},
-		{2, []uint{0, 2}, 2},
-		{2, []uint{0, 3}, 3},
-		{2, []uint{1, 0}, 1},
-		{2, []uint{1, 1}, 1},
-		{2, []uint{1, 2}, 3},
-		{2, []uint{1, 3}, 3},
-		{2, []uint{2, 0}, 2},
-		{2, []uint{2, 1}, 3},
-		{2, []uint{2, 2}, 2},
-		{2, []uint{2, 3}, 3},
-		{2, []uint{3, 0}, 3},
-		{2, []uint{3, 1}, 3},
-		{2, []uint{3, 2}, 3},
-		{2, []uint{3, 3}, 3},
-		{3, []uint{0, 0}, 0},
-		{3, []uint{0, 1}, 1},
-		{3, []uint{0, 2}, 2},
-		{3, []uint{0, 3}, 3},
-		{3, []uint{0, 4}, 4},
-		{3, []uint{0, 5}, 5},
-		{3, []uint{0, 6}, 6},
-		{3, []uint{0, 7}, 0},
-		{3, []uint{1, 0}, 1},
-		{3, []uint{1, 1}, 1},
-		{3, []uint{1, 2}, 3},
-		{3, []uint{1, 3}, 3},
-		{3, []uint{1, 4}, 5},
-		{3, []uint{1, 5}, 5},
-		{3, []uint{1, 7}, 0},
-		{3, []uint{2, 0}, 2},
-		{3, []uint{2, 1}, 3},
-		{3, []uint{2, 2}, 2},
-		{3, []uint{2, 3}, 3},
-		{3, []uint{2, 4}, 6},
-		{3, []uint{2, 5}, 0},
-		{3, []uint{2, 6}, 6},
-		{3, []uint{2, 7}, 0},
-		{3, []uint{3, 0}, 3},
-		{3, []uint{3, 1}, 3},
-		{3, []uint{3, 2}, 3},
-		{3, []uint{3, 3}, 3},
-		{3, []uint{3, 4}, 0},
-		{3, []uint{3, 5}, 0},
-		{3, []uint{3, 6}, 0},
-		{3, []uint{3, 7}, 0},
-		{3, []uint{4, 0}, 4},
-		{3, []uint{4, 1}, 5},
-		{3, []uint{4, 2}, 6},
-		{3, []uint{4, 3}, 0},
-		{3, []uint{4, 4}, 4},
-		{3, []uint{4, 5}, 5},
-		{3, []uint{4, 6}, 6},
-		{3, []uint{4, 7}, 0},
-		{3, []uint{5, 0}, 5},
-		{3, []uint{5, 1}, 5},
-		{3, []uint{5, 2}, 0},
-		{3, []uint{5, 3}, 0},
-		{3, []uint{5, 4}, 5},
-		{3, []uint{5, 5}, 5},
-		{3, []uint{5, 6}, 0},
-		{3, []uint{5, 7}, 0},
-		{3, []uint{6, 0}, 6},
-		{3, []uint{6, 1}, 0},
-		{3, []uint{6, 2}, 6},
-		{3, []uint{6, 3}, 0},
-		{3, []uint{6, 4}, 6},
-		{3, []uint{6, 5}, 0},
-		{3, []uint{6, 6}, 6},
-		{3, []uint{6, 7}, 0},
-		{3, []uint{7, 0}, 0},
-		{3, []uint{7, 1}, 0},
-		{3, []uint{7, 2}, 0},
-		{3, []uint{7, 3}, 0},
-		{3, []uint{7, 4}, 0},
-		{3, []uint{7, 5}, 0},
-		{3, []uint{7, 6}, 0},
-		{3, []uint{7, 7}, 0},
-		{3, []uint{2, 7, 7}, 7},
-		{3, []uint{1, 2, 3}, 3},
-		{3, []uint{2, 4, 6}, 6},
-		{3, []uint{1, 4, 5}, 5},
+		// 0
+		{1, []uint{0}, 0, 0},
+		{1, []uint{1}, 1, 1},
+		{2, []uint{2}, 2, 1},
+		{3, []uint{4}, 4, 1},
+		{3, []uint{7}, 7, 3},
+		{1, []uint{0, 0}, 0, 0},
+		{1, []uint{0, 1}, 1, 1},
+		{1, []uint{1, 0}, 1, 1},
+		{1, []uint{1, 1}, 1, 1},
+		{2, []uint{0, 0}, 0, 0},
+		// 10
+		{2, []uint{0, 1}, 1, 1},
+		{2, []uint{0, 2}, 2, 1},
+		{2, []uint{0, 3}, 3, 2},
+		{2, []uint{1, 0}, 1, 1},
+		{2, []uint{1, 1}, 1, 1},
+		{2, []uint{1, 2}, 3, 2},
+		{2, []uint{1, 3}, 3, 2},
+		{2, []uint{2, 0}, 2, 1},
+		{2, []uint{2, 1}, 3, 2},
+		{2, []uint{2, 2}, 2, 1},
+		// 20
+		{2, []uint{2, 3}, 3, 2},
+		{2, []uint{3, 0}, 3, 2},
+		{2, []uint{3, 1}, 3, 2},
+		{2, []uint{3, 2}, 3, 2},
+		{2, []uint{3, 3}, 3, 2},
+		{3, []uint{0, 0}, 0, 0},
+		{3, []uint{0, 1}, 1, 1},
+		{3, []uint{0, 2}, 2, 1},
+		{3, []uint{0, 3}, 3, 2},
+		{3, []uint{0, 4}, 4, 1},
+		// 30
+		{3, []uint{0, 5}, 5, 2},
+		{3, []uint{0, 6}, 6, 2},
+		{3, []uint{0, 7}, 7, 3},
+		{3, []uint{1, 0}, 1, 1},
+		{3, []uint{1, 1}, 1, 1},
+		{3, []uint{1, 2}, 3, 2},
+		{3, []uint{1, 3}, 3, 2},
+		{3, []uint{1, 4}, 5, 2},
+		{3, []uint{1, 5}, 5, 2},
+		{3, []uint{1, 7}, 7, 3},
+		// 40
+		{3, []uint{2, 0}, 2, 1},
+		{3, []uint{2, 1}, 3, 2},
+		{3, []uint{2, 2}, 2, 1},
+		{3, []uint{2, 3}, 3, 2},
+		{3, []uint{2, 4}, 6, 2},
+		{3, []uint{2, 5}, 7, 3},
+		{3, []uint{2, 6}, 6, 2},
+		{3, []uint{2, 7}, 7, 3},
+		{3, []uint{3, 0}, 3, 2},
+		{3, []uint{3, 1}, 3, 2},
+		// 50
+		{3, []uint{3, 2}, 3, 2},
+		{3, []uint{3, 3}, 3, 2},
+		{3, []uint{3, 4}, 7, 3},
+		{3, []uint{3, 5}, 7, 3},
+		{3, []uint{3, 6}, 7, 3},
+		{3, []uint{3, 7}, 7, 3},
+		{3, []uint{4, 0}, 4, 1},
+		{3, []uint{4, 1}, 5, 2},
+		{3, []uint{4, 2}, 6, 2},
+		{3, []uint{4, 3}, 7, 3},
+		// 60
+		{3, []uint{4, 4}, 4, 1},
+		{3, []uint{4, 5}, 5, 2},
+		{3, []uint{4, 6}, 6, 2},
+		{3, []uint{4, 7}, 7, 3},
+		{3, []uint{5, 0}, 5, 2},
+		{3, []uint{5, 1}, 5, 2},
+		{3, []uint{5, 2}, 7, 3},
+		{3, []uint{5, 3}, 7, 3},
+		{3, []uint{5, 4}, 5, 2},
+		{3, []uint{5, 5}, 5, 2},
+		// 70
+		{3, []uint{5, 6}, 7, 3},
+		{3, []uint{5, 7}, 7, 3},
+		{3, []uint{6, 0}, 6, 2},
+		{3, []uint{6, 1}, 7, 3},
+		{3, []uint{6, 2}, 6, 2},
+		{3, []uint{6, 3}, 7, 3},
+		{3, []uint{6, 4}, 6, 2},
+		{3, []uint{6, 5}, 7, 3},
+		{3, []uint{6, 6}, 6, 2},
+		{3, []uint{6, 7}, 7, 3},
+		// 80
+		{3, []uint{7, 0}, 7, 3},
+		{3, []uint{7, 1}, 7, 3},
+		{3, []uint{7, 2}, 7, 3},
+		{3, []uint{7, 3}, 7, 3},
+		{3, []uint{7, 4}, 7, 3},
+		{3, []uint{7, 5}, 7, 3},
+		{3, []uint{7, 6}, 7, 3},
+		{3, []uint{7, 7}, 7, 3},
+		{3, []uint{2, 7, 7}, 7, 3},
+		// 90
+		{3, []uint{1, 2, 3}, 3, 2},
+		{3, []uint{2, 4, 6}, 6, 2},
+		{3, []uint{1, 4, 5}, 5, 2},
 	}
-	for _, c := range cases {
+	for ic, c := range cases {
+		//fmt.Println(i)
 		sp := NewGF2VectorSpace(c.dim)
 		s := make([]*GF2Vector, len(c.a))
 		for i := range c.a {
 			s[i] = sp.NewGF2Vector(c.a[i])
 		}
-		ok, got := SpanOfSubspace(s)
-		if ok && got.subOnes != c.ones || !ok && c.ones != 0 {
-			t.Errorf("SpanOfSubspace(%v) =\n%v, %v, %v,\nwant %v", s, ok, got, got.subOnes, c.ones)
+		ones, spDim := OnesOfSet(s)
+		if ones.Val() != c.ones || spDim != c.spDim {
+			t.Errorf("%v: OnesOfSet(%v) = %v, %v, want %b, %v",
+				ic, s, ones, spDim, c.ones, c.spDim)
+		}
+	}
+}
+
+func TestBaseOfOnesVector(t *testing.T) {
+	cases := []struct {
+		dim  uint
+		val  uint
+		base []uint
+	}{
+		{1, 0, []uint{}},
+		{1, 1, []uint{1}},
+		{2, 0, []uint{}},
+		{2, 1, []uint{1}},
+		{2, 2, []uint{2}},
+		{2, 3, []uint{1, 2}},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.dim)
+		vc := sp.NewGF2Vector(c.val)
+		vBase := sp.NewGF2VectorSet(c.base)
+		base := BaseOfOnesVector(vc)
+		if !reflect.DeepEqual(base, vBase) {
+			t.Errorf("BaseOfOnesVector(%v) = \n%v, want \n%v", vc, base, vBase)
+		}
+	}
+}
+
+func TestSubspaceOfSet(t *testing.T) {
+	cases := []struct {
+		dim     uint
+		sbstDim int
+		set     []uint
+		val     uint
+		found   bool
+	}{
+		{4, 1, []uint{2, 3, 7, 5}, 2, true},
+		{4, 2, []uint{3, 3, 7, 5}, 3, true},
+		{4, 2, []uint{3, 5, 9, 5}, 5, true},
+		{4, 2, []uint{3, 5, 9, 6}, 0, false},
+		{4, 2, []uint{7, 9, 7, 8}, 9, true},
+		{4, 3, []uint{7, 9, 7, 8}, 0, false},
+		{5, 3, []uint{7, 9, 7, 3, 8}, 7, true},
+		{5, 3, []uint{5, 9, 7, 3, 8}, 13, true},
+		{5, 3, []uint{16, 5, 7, 3, 8}, 7, true},
+		{5, 3, []uint{9, 5, 7, 3, 8}, 13, true},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.dim)
+		set := sp.NewGF2VectorSet(c.set)
+		v, found := SubspaceOfSet(set, c.sbstDim)
+		val := uint(0)
+		if found {
+			val = v.subOnes
+		}
+		if found != c.found || val != c.val {
+			t.Errorf("SubspaceOfSet(%v, %v, %v) =\n%v, %v, want\n%v, %v",
+				c.set, set, c.sbstDim, val, found, c.val, c.found)
+		}
+	}
+}
+
+/*
+func TestReduceOtherInUnit(t *testing.T) {
+	cases := []struct {
+		val         int
+		allDigits   int
+		u           []int
+		grid        []int
+		gridReduced []int
+	}{
+		{3, 0b1111, []int{0, 1, 2, 3}, []int{3, 3, 7, 11}, []int{3, 3, 4, 8}},
+		{5, 0b1111, []int{0, 1, 4, 5}, []int{3, 5, 7, 6, 9, 5}, []int{2, 5, 7, 6, 8, 5}},
+		{1, 0b1111, []int{0, 1, 4, 5}, []int{4, 6, 7, 5, 8, 6}, []int{4, 6, 7, 5, 8, 6}},
+		{7, 0b11111, []int{0, 1, 2, 3, 4}, []int{9, 5, 7, 3, 8}, []int{8, 5, 7, 3, 8}},
+	}
+	for _, c := range cases {
+		gridWork := make([]int, len(c.grid))
+		copy(gridWork, c.grid)
+		reduceOtherInUnit(c.val, c.allDigits, c.u, gridWork)
+		if !reflect.DeepEqual(gridWork, c.gridReduced) {
+			t.Errorf("reduceOtherInUnit(%v, %0b, %v, %v) =\n%v, want\n%v",
+				c.val, c.allDigits, c.u, c.grid, gridWork, c.gridReduced)
+		}
+	}
+}
+
+func TestUnitBits(t *testing.T) {
+	cases := []struct {
+		vec uint
+		res []int
+	}{
+		{0, []int{}},
+		{1, []int{1}},
+		{2, []int{2}},
+		{3, []int{1, 2}},
+		{4, []int{4}},
+		{5, []int{1, 4}},
+		{6, []int{2, 4}},
+		{7, []int{1, 2, 4}},
+	}
+	for _, c := range cases {
+		res := unitBits(c.vec)
+		if !reflect.DeepEqual(res, c.res) {
+			t.Errorf("unitBits(%v) = \n%v, want\n%v", c.vec, res, c.res)
+		}
+	}
+}
+
+func TestIsValueInSet(t *testing.T) {
+	cases := []struct {
+		value int
+		set   []int
+		grid  []int
+		isIn  bool
+	}{
+		{0, []int{0, 1}, []int{1, 2}, false},
+		{1, []int{0, 1}, []int{1, 2}, true},
+		{2, []int{0, 1}, []int{1, 2}, true},
+		{3, []int{0, 1}, []int{1, 2}, true},
+		{4, []int{0, 1}, []int{1, 2}, false},
+		{4, []int{0, 1}, []int{1, 4}, true},
+		{4, []int{0, 1}, []int{1, 5}, true},
+		{4, []int{0, 1}, []int{1, 6}, true},
+		{5, []int{0, 1}, []int{1, 2}, true},
+	}
+	for _, c := range cases[0:] {
+		isIn := isValueInSet(c.value, c.set, c.grid)
+		if isIn != c.isIn {
+			t.Errorf("isValueInSet(%v, %v, %v) = %v, want %v",
+				c.value, c.set, c.grid, isIn, c.isIn)
+		}
+	}
+}
+
+func TestRemoveValueFromSet(t *testing.T) {
+	cases := []struct {
+		d         int
+		allDigits int
+		set       []int
+		grid      []int
+		gridNew   []int
+	}{
+		{1, 3, []int{0, 1}, []int{1, 2}, []int{0, 2}},
+		{2, 3, []int{0, 1}, []int{1, 2}, []int{1, 0}},
+		{2, 7, []int{0, 1}, []int{3, 7}, []int{1, 5}},
+		{2, 15, []int{0, 1}, []int{3, 7}, []int{1, 5}},
+		{2, 15, []int{0, 1}, []int{6, 7}, []int{4, 5}},
+		{2, 15, []int{0, 1}, []int{5, 7}, []int{5, 5}},
+		{2, 15, []int{0, 1}, []int{13, 7}, []int{13, 5}},
+		{2, 15, []int{0, 1}, []int{13, 12}, []int{13, 12}},
+	}
+	for _, c := range cases[0:] {
+		grds := fmt.Sprint(c.grid)
+		removeValueFromSet(c.d, c.allDigits, c.set, c.grid)
+		if !reflect.DeepEqual(c.grid, c.gridNew) {
+			t.Errorf("removeValueFromSet(%v, %v, %v, %v) grid = \n%v, want\n%v",
+				c.d, c.allDigits, c.set, grds, c.grid, c.gridNew)
+		}
+	}
+}
+*/
+
+/////////////////////////////////////// utility functions /////////////////////
+
+func TestBinominalCoefficient(t *testing.T) {
+	cases := uint(5)
+	binCoeff := [][]uint{{1}, {1, 1}, {1, 2, 1}, {1, 3, 3, 1}, {1, 4, 6, 4, 1}}
+	for n := range cases {
+		for j := range n {
+			bc := binominalCoefficient(n, j)
+			if bc != binCoeff[n][j] {
+				t.Errorf("binominalCoefficient(%v, %v) = %v, wwant %v",
+					n, j, bc, binCoeff[n][j])
+			}
+		}
+	}
+}
+
+// combinations return all k-element subsets from elements
+func TestCombinations(t *testing.T) {
+	cases := []struct {
+		elements []int
+		k        int
+		combs    [][]int
+	}{
+		{[]int{1, 2}, 0,
+			[][]int{{}}},
+		{[]int{1, 2}, 1,
+			[][]int{{1}, {2}}},
+		{[]int{1, 2}, 2,
+			[][]int{{1, 2}}},
+		{[]int{1, 2}, 3,
+			[][]int{}},
+		{[]int{1, 2, 3}, 1,
+			[][]int{{1}, {2}, {3}}},
+		{[]int{1, 2, 3}, 2,
+			[][]int{{1, 2}, {1, 3}, {2, 3}}},
+		{[]int{1, 2, 3}, 3,
+			[][]int{{1, 2, 3}}},
+		{[]int{1, 2, 3, 4}, 1,
+			[][]int{{1}, {2}, {3}, {4}}},
+		{[]int{1, 2, 3, 4}, 2,
+			[][]int{{1, 2}, {1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 4}}},
+		{[]int{1, 2, 3, 4}, 3,
+			[][]int{{1, 2, 3}, {1, 2, 4}, {1, 3, 4}, {2, 3, 4}}},
+		{[]int{1, 2, 3, 4}, 4,
+			[][]int{{1, 2, 3, 4}}},
+	}
+	for _, c := range cases {
+		combs := combinations(c.elements, c.k)
+		if !reflect.DeepEqual(combs, c.combs) {
+			t.Errorf("combinations(%v, %v) = \n%v, want\n%v",
+				c.elements, c.k, combs, c.combs)
 		}
 	}
 }

@@ -51,26 +51,26 @@ func (sp *GF2VectorSpace) String() string {
 	return fmt.Sprintf("GF(2)sp{%v: %v}", sp.dim, sp.ones)
 }
 
-// GF2SubVectorSpace represents a sub vector space
-type GF2SubVectorSpace struct {
+// GF2VectorSubspace represents a vector subspace
+type GF2VectorSubspace struct {
 	GF2VectorSpace
 	subOnes uint // bitvector where the bits of the base are set
 }
 
-// NewGF2SubVectorSpace create a sub vector space with base bits b as sub space
+// NewGF2VectorSubspace create a sub vector space with base bits b as sub space
 // of a vector space with dimension n.
 // Panic if b > n.
 // We call internally NewGF2VectorSpace which may panic for n out of range.
-func NewGF2SubVectorSpace(n, b uint) *GF2SubVectorSpace {
+func NewGF2VectorSubspace(n, b uint) *GF2VectorSubspace {
 	if b > n {
-		panic(fmt.Sprintf("NewGF2SubVectorSpace(dim): base %v not in space with dim = %v", b, n))
+		panic(fmt.Sprintf("NewGF2VectorSubspace(dim): base %v not in space with dim = %v", b, n))
 	}
 	vs := NewGF2VectorSpace(n)
-	svs := GF2SubVectorSpace{*vs, b}
+	svs := GF2VectorSubspace{*vs, b}
 	return &svs
 }
 
-func (sp *GF2SubVectorSpace) String() string {
+func (sp *GF2VectorSubspace) String() string {
 	return fmt.Sprintf("GF(2)ssp{%v: %v, %v}", sp.dim, sp.ones, sp.subOnes)
 }
 
@@ -105,6 +105,15 @@ func (s *GF2VectorSpace) NewGF2Vector(value uint) *GF2Vector {
 
 	v := GF2Vector{s, value}
 	return &v
+}
+
+// NewGF2VectorSet return a set of vectors with the values given.
+func (s *GF2VectorSpace) NewGF2VectorSet(u []uint) []*GF2Vector {
+	set := make([]*GF2Vector, len(u))
+	for i, x := range u {
+		set[i] = s.NewGF2Vector(x)
+	}
+	return set
 }
 
 // GF2BaseVector return a GF2Vector representing the base with index i.
@@ -275,28 +284,118 @@ func ScalarProduct(a, b *GF2Vector) int {
 	return OnesCount(prod)
 }
 
-// SpanOfSubspace returns true and the subspace of a set of vectors s if the
-// vectors span a subspace. For true the dimension of the set s must be
-// greater or equal the Norm of the union of the set.
-// Steinitz exchange lemma:
-// https://en.wikipedia.org/w/index.php?title=Steinitz_exchange_lemma&oldid=1336271854
-// The dimension of each span of a vector space is greater or equal to the
-// dimension of the base of the vector space.
-func SpanOfSubspace(s []*GF2Vector) (Ok bool, sp *GF2SubVectorSpace) {
-	span := Or(s...) // demands all s are in same vectorspace
-	dim := OnesCount(span)
-	if dim <= len(s) {
-		// we have a subspace
-		svs := GF2SubVectorSpace{(*s[0].sp), span.val}
-		return true, &svs
+// BaseOfOnesVector return the base, the set of unit vectors of the given bit vector
+func BaseOfOnesVector(vc *GF2Vector) []*GF2Vector {
+	vec := vc.Val()
+	res := make([]*GF2Vector, 0, bits.Len(vec))
+	for vec != 0 {
+		b := bits.TrailingZeros(vec)
+		v := uint(1) << b
+		res = append(res, vc.sp.NewGF2Vector(v))
+		vec -= v
 	}
+	return res
+}
+
+// OnesOfSet return the ones of the span and the dimension of the subspace
+// of the vectors in the given set.
+func OnesOfSet(set []*GF2Vector) (*GF2Vector, int) {
+	span := Or(set...) // demands all s are in same vectorspace
+	return span, OnesCount(span)
+}
+
+// SubspaceOfSet return first subspace of set, with dim.
+// check all combinations of subsets of a set of bit vectors
+// to see wether a subset is confined to a subspace.
+// if found equals false sp is nil.
+func SubspaceOfSet(set []*GF2Vector, dim int) (sp *GF2VectorSubspace, found bool) {
+	// compute all combinations of subset of size dim
+	subsets := combinations(set, dim)
+
+	for _, s := range subsets {
+		spOnes, spDim := OnesOfSet(s)
+		if spDim == dim {
+			spa := GF2VectorSubspace{*set[0].sp, spOnes.Val()}
+			return &spa, true
+		}
+	}
+
 	return
 }
 
-// SubSpaceOfSet check all combinations of subsets of a set of bit vectors
-// to see wether a subset is confined to a subspace.
-// Check only bit vectors with more than 1 bit set.
-// All bit vectors with one bit for a subset.
-// Return the first subsets and subspaces found.
-func SubSpaceOfSets() {
+/* TODO
+// isBaseElementOfValueInSet return true if any element of the set has the bits of value set
+func isValueInSet(value uint, set []*GF2Vector) bool {
+	if value == 0 {
+		return false
+	}
+	ub := unitBits(uint(value))
+	for _, d := range ub {
+		for _, s := range set {
+			cmpVal := grid[s] & d
+			if cmpVal != 0 && cmpVal == d {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// removeValueFromSet remove the digit(value) from the elements of grid in set
+func removeValueFromSet(d, allDigits int, set, grid []int) {
+	notd := allDigits ^ d
+	for _, s := range set {
+		grid[s] &= notd
+	}
+}
+*/
+
+/////////////////////////////////////// utility functions /////////////////////
+
+// binominalCoefficient compute the binomial coefficient (n over k)
+// = \prod_{j=1}^k (n+1-j)/j
+func binominalCoefficient(n, k uint) uint {
+	uOne := uint(1)
+
+	nmk := n - k
+	if k > nmk {
+		k = nmk
+		nmk = n - k
+	}
+
+	b := uOne
+	nom := n + uOne
+	for j := uOne; j <= k; j++ {
+		b = b * (nom - j) / j
+	}
+	return b
+}
+
+// combinations return all k-element subsets from elements
+func combinations[T any](elements []T, k int) [][]T {
+	// prevent reallocations of result and comb, by using final length
+	est := binominalCoefficient(uint(len(elements)), uint(k))
+	result := make([][]T, 0, est)
+	comb := make([]T, 0, k)
+
+	// recursive closure using result and comb
+	var recursiveCombination func(start int)
+	recursiveCombination = func(start int) {
+		if len(comb) == k {
+			// append copy of comb to result, comb is modified for each run
+			temp := make([]T, len(comb))
+			copy(temp, comb)
+			result = append(result, temp)
+			return
+		}
+
+		for i := start; i < len(elements); i++ { // iterate remaining elements
+			comb = append(comb, elements[i]) // append current element
+			recursiveCombination(i + 1)      // recurse with remaining elements
+			comb = comb[:len(comb)-1]        // remove last element added at loop start for next run
+		}
+	}
+
+	recursiveCombination(0)
+	return result
 }
