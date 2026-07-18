@@ -19,6 +19,16 @@
    urldate=long, 
 ]{biblatex}
 
+% TODO Add lit Heferon
+
+%intro
+%field
+%vector
+%vector set
+%vdctor space
+%sub vector space
+%abbildungen LGS
+
 %--- line break penalties
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
@@ -53,20 +63,24 @@
 The aim of this article is to document all properties of the vector space of size $n$ of bit vectors $\BF_2^n$
 conscisly in one place.
 We include the properties usually only documented for the vector spaces $\BQ^n, \BR^n, \BC^n$, like base, span, dimension,
-norm, scalar product and inner sum. For the properties norm and scalar product we provide definitions with similar properties 
-satisfying the axioms.
+norm, scalar product and inner sum. For the properties norm and
+scalar product we provide definitions and show that the corresponding axioms are satisfied.
 \end{abstract}
 
 \section{Introduction}
 
-Bit vectors are frequently used in computer science. They are used for integers, combinatorial algorithms, coding theory,
-and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}. A set of bit vectors of the same length forms a vector space.
-Information of all aspects of the vector space of bit vectors are scattered over multiple documents. This article is a collection of the properties of the vector space of bit vectors of the same length.
+Bit vectors are frequently used in computer science. They are used for integers,
+combinatorial algorithms, coding theory,
+and for logical and arithmetic operations \cite{knuth:taocp_v4_f1, Hill2004}.
+A set of bit vectors of the same length forms a vector space.
+Information of all aspects of the vector space of bit vectors are scattered over multiple documents.
+This article is a collection of the properties of the vector space of bit vectors of the same length.
 
 Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$.
 
-The Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs} implements data types and functions for the vector space of bit vectors.
-This article is a supplementary documentation to the Go package.
+The tyoes and functions for the vector space of bit vectors described in this paper are implemented in the
+Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs}.
+This article is an enhanced documentation of the Go package.
 
 \section{\texorpdfstring{Field $\BF_2$}{Field F2}}
 
@@ -153,7 +167,7 @@ So $\BF_2$ with the operation multiplication is an abelian group.
 
 \subsection{Mappings}
 
-In addition to the group operations we define some mappings, applicable to $\BF_2$.
+In addition to the algebraic group operations we have some mappings, applicable to $\BF_2$.
 
 \subsubsection{Complement}
 \begin{equation}
@@ -180,25 +194,25 @@ In boolean algebra we have the operation disjunction, named OR in computer scien
 The operation $\vee$ does not satisfy the group axioms; there is no inverse element.
 
 \subsubsection{Absolute Value}
-Absolute value $| \cdot |$ maps an element $x$ of $\BF_2$ to $\BR$:
+Absolute value $| \cdot |$ maps an element $x$ of $\BF_2$ to $\BN$:
 \begin{equation}
 \begin{array}{ll}
-	| \cdot | : \BF_2 \rightarrow \BR, & x \mapsto y, \\
+	| \cdot | : \BF_2 \rightarrow \BN, & x \mapsto y, \\
 & \begin{array}{l l l l}
 | 0 | = 0, & | 1  | = 1. \\
 \end{array}
 \end{array}
 \label{def:value}
 \end{equation}
-After application of this mapping, we can use the classical definition of the addition as in $\BR$.
+After application of this mapping, we can use the definition of the addition as in $\BN$.
 
 \subsection{Field Axioms}
 
-The set $\BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020, Hill2004}. We use~$K$ as symbol for any field satisfying the field axioms.
+The set $\BF_2$ with the operations addition and multiplication satisfies the field axioms \cite{Fischer2020, Hill2004}.
 \begin{description}
-\item[K1] $K$ with the addition $+$ is an abelian group.
-\item[K2] $K^* := K\setminus \{0\}$ with the multiplication $\cdot$ for every element of $K^*$ is an abelian group.
-\item[K3] distributive property \cite{Axler2024, wikipedia_en_2025_DistributiveProperty} is satisfied $\forall a, b, c \in K$
+\item[K1] $\BF_2$ with the addition $+$ is an abelian group.
+\item[K2] $\BF_2 := \BF_2\setminus \{0\}$ with the multiplication $\cdot$ for every element of $\BF_2$ is an abelian group.
+\item[K3] distributive property \cite{Axler2024, wikipedia_en_2025_DistributiveProperty} is satisfied $\forall a, b, c \in \BF_2$
 \begin{equation}
 \begin{array}{c}
 a \cdot (b + c) = a \cdot b + a \cdot c, \\
@@ -208,34 +222,30 @@ a \cdot (b + c) = a \cdot b + a \cdot c, \\
 \end{description}
 Obviously $\BF_2$ satisfies the field axioms.
 
-\section{\texorpdfstring{Vector Space $\BF_2^n$}{Vector Space}}
+\section{Bit Vectors}
 
-\subsection{Vectors}
+\subsection{Definition}
 We define a bit vector $x$ of size $n$ as a tuple $(x_i)$ of values $x_i \in \BF_2$:
 \begin{equation}
-x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2,
+x := (x_i) := (x_1, x_2, \dots, x_n), \quad \forall x_i \in \BF_2.
 \end{equation}
 
-and we define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer2020} as the vector space $\BF_2^n$:
-\begin{equation}
-\BF_2^n := \{x =  (x_1, \dots, x_n) : x_i \in \BF_2\}.
-\end{equation}
-
-In addition we define two distinguished constant elements of $\BF_2^n$:
+And we define two distinguished constant bit vectors:
 \begin{description}
-\item[Zero $\0$, zero vector] all components are $0$, identity element of vector addition equation (\ref{def:vectoroperations}).
-\item[Ones $\1$, ones vector] all components are $1$, identity element of vector multiplication.
+\item[Zero, $\0$, zero vector] all components are $0$, identity element of vector addition equation (\ref{def:vectoroperations}).
+\item[Ones, $\1$, ones vector] all components are $1$, identity element of vector multiplication.
 \end{description}
 
 \subsection{Mapping of Integers to Bit Vectors}
-All vectors in a vector space have the same length $n$. Obviously we do not have a vector space if $n = 0$.
 
-Bit vectors are representatives of unsigned integers $a_i \in \BN$.
-For mapping of a set of unsigned integers we compute the order $n$ of thei
-target vector space from the maximum of the $\max(a_i) > 0$, using equation~(\ref{size}).
-We restrict the vector space to positive integers. If $\max(a_i) \le 0$ the $a_i$ cannot be
-represented with the vector space as defined in this article.
-Regarding the special considerations for representation of integers $a_i < 0$ as bit vectors see \cite{knuth:taocp_v4_f1}.
+In computers unsigned integers $a \in \BN$ are represented by bit vectors. In this paper we
+consider unsigned integer $a \ge 0$ only. 
+Regarding the special considerations for representation of integers $a < 0$
+as bit vectors see \cite{knuth:taocp_v4_f1}.
+
+For mapping of a set $\{a_i \in \BN\}$ of unsigned integers we compute first the
+required size $n$ of the target vectors. Obviously if all $a_i = 0$, we get $n = 0$.
+Otherwise if the the maximum $\max(a_i) > 0$, we use equation~(\ref{size}).
 
 \begin{equation}
 n = \lfloor \log_{2}(\max(a_i)) \rfloor + 1.
@@ -273,42 +283,160 @@ The Go package~\texttt{gf2vs} supports vector spaces of arbitrary length, up to 
 
 \subsection{Operations on Bit Vectors}
 
-On bit vectors we have mappingis defining the operations of the vector space and additional mappings ususally not present in 
-definitions of a vector space.
-
-\subsubsection{Mappings of Bit Vectors}
-Equation (\ref{def:vecMapping}) defines the mapping of bit vectors.
-\begin{equation}
-\left.
-\begin{array}{lrrcc}
-\text{Complement} & \sim : \BF_2^n \rightarrow \BF_2^n, & \sim x = y & \Leftrightarrow & \neg x_i = \ y_i \ , \\
-\text{Absolut value} & | \cdot |: \BF_2^n \rightarrow \BR^n, & |x| = y & \Leftrightarrow & | x_i | = | y_i |,
-\end{array}
-\right\} i = 1, \dots, n.
-\label{def:vecMapping}
-\end{equation}
-We define the mapping $| \cdot |$ for formal mapping of a bit vector from $\BF_2^n$ to $\BR^n$.
-
-For the constants we have: $ \sim \0 = \1$ and $\sim \1 = \0$.
-
-\subsubsection{Operations on Bit Vectors}
-
 Equation (\ref{def:vectoroperations}) defines bit-wise operations on the bit vectors $x, y, z$ see \cite[ch. 2.4.1]{Fischer2020} and \cite[(1), (2), (3)]{knuth:taocp_v4_f1}.
-As we have a vector space over a field the vector operations defined bit-wise inherit the group properties of the field $\BF_2$.
+As we define the vector operations bit-wise we
+inherit the group properties of the field $\BF_2$.
 \begin{equation}
 \left.
 \begin{array}{lrrcrl}
-\text{Addition, XOR} &+ : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x + y = z & \Leftrightarrow & x_i + y_i = z_i, \\
-\text{Multiplication, AND} & \cdot : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x \cdot y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
-\text{Disjunction, OR} &| : \BF_2^n \times \BF_2^n \rightarrow \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
-\text{Scalar multiplication} &\cdot : \BF_2 \times \BF_2^n \rightarrow \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
+\text{Complement} & \neg : \BF_2^n \to \BF_2^n, & \neg x = y & \Leftrightarrow & \neg x_i = \ y_i \ , \\
+\text{Addition, XOR} &+ : \BF_2^n \times \BF_2^n \to \BF_2^n,  & x + y = z & \Leftrightarrow & x_i + y_i = z_i, \\
+\text{Multiplication, AND} & \cdot : \BF_2^n \times \BF_2^n \to \BF_2^n,  & x \cdot y = z  & \Leftrightarrow & x_i \cdot y_i = z_i, \\
+\text{Disjunction, OR} &| : \BF_2^n \times \BF_2^n \to \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
+\text{Scalar multiplication} &\cdot : \BF_2 \times \BF_2^n \to \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
+\text{Absolut value} & | \cdot |: \BF_2^n \to \BN^n, & |x| = y & \Leftrightarrow & | x_i | = y_i, \\
+\text{Bit vector norm} & \| \cdot \|i_1 : \BF_2^n \to \BN, & \| x \|_1 & \Leftrightarrow & \sum_{i=1}^n |x_i|, \\
+\text{Bit vector scalar product} & \langle , \rangle : \BF_2^n \times \BF_2^n \to \BN, & \langle x , y \rangle & \Leftrightarrow & \| x \cdot y \|_1.
 \end{array}
 \right\} i = 1, \dots, n.
 \label{def:vectoroperations}
 \end{equation}
+We define the mapping $| \cdot |$ for formal mapping of a bit vector from $\BF_2^n$ to $\BN^n$.
+Detail of the operations bit vector norm and bit vector scalar product are given below.
 
-We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for bit vectors of size $n$ here:
+\subsection{Norm via Hamming Weight}
+The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
+In particular, for $x \in \BF_2^n$ we have
+\begin{equation}
+	\left( \sum_{i=1}^n x_i \right)\bmod 2 = \left\{
+	\begin{array}{ll}
+		1, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is odd},  \\
+		0, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is even}.  \\
+	\end{array}
+	\right.
+\end{equation}
+From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in~$\BF_2^n$.
+
+In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries)
+of~ $x \in \{0, 1\}^n$ is defined as:
+\begin{equation}
+\begin{array}{ll}
+w_H : \BF_2^n \rightarrow \BN, & w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
+\end{array}
+\end{equation}
+and the associated {\em Hamming distance} $d_H$ is:
+\begin{equation}
+\begin{array}{ll}
+d_H : \BF_2^n \times \BF_2^n \rightarrow \BN, & d_H(x, y) = w_H(x - y).
+\end{array}
+\end{equation}
+
+If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$,
+by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors $x = (x_i)$ in $\BR^n$ norms are defined
+and we get:
+\begin{equation}
+\| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
+\end{equation}
+In $\BR^n$ $\| x \|_1$ is named $\ell_1$-norm see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm}.
+Obviously it equals the Hamming weight on bit vectors.
+This norm is sometimes called absolute-value
+norm~\cite{wikipedia_en_2025_NormMathematics}.
+The value of the norm of a vector of $\BF_2^n$ is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
+
+In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(x~uint)~uint} in package~\texttt{math/bits}.
+
+To prove that this mapping is a norm, it must satisfy the three norm axioms: positive definiteness, absolute homogeneity, and the triangle inequality.
+\begin{description}
+\item[Positive definiteness] \
+\begin{description}
+\item[Non-negativity] $\| x \|_1 \ge 0$.
+
+Since the absolute value of a bit $x_i$ is always greater than or equal to zero $\vert{}x_i\vert{} \ge 0$ the sum of these absolute values also never negative. $\|x\|_1 = \sum_{i=1}^{n} |x_i| \ge 0$.
+\item[Definiteness] $\| x \|_1 = 0 \Leftrightarrow x = \0$.
+\begin{description}
+\item[$\implies :$]Let \(\Vert{}x\Vert{}_1 = 0\). This means \(\sum_{i=1}^{n} \vert{}x_i\vert{} = 0\).
+Since the absolute value of a real number is never negative (\(\vert{}x_i\vert{} \ge 0\)),
+this sum can equal \(0\) only if every single term is \(0\).
+Thus, \(\vert{}x_i\vert{} = 0\) must hold for all \(i \in \{1, 2, \dots, n\}\).
+It follows that \(x_i = 0\), which corresponds exactly to the zero vector \(x = \0\).
+\item[$\impliedby $:] If $x = 0$, then each component $x_i = 0$. Consequently, $\vert{}x_i\vert{} = 0$ as well, and the sum equals zero: $\Vert{}0\Vert{}_1 = \sum_{i=1}^{n} \vert{}0\vert{} = 0$.
+\end{description}
+\end{description}
+\item[Absolute homogeneity] $ \| s \cdot x\|_1 = s \cdot \| x\|_1 \quad  \forall s \in \BF_2, \enspace x \in \BF_2^n$, \\
+Factoring a scalar out of the norm results in that factor being multiplied as an absolute value.
+For any scalar $s \in \BF$ and any vector $x \in \BF^n$,
+the following holds: $\Vert{}s x\Vert{}_1 = \sum_{i=1}^{n} \|s x_i\|$
+Using the multiplicative property of the absolute value
+($\|s x_i\| = \|s\| \cdot \|x_i\|$),
+we obtain: $\Vert{}s x\Vert{}_1 = \sum_{i=1}^{n} (\|s\| \cdot \|x_i\|)$
+Since the scalar $\|s\|$ is constant for all terms in the sum,
+we can factor it out: $\Vert{}s x\Vert{}_1 = \|s\| \cdot \sum_{i=1}^{n} \|x_i\| = \|s\| \cdot \Vert{}x\Vert{}_1$ 
+\item[Subadditivity / Triangle inequality] \ \\
+$w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
+The norm of the sum of two vectors is no greater than the sum of the individual norms. For two vectors $x, y \in \BF^n$, the following holds: $\Vert{}x + y\Vert{}_1 = \sum_{i=1}^{n} \|x_i + y_i\|$. Here, we apply the classical triangle inequality for real numbers, which states that the absolute value of the sum of two numbers is never greater than the sum of their individual absolute values ($\|x_i + y_i\| \le \|x_i\| + \|y_i\|$): $\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} (\|x_i\| + \|y_i\|)$. Based on the rules for summation, we can split this into two separate sums: $\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} \|x_i\| + \sum_{i=1}^{n} \|y_i\|$. This corresponds exactly to the definition of the norms of the individual vectors: $\Vert{}x + y\Vert{}_1 \le \Vert{}x\Vert{}_1 + \Vert{}y\Vert{}_1$. Conclusion: Since the $L_{1}$-norm satisfies all three axioms, it is a valid norm from a mathematical perspective.
+\end{description}
+%
+%
+%Die \(L_{1}\)-Norm (auch Betragssummennorm oder Manhattan-Norm) für einen Vektor \(x = (x_1, x_2, \dots, x_n)\) aus dem \(\mathbb{R}^{n}\) ist definiert als:\(\Vert{}x\Vert{}_1 = \sum_{i=1}^{n} \vert{}x_i\vert{}\)Um zu beweisen, dass diese Abbildung eine Norm ist, muss sie die drei klassischen Normaxiome erfülleni
+%: Positive Definitheit, Absolute Homogenität und die Dreiecksungleichung
+%.1. Positive DefinitheitDie Norm eines Vektors ist immer nicht-negativ, und sie ist genau dann \(0\), wenn der Vektor der Nullvektor ist.
+%Nicht-Negativität (\(\Vert{}x\Vert{}_1 \ge 0\)):
+%Da der Absolutbetrag einer reellen Zahl stets größer oder gleich Null ist (\(\vert{}x_i\vert{} \ge 0\)), ist auch die Summe dieser Beträge niemals negativ.\(\Vert{}x\Vert{}_1 = \sum_{i=1}^{n} \vert{}x_i\vert{} \ge 0\)
+%Identitätssinn (\(\Vert{}x\Vert{}_1 = 0 \iff x = 0\)):\(\implies \): Wenn \(\Vert{}x\Vert{}_1 = 0\), dann gilt \(\sum_{i=1}^{n} \vert{}x_i\vert{} = 0\). Da alle Summanden positiv oder null sind, kann die Summe nur dann null sein, wenn jeder einzelne Summand null ist. Es folgt \(\vert{}x_i\vert{} = 0\) für alle \(i\), was bedeutet, dass \(x_i = 0\) ist. Der Vektor ist also der Nullvektor.\(\impliedby \): Wenn \(x = 0\), ist jede Komponente \(x_i = 0\). Folglich ist auch \(\vert{}x_i\vert{} = 0\) und die Summe ergibt null: \(\Vert{}0\Vert{}_1 = \sum_{i=1}^{n} \vert{}0\vert{} = 0\).2. Absolute HomogenitätDas Herausziehen eines skalaren Faktors aus der Norm bewirkt, dass dieser Faktor als Betrag multipliziert wird. Für jeden Skalar \(\lambda \in \mathbb{R}\) und jeden Vektor \(x \in \mathbb{R}^n\) gilt:\(\Vert{}\lambda x\Vert{}_1 = \sum_{i=1}^{n} \vert{}\lambda x_i\vert{}\)Mithilfe der Multiplikationseigenschaft des Betrages (\(\vert{}\lambda x_i\vert{} = \vert{}\lambda\vert{} \cdot \vert{}x_i\vert{}\)) erhalten wir:\(\Vert{}\lambda x\Vert{}_1 = \sum_{i=1}^{n} (\vert{}\lambda\vert{} \cdot \vert{}x_i\vert{})\)Da der Skalar \(\vert{}\lambda\vert{}\) für alle Summanden konstant ist, können wir ihn aus der Summe ausklammern:\(\Vert{}\lambda x\Vert{}_1 = \vert{}\lambda\vert{} \cdot \sum_{i=1}^{n} \vert{}x_i\vert{} = \vert{}\lambda\vert{} \cdot \Vert{}x\Vert{}_1\)3. DreiecksungleichungDie Summe zweier Vektoren ist in ihrer Norm nicht größer als die Summe der einzelnen Normen. Für zwei Vektoren \(x, y \in \mathbb{R}^n\) gilt:\(\Vert{}x + y\Vert{}_1 = \sum_{i=1}^{n} \vert{}x_i + y_i\vert{}\)Hier wenden wir die klassische Dreiecksungleichung für reelle Zahlen an, die besagt, dass der Betrag der Summe zweier Zahlen niemals größer ist als die Summe ihrer Einzelbeträge (\(\vert{}x_i + y_i\vert{} \le \vert{}x_i\vert{} + \vert{}y_i\vert{}\)):\(\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} (\vert{}x_i\vert{} + \vert{}y_i\vert{})\)Aufgrund der Rechenregeln für Summen können wir diese in zwei separate Summen aufteilen:\(\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} \vert{}x_i\vert{} + \sum_{i=1}^{n} \vert{}y_i\vert{}\)Dies entspricht exakt der Definition der Normen der Einzelvektoren:\(\Vert{}x + y\Vert{}_1 \le \Vert{}x\Vert{}_1 + \Vert{}y\Vert{}_1\)Fazit: Da die \(L_{1}\)-Norm alle drei Axiome erfüllt, ist sie mathematisch gesehen eine gültige Norm.
+%
+%
+%
+%This norm is only norm we can use for Bit vectors. eikliduyce norm dersekbe Wert, maximjmsnor kmner 1
+%
+
+
+\subsection{Bit Vector Scalar Product}
+We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner
+product of two vectors as given in equation~(\ref{def:innerproduct}):
+\begin{equation}
+\begin{array}{ll}
+\langle , \rangle : \BF_2^n \times \BF_2^n \to \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \cdot y \|_1 = w_H(x \cdot y).
+\end{array}
+\label{def:innerproduct}
+\end{equation}
+The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \subset \BR^n$
+\begin{equation}
+\begin{array}{ll}
+\langle , \rangle : \BR^n \times \BR^n \rightarrow \BR, & \langle x , y \rangle  = \sum_i^n x_i \cdot y_i.
+\end{array}
+\end{equation}
+
+By computation we can easily verify the properties of the scalar product, for $x, y \in \BF_2^n$ and $\lambda \in \BF_2$:
+\begin{description}
+\item[Distributivity]
+\begin{flalign*}
+& \langle x + x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
+& \langle x, y + y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
+& \langle\lambda x, y \rangle = \lambda \langle x, y\rangle, & \\
+& \langle x, \lambda y\rangle = \lambda \langle x, y\rangle. &
+\end{flalign*}
+\item[Commutativity]
+\begin{flalign*}
+& \langle x, y\rangle = \langle y, x\rangle. &
+\end{flalign*}
+\item[Positive definiteness]
+\begin{flalign*}
+& \langle x, x\rangle \enspace \ge 0, \text{ and } \langle x,x\rangle = 0 \Leftrightarrow x = \0. &
+\end{flalign*}
+\item[Orthogonality]
+\begin{flalign*}
+& \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } & \\
+& \langle x, \neg x \rangle = 0, \text{ a vector is orthogonal to its complement.}
+\end{flalign*}
+\end{description}
+In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
+
+\subsection{Identities}
+
+This chapter lists the identies of operation on bit vectors of size $n$. 
+D. E. Knuth \cite[(4),~\dots,~(14)]{knuth:taocp_v4_f1} provides most of them.
 \begin{flalign}
+&\neg \0 = \1, \enspace \neg \1 = \0: & \text{complement of constants;}\\
 & x + y =  y + x, \enspace x \cdot y = y \cdot x, \enspace x | y = y | x: & \text{commutativity;} \\
 & (x + y) + z = x + (y + z), \enspace (x \cdot y) \cdot z = x \cdot (y \cdot z), \enspace (x | y) | z = x | (y | z): & \text{associativity}; \\
 & (x + y) \cdot z = (x \cdot z) + (y \cdot z): & \text{distributivity AND over XOR};\\
@@ -316,12 +444,23 @@ We adopt the main identities from \cite[(4), \dots, (14)]{knuth:taocp_v4_f1} for
 & (x \cdot y) + (x | y) = x + y; &\\
 & (x \cdot y) | x = x, \enspace (x | y) \cdot x = x: & \text{idempotence}; \\
 & x + \0 = x, \enspace x \cdot \0 = \0, \enspace x | \0 = x; &  \\
-& x + \1 = \sim x, \enspace x \cdot \1 = x, \enspace x | \1 = \1; & \\
+& x + \1 = \neg x, \enspace x \cdot \1 = x, \enspace x | \1 = \1; & \\
 & x + x = \0, \enspace x \cdot x = x, \enspace x | x = x; & \\
-& x + (\sim x) = \1, \enspace x \cdot (\sim x) = \0, \enspace x | (\sim x) = \1; & \\
-& \sim(x + y) = (\sim x) + y = x + (\sim y); & \\
-& \sim ( x \cdot y) = (\sim x) | (\sim y), \enspace \sim(x | y) = (\sim x) \cdot (\sim y): & \text{De Morgan}.
+& x + (\neg x) = \1, \enspace x \cdot (\neg x) = \0, \enspace x | (\neg x) = \1; & \\
+& \neg(x + y) = (\neg x) + y = x + (\neg y); & \\
+& \neg ( x \cdot y) = (\neg x) | (\neg y), \enspace \neg(x | y) = (\neg x) \cdot (\neg y): & \text{De Morgan}; \\
+& \| \0 \|_1 = 0, \enspace \| \1 \|_1 = n; & \\
+& \langle \1, \1 \rangle = n, \enspace \langle x, \neg x \rangle = 0;
 \end{flalign}
+
+
+\section{\texorpdfstring{Vector Space $\BF_2^n$}{Vector Space}}
+
+and we define the set of all bit vectors of size $n$ see \cite[ch 2.4.1]{Fischer2020} as the vector space $\BF_2^n$:
+\begin{equation}
+\BF_2^n := \{x =  (x_1, \dots, x_n) : x_i \in \BF_2\}.
+\end{equation}
+
 
 \subsection{Axioms of Vector Space}
 The set $\BF_2^n$ with the binary operation of vector addition $+$ and the binary function of scalar multiplication $\cdot$,
@@ -375,6 +514,13 @@ e_i = (x_k),
 \end{equation}
 Please note the $e_i$ are linearly independent.
 
+Please note the norm of the unit vectors 
+\begin{equation}
+\| e_i \|_1 = 1, \quad \forall i \in \{1, \dots n \}.
+\label{normUnitVector}
+\end{equation}
+These are the only vectors with norm 1 in the vector space.
+
 In the vector space $\BF_2^n$ each vector $x$ satisfies the equation (\ref{powerOf2})
 iff $x$ is a unit vector 
 \cite{Anderson2011, Warren2013}
@@ -417,102 +563,6 @@ For the vector space $\BF_2^n$ the sum of the base vectors is $\1$ the ones vect
 \begin{equation}
 	\sum_{i=1}^n e_i = \1
 \end{equation}
-
-\subsubsection{Norm via Hamming Weight}
-The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
-In particular, for $x \in \BF_2^n$ we have
-\begin{equation}
-	\left( \sum_{i=1}^n x_i \right)\bmod 2 = \left\{
-	\begin{array}{ll}
-		1, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is odd},  \\
-		0, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is even}.  \\
-	\end{array}
-	\right.
-\end{equation}
-From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in~$\BF_2^n$.
-
-In coding theory \cite{Hamming1950, wikipedia_en_2025_HammingWeight} the {\em Hamming weight} $w_H$ (number of 1-entries)
-of~ $x \in \{0, 1\}^n$ is defined as:
-\begin{equation}
-\begin{array}{ll}
-w_H : \BF_2^n \rightarrow \BN, & w_H(x) = | \{i \in \{1, \dots, n\} : x_i = 1\}|,
-\end{array}
-\end{equation}
-and the associated {\em Hamming distance} $d_H$ is:
-\begin{equation}
-\begin{array}{ll}
-d_H : \BF_2^n \times \BF_2^n \rightarrow \BN, & d_H(x, y) = w_H(x - y).
-\end{array}
-\end{equation}
-
-If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$,
-by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors $x = (x_i)$ in $\BR^n$ norms are defined and we get:
-\begin{equation}
-\| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
-\end{equation}
-In $\BR^n$ $\| x \|_1$ is named $\ell_1$-norm see \cite{Forster2016_Analysis_1, Mathworld2025:L1-Norm}.
-Obviously it equals the Hamming weight on bit vectors.
-This norm is sometimes called absolute-value
-norm~\cite{wikipedia_en_2025_NormMathematics}.
-The value of the norm of a vector of $\BF_2^n$ is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
-
-In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(x~uint)~uint} in package~\texttt{math/bits}.
-
-This norm satisfies the axioms of a norm:
-\begin{description}
-\item[Subadditivity / Triangle inequality] \ \\
-$w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
-\item[Absolute homogeneity] \ \\
-$ w_H(s \cdot x) = s \cdot w_H(x) \quad  \forall s \in \BF_2, \enspace x \in \BF_2^n$,
-\item[Positive definiteness] \ \\
-$w_H(x) \ge 0$, and $w_H(x) = 0 \Leftrightarrow x = \0$.
-\end{description}
-Please note the norm of the unit vectors 
-\begin{equation}
-\| e_i \|_1 = 1, \quad \forall i \in \{1, \dots n \}.
-\label{normUnitVector}
-\end{equation}
-These are the only vectors with norm 1 in the vector space.
-
-\subsubsection{Scalar Product} \ \\
-We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner product of two vectors as given in equation~(\ref{def:innerproduct}):
-\begin{equation}
-\begin{array}{ll}
-\langle , \rangle : \BF_2^n \times \BF_2^n \rightarrow \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \cdot y \|_1 = w_H(x \cdot y).
-\end{array}
-\label{def:innerproduct}
-\end{equation}
-The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \subset \BR^n$
-\begin{equation}
-\begin{array}{ll}
-\langle , \rangle : \BR^n \times \BR^n \rightarrow \BR, & \langle x , y \rangle  = \sum_i^n x_i \cdot y_i.
-\end{array}
-\end{equation}
-
-By computation we can easily verify the properties of the scalar product, for $x, y \in \BF_2^n$ and $\lambda \in \BF_2$:
-\begin{description}
-\item[Distributivity]
-\begin{flalign*}
-& \langle x + x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
-& \langle x, y + y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
-& \langle\lambda x, y \rangle = \lambda \langle x, y\rangle, & \\
-& \langle x, \lambda y\rangle = \lambda \langle x, y\rangle. &
-\end{flalign*}
-\item[Commutativity]
-\begin{flalign*}
-& \langle x, y\rangle = \langle y, x\rangle. &
-\end{flalign*}
-\item[Positive definiteness]
-\begin{flalign*}
-& \langle x, x\rangle \enspace \ge 0, \text{ and } \langle x,x\rangle = 0 \Leftrightarrow x = \0. &
-\end{flalign*}
-\item[Orthogonality]
-\begin{flalign*}
-& \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } & \\
-& \langle x, \sim x \rangle = 0, \text{ a vector is orthogonal to its complement.}
-\end{flalign*}
-\end{description}
-In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
 
 \subsubsection{Orthonormal Base}
 With the properties of the norm and the scalar product it follows $\BE$ is an orthonormal base, and this is the only orthonormal base of $\BF_2^n$, as the unit vectors are the only vectors in $\BF_2^n$ with a length of 1 in the vector space, see equation (\ref{normUnitVector}).
