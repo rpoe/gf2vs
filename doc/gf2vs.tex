@@ -78,7 +78,7 @@ This article is a collection of the properties of the vector space of bit vector
 
 Bits are based on the finite set of integers of order $2$. This set $\{0, 1\}$ with the operations addition and multiplication modulo 2 satisfies the axioms of a field. This finite field is named Galois Field \cite{Lidl2000, wikipedia_en_2026_GaloisField}\footnote{We cite Wikipedia for reused wordings.} $GF(2) = \BF_2$. Over this field there is the vector space $\BF_2^n$.
 
-The tyoes and functions for the vector space of bit vectors described in this paper are implemented in the
+The types and functions for the vector space of bit vectors described in this paper are implemented in the
 Go package~\texttt{gf2vs}~\cite{rp:gopkg:gf2vs}.
 This article is an enhanced documentation of the Go package.
 
@@ -86,11 +86,12 @@ This article is an enhanced documentation of the Go package.
 
 \subsection{Supporting Set}
 
-In computer science bits are modeled as the set $\{0, 1\}$. This is the set $\BZ_2 \subset \BN \subset \BZ \subset \BR$.
-This set is equivalent to the set of representatives of the cyclic group $\BZ/2\BZ$ of order~2.
+Digital computer work with 2 states, mostly electric voltage, on and off. In computer science the two states are named bit and
+are modeled as the set $\{0, 1\}$. This is the set $\BZ_2 \subset \BN \subset \BZ \subset \BR$.
+This set is equivalent to the set of representatives of the cyclic group $\BZ/2\BZ$ of order~2~in algebra.
 In logic we have the boolean values False $F = 0$ and True~ $T = 1$~\cite{knuth:taocp_v4_f0}.
 
-The representatives of the cyclic set $\BZ/2\BZ$ with operations modulo~2 satisfy the field axioms.
+The representatives of the cyclic set $\BZ/2\BZ$ with operations modulo~2 satisfy the algebraic field axioms.
 We use the notation $\BF_2$ for the field. It is equivalent to the Galois Field $GF(2)$.
 
 \subsection{Group Operations}
@@ -295,16 +296,16 @@ inherit the group properties of the field $\BF_2$.
 \text{Disjunction, OR} &| : \BF_2^n \times \BF_2^n \to \BF_2^n,  & x | y = z  & \Leftrightarrow & x_i \vee y_i = z_i,   \\
 \text{Scalar multiplication} &\cdot : \BF_2 \times \BF_2^n \to \BF_2^n, & \lambda \cdot x = y  & \Leftrightarrow & \lambda \cdot x_i  = y_i,   \\
 \text{Absolut value} & | \cdot |: \BF_2^n \to \BN^n, & |x| = y & \Leftrightarrow & | x_i | = y_i, \\
-\text{Bit vector norm} & \| \cdot \|i_1 : \BF_2^n \to \BN, & \| x \|_1 & \Leftrightarrow & \sum_{i=1}^n |x_i|, \\
-\text{Bit vector scalar product} & \langle , \rangle : \BF_2^n \times \BF_2^n \to \BN, & \langle x , y \rangle & \Leftrightarrow & \| x \cdot y \|_1.
+\text{Bit vector norm} & \| \cdot \| : \BF_2^n \to \BN, & \| x \| & \Leftrightarrow & \sum_{i=1}^n |x_i|, \\
+\text{Bit vector scalar product} & \langle , \rangle : \BF_2^n \times \BF_2^n \to \BN, & \langle x , y \rangle & \Leftrightarrow & \| x \cdot y \|.
 \end{array}
 \right\} i = 1, \dots, n.
 \label{def:vectoroperations}
 \end{equation}
 We define the mapping $| \cdot |$ for formal mapping of a bit vector from $\BF_2^n$ to $\BN^n$.
-Detail of the operations bit vector norm and bit vector scalar product are given below.
+Details of the operations bit vector norm and bit vector scalar product are given below.
 
-\subsection{Norm via Hamming Weight}
+\subsection{Bit Vector Norm}
 The addition in the field $\BF_2$ is modulo~2. Hence each sum in $\BF_2$ evaluates to either $0$ or $1$.
 In particular, for $x \in \BF_2^n$ we have
 \begin{equation}
@@ -341,61 +342,64 @@ In $\BR^n$ $\| x \|_1$ is named $\ell_1$-norm see \cite{Forster2016_Analysis_1, 
 Obviously it equals the Hamming weight on bit vectors.
 This norm is sometimes called absolute-value
 norm~\cite{wikipedia_en_2025_NormMathematics}.
+We use the Hamming weight and define it to be the norm $\| x\| $ of a bit vector.
+\begin{equation}
+\| x \| = \sum_{i=1}^n | x_i |.
+\label{def:norm}
+\end{equation}
 The value of the norm of a vector of $\BF_2^n$ is an element of the set $\{0, 1, \dots, n\} \subset \BN \subset \BZ \subset \BR$.
 
-In the programming languages C the function is named popcount() and in the language Go it is the function  ~\texttt{OnesCount(x~uint)~uint} in package~\texttt{math/bits}.
+In the programming languages C the function is named popcount() and in the language Go it is the
+function  ~\texttt{OnesCount(x~uint)~uint} in package~\texttt{math/bits}.
 
-To prove that this mapping is a norm, it must satisfy the three norm axioms: positive definiteness, absolute homogeneity, and the triangle inequality.
+To prove that equation (\ref{def:norm}) defines a norm, it must satisfy the three norm axioms: positive definiteness,
+absolute homogeneity, and the triangle inequality.
 \begin{description}
 \item[Positive definiteness] \
 \begin{description}
-\item[Non-negativity] $\| x \|_1 \ge 0$.
+\item[Non-negativity] $\| x \| \ge 0$.
 
-Since the absolute value of a bit $x_i$ is always greater than or equal to zero $\vert{}x_i\vert{} \ge 0$ the sum of these absolute values also never negative. $\|x\|_1 = \sum_{i=1}^{n} |x_i| \ge 0$.
-\item[Definiteness] $\| x \|_1 = 0 \Leftrightarrow x = \0$.
+Since the absolute value of a bit $x_i$ is always greater than or equal to zero $|x_i| \ge 0$ the
+sum of these absolute values is also never negative. $\|x\| = \sum_{i=1}^{n} |x_i| \ge 0$.
+\item[Definiteness] $\| x \| = 0 \Leftrightarrow x = \0$.
 \begin{description}
-\item[$\implies :$]Let \(\Vert{}x\Vert{}_1 = 0\). This means \(\sum_{i=1}^{n} \vert{}x_i\vert{} = 0\).
-Since the absolute value of a real number is never negative (\(\vert{}x_i\vert{} \ge 0\)),
-this sum can equal \(0\) only if every single term is \(0\).
-Thus, \(\vert{}x_i\vert{} = 0\) must hold for all \(i \in \{1, 2, \dots, n\}\).
-It follows that \(x_i = 0\), which corresponds exactly to the zero vector \(x = \0\).
-\item[$\impliedby $:] If $x = 0$, then each component $x_i = 0$. Consequently, $\vert{}x_i\vert{} = 0$ as well, and the sum equals zero: $\Vert{}0\Vert{}_1 = \sum_{i=1}^{n} \vert{}0\vert{} = 0$.
+\item[$\implies :$]Let $\|x\| = 0$. This means $\sum_{i=1}^{n} |x_i| = 0$.
+Since the absolute value of a bit is never negative ($|x_i| \ge 0$),
+this sum can equal $0$ only if every single term is $0$.
+Thus, $|x_i| = 0$ must hold for all $i \in \{1, 2, \dots, n\}$.
+It follows a vector with all $x_i = 0$, corresponds exactly to the zero vector $x = \0$.
+\item[$\impliedby $:] If $x = \0$, then each component $x_i = 0$. Consequently, $|x_i| = 0$ as well,
+and the sum equals zero:~$\|\0\| = \sum_{i=1}^{n} |0| = 0$.
 \end{description}
 \end{description}
-\item[Absolute homogeneity] $ \| s \cdot x\|_1 = s \cdot \| x\|_1 \quad  \forall s \in \BF_2, \enspace x \in \BF_2^n$, \\
+\item[Absolute homogeneity] $ \| \lambda \cdot x\| = \lambda \cdot \| x\|$. \\
 Factoring a scalar out of the norm results in that factor being multiplied as an absolute value.
-For any scalar $s \in \BF$ and any vector $x \in \BF^n$,
-the following holds: $\Vert{}s x\Vert{}_1 = \sum_{i=1}^{n} \|s x_i\|$
+For any scalar $\lambda \in \BF$ and any vector $x \in \BF^n$,
+the following holds: $\|\lambda x\| = \sum_{i=1}^{n} |\lambda x_i|$
 Using the multiplicative property of the absolute value
-($\|s x_i\| = \|s\| \cdot \|x_i\|$),
-we obtain: $\Vert{}s x\Vert{}_1 = \sum_{i=1}^{n} (\|s\| \cdot \|x_i\|)$
-Since the scalar $\|s\|$ is constant for all terms in the sum,
-we can factor it out: $\Vert{}s x\Vert{}_1 = \|s\| \cdot \sum_{i=1}^{n} \|x_i\| = \|s\| \cdot \Vert{}x\Vert{}_1$ 
-\item[Subadditivity / Triangle inequality] \ \\
-$w_H(x+y) \leq w_H(x)+w_H(y) \quad \forall x,y \in \BF_2^n$,
-The norm of the sum of two vectors is no greater than the sum of the individual norms. For two vectors $x, y \in \BF^n$, the following holds: $\Vert{}x + y\Vert{}_1 = \sum_{i=1}^{n} \|x_i + y_i\|$. Here, we apply the classical triangle inequality for real numbers, which states that the absolute value of the sum of two numbers is never greater than the sum of their individual absolute values ($\|x_i + y_i\| \le \|x_i\| + \|y_i\|$): $\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} (\|x_i\| + \|y_i\|)$. Based on the rules for summation, we can split this into two separate sums: $\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} \|x_i\| + \sum_{i=1}^{n} \|y_i\|$. This corresponds exactly to the definition of the norms of the individual vectors: $\Vert{}x + y\Vert{}_1 \le \Vert{}x\Vert{}_1 + \Vert{}y\Vert{}_1$. Conclusion: Since the $L_{1}$-norm satisfies all three axioms, it is a valid norm from a mathematical perspective.
+$|\lambda x_i| = |\lambda| \cdot |x_i|$,
+we obtain: $\|\lambda x\| = \sum_{i=1}^{n} (|\lambda| \cdot |x_i|)$
+Since the scalar $|\lambda|$ is constant for all terms in the sum,
+we can factor it out: $\|\lambda x\| = |\lambda| \cdot \sum_{i=1}^{n} |x_i| = |\lambda| \cdot \|x\|$.
+\item[Subadditivity / Triangle inequality] $\|x + y\| \le \| x \| + \| y \|$, \\
+The norm of the sum of two vectors is never greater than the sum of the individual norms.
+For two vectors $x, y \in \BF^n$, the following holds: $\|x + y\| = \sum_{i=1}^{n} |x_i + y_i|$.
+From equation (\ref{def:opaddition}) and the definition of the absolut value we know the absolut value of the sum of
+two numbers $x_i, y_i \in \BF$ is never greater than the sum of their absolute values $|x_i + y_i| \le |x_i| + |y_i|$.
+Based on the rules for summation, we can split 
+$\|x + y\| \le \sum_{i=1}^{n} (|x_i| + |y_i|)$ into two separate
+sums: $\|x + y\| \le \sum_{i=1}^{n} |x_i| + \sum_{i=1}^{n} |y_i|$.
+This corresponds exactly to the definition of the norms of the individual vectors: $\|x + y\| \le \|x\| + \|y\|$.
 \end{description}
-%
-%
-%Die \(L_{1}\)-Norm (auch Betragssummennorm oder Manhattan-Norm) für einen Vektor \(x = (x_1, x_2, \dots, x_n)\) aus dem \(\mathbb{R}^{n}\) ist definiert als:\(\Vert{}x\Vert{}_1 = \sum_{i=1}^{n} \vert{}x_i\vert{}\)Um zu beweisen, dass diese Abbildung eine Norm ist, muss sie die drei klassischen Normaxiome erfülleni
-%: Positive Definitheit, Absolute Homogenität und die Dreiecksungleichung
-%.1. Positive DefinitheitDie Norm eines Vektors ist immer nicht-negativ, und sie ist genau dann \(0\), wenn der Vektor der Nullvektor ist.
-%Nicht-Negativität (\(\Vert{}x\Vert{}_1 \ge 0\)):
-%Da der Absolutbetrag einer reellen Zahl stets größer oder gleich Null ist (\(\vert{}x_i\vert{} \ge 0\)), ist auch die Summe dieser Beträge niemals negativ.\(\Vert{}x\Vert{}_1 = \sum_{i=1}^{n} \vert{}x_i\vert{} \ge 0\)
-%Identitätssinn (\(\Vert{}x\Vert{}_1 = 0 \iff x = 0\)):\(\implies \): Wenn \(\Vert{}x\Vert{}_1 = 0\), dann gilt \(\sum_{i=1}^{n} \vert{}x_i\vert{} = 0\). Da alle Summanden positiv oder null sind, kann die Summe nur dann null sein, wenn jeder einzelne Summand null ist. Es folgt \(\vert{}x_i\vert{} = 0\) für alle \(i\), was bedeutet, dass \(x_i = 0\) ist. Der Vektor ist also der Nullvektor.\(\impliedby \): Wenn \(x = 0\), ist jede Komponente \(x_i = 0\). Folglich ist auch \(\vert{}x_i\vert{} = 0\) und die Summe ergibt null: \(\Vert{}0\Vert{}_1 = \sum_{i=1}^{n} \vert{}0\vert{} = 0\).2. Absolute HomogenitätDas Herausziehen eines skalaren Faktors aus der Norm bewirkt, dass dieser Faktor als Betrag multipliziert wird. Für jeden Skalar \(\lambda \in \mathbb{R}\) und jeden Vektor \(x \in \mathbb{R}^n\) gilt:\(\Vert{}\lambda x\Vert{}_1 = \sum_{i=1}^{n} \vert{}\lambda x_i\vert{}\)Mithilfe der Multiplikationseigenschaft des Betrages (\(\vert{}\lambda x_i\vert{} = \vert{}\lambda\vert{} \cdot \vert{}x_i\vert{}\)) erhalten wir:\(\Vert{}\lambda x\Vert{}_1 = \sum_{i=1}^{n} (\vert{}\lambda\vert{} \cdot \vert{}x_i\vert{})\)Da der Skalar \(\vert{}\lambda\vert{}\) für alle Summanden konstant ist, können wir ihn aus der Summe ausklammern:\(\Vert{}\lambda x\Vert{}_1 = \vert{}\lambda\vert{} \cdot \sum_{i=1}^{n} \vert{}x_i\vert{} = \vert{}\lambda\vert{} \cdot \Vert{}x\Vert{}_1\)3. DreiecksungleichungDie Summe zweier Vektoren ist in ihrer Norm nicht größer als die Summe der einzelnen Normen. Für zwei Vektoren \(x, y \in \mathbb{R}^n\) gilt:\(\Vert{}x + y\Vert{}_1 = \sum_{i=1}^{n} \vert{}x_i + y_i\vert{}\)Hier wenden wir die klassische Dreiecksungleichung für reelle Zahlen an, die besagt, dass der Betrag der Summe zweier Zahlen niemals größer ist als die Summe ihrer Einzelbeträge (\(\vert{}x_i + y_i\vert{} \le \vert{}x_i\vert{} + \vert{}y_i\vert{}\)):\(\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} (\vert{}x_i\vert{} + \vert{}y_i\vert{})\)Aufgrund der Rechenregeln für Summen können wir diese in zwei separate Summen aufteilen:\(\Vert{}x + y\Vert{}_1 \le \sum_{i=1}^{n} \vert{}x_i\vert{} + \sum_{i=1}^{n} \vert{}y_i\vert{}\)Dies entspricht exakt der Definition der Normen der Einzelvektoren:\(\Vert{}x + y\Vert{}_1 \le \Vert{}x\Vert{}_1 + \Vert{}y\Vert{}_1\)Fazit: Da die \(L_{1}\)-Norm alle drei Axiome erfüllt, ist sie mathematisch gesehen eine gültige Norm.
-%
-%
-%
-%This norm is only norm we can use for Bit vectors. eikliduyce norm dersekbe Wert, maximjmsnor kmner 1
-%
-
+Since the bit vector norm satisfies all three axioms, it is a valid norm from a mathematical perspective.
+\qed
 
 \subsection{Bit Vector Scalar Product}
 We define the scalar product, dot product \cite{Fischer2020, wikipedia_en_2025_DotProduct} or inner
 product of two vectors as given in equation~(\ref{def:innerproduct}):
 \begin{equation}
 \begin{array}{ll}
-\langle , \rangle : \BF_2^n \times \BF_2^n \to \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \cdot y \|_1 = w_H(x \cdot y).
+\langle , \rangle : \BF_2^n \times \BF_2^n \to \BR, & \langle x , y \rangle =  \sum_{i=1}^n |x_i \cdot y_i| =  \| x \cdot y \| = w_H(x \cdot y).
 \end{array}
 \label{def:innerproduct}
 \end{equation}
