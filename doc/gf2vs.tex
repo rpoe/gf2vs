@@ -53,7 +53,7 @@
 
 \title{Vector space of bit vectors}
 \author{Ralf Poeppel \\ \url{mailto:ralf@poeppel-familie.de}}
-\date{2026-06-21}
+\date{2026-07-19}
 
 \begin{document}
 
@@ -315,6 +315,7 @@ In particular, for $x \in \BF_2^n$ we have
 		0, & | \{i \in \{1, \dots, n\} : x_i = 1\}| \text{ is even}.  \\
 	\end{array}
 	\right.
+	\label{sumInGf2}
 \end{equation}
 From this it follows that we cannot directly use the usual norm definitions (as over $\BR$) to measure vector length in~$\BF_2^n$.
 
@@ -332,8 +333,10 @@ d_H : \BF_2^n \times \BF_2^n \rightarrow \BN, & d_H(x, y) = w_H(x - y).
 \end{array}
 \end{equation}
 
-If we first apply operation $| \  |$ we map a vector from $\BF_2^n \rightarrow \BR^n$,
-by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. On vectors $x = (x_i)$ in $\BR^n$ norms are defined
+If we first apply operation absolute value $| \  |$ we map a vector from $\BF_2^n \to \BN^n$,
+by embedding $\BF_2^n = \{0, 1\}^n \subset \BR^n$. By this mapping we overcome the limitation of equation
+(\ref{sumInGf2}).
+On vectors $x = (x_i)$ in $\BR^n$ norms are defined
 and we get:
 \begin{equation}
 \| x \|_1 = \sum_{i=1}^n | x_i | = w_H(x).
@@ -366,7 +369,7 @@ sum of these absolute values is also never negative. $\|x\| = \sum_{i=1}^{n} |x_
 \item[$\implies :$]Let $\|x\| = 0$. This means $\sum_{i=1}^{n} |x_i| = 0$.
 Since the absolute value of a bit is never negative ($|x_i| \ge 0$),
 this sum can equal $0$ only if every single term is $0$.
-Thus, $|x_i| = 0$ must hold for all $i \in \{1, 2, \dots, n\}$.
+Thus $|x_i| = 0$ must hold for all $i \in \{1, 2, \dots, n\}$.
 It follows a vector with all $x_i = 0$, corresponds exactly to the zero vector $x = \0$.
 \item[$\impliedby $:] If $x = \0$, then each component $x_i = 0$. Consequently, $|x_i| = 0$ as well,
 and the sum equals zero:~$\|\0\| = \sum_{i=1}^{n} |0| = 0$.
@@ -410,30 +413,88 @@ The obtained value equals the standard scalar product of $x, y \in \{0, 1\}^n \s
 \end{array}
 \end{equation}
 
-By computation we can easily verify the properties of the scalar product, for $x, y \in \BF_2^n$ and $\lambda \in \BF_2$:
+By computation we can easily proof the properties of the scalar product, for $x, y \in \BF_2^n$ and $\lambda \in \BF_2$:
 \begin{description}
-\item[Distributivity]
-\begin{flalign*}
-& \langle x + x', y \rangle = \langle x, y\rangle + \langle x', y\rangle, &\\
-& \langle x, y + y'\rangle = \langle x, y\rangle + \langle x, y'\rangle, & \\
-& \langle\lambda x, y \rangle = \lambda \langle x, y\rangle, & \\
-& \langle x, \lambda y\rangle = \lambda \langle x, y\rangle. &
-\end{flalign*}
+\item[Bilinearity] \
+\begin{description}
+\item[Distributivity in the first argument:]
+$\langle x + x', y \rangle = \langle x, y \rangle + \langle x', y \rangle$.
+\begin{equation*}
+\begin{array}{rlr}
+	\langle x+x',y\rangle & =\sum _{i=1}^{n}|(x_i+x_i')y_i| & \text{(definition)}, \\
+	&=\sum _{i=1}^{n} |(x_i y_i + x_i' y_i)| & \text{(distributiv law for bits)}, \\
+	&=\sum _{i=1}^{n} |x_i y_i| + \sum_{i=1}^{n} |x_i' y_i| & \text{(sum splitting)},\\
+	&=\langle x,y\rangle +\langle x',y\rangle.
+\end{array}
+\end{equation*}
+\item[Distributivity in the second argument:]
+$\langle x, y + y' \rangle = \langle x, y \rangle + \langle x, y' \rangle$.
+\begin{equation*}
+\begin{array}{rlr}
+\langle x,y+y' \rangle & =\sum _{i=1}^{n}|x_i (y_i + y_i')|  & \text{(definition)}, \\
+	&=\sum _{i=1}^{n} |(x_i y_i + x_i y_i')| & \text{(distributiv law for bits)}, \\
+	&=\sum _{i=1}^{n} |x_i y_i| + \sum_{i=1}^{n} |x_i y_i'| & \text{(sum splitting)}, \\
+	&=\langle x,y\rangle +\langle x,y'\rangle.
+\end{array}
+\end{equation*}
+\item[Homogeneity in the first argument:]
+\(\langle \lambda x, y \rangle = \lambda \langle x, y \rangle\).
+\begin{equation*}
+\begin{array}{rlr}
+	\langle \lambda x,y\rangle & =\sum _{i=1}^{n} | (\lambda x_i) y_i |  & \text{(definition)}, \\
+	& =\sum _{i=1}^{n} | \lambda (x_i y_i) | & \text{(associative law of bits)}, \\
+	& =|\lambda| \sum _{i=1}^{n} |x_i y_i | & (|\lambda| \text{ independent of summation index}), \\
+	& = \lambda \langle x,y \rangle & (|\lambda| = \lambda).
+\end{array}
+\end{equation*}
+\item[Homogeneity in the second argument:]
+\(\langle x, \lambda y \rangle = \lambda \langle x, y \rangle\).
+\begin{equation*}
+\begin{array}{rlr}
+	\langle x, \lambda y \rangle & =\sum _{i=1}^{n} | x_i (\lambda y_i) |  & \text{(definition)}, \\
+	& =\sum _{i=1}^{n} | \lambda (x_i y_i) | & \text{(commutative and associative laws of bits)}, \\
+	& =|\lambda| \sum _{i=1}^{n} |x_i y_i | & (|\lambda| \text{ independent of summation index}), \\
+	& = \lambda \langle x,y \rangle & (|\lambda| = \lambda).
+\end{array}
+\end{equation*}
+\end{description}
 \item[Commutativity]
-\begin{flalign*}
-& \langle x, y\rangle = \langle y, x\rangle. &
-\end{flalign*}
-\item[Positive definiteness]
-\begin{flalign*}
-& \langle x, x\rangle \enspace \ge 0, \text{ and } \langle x,x\rangle = 0 \Leftrightarrow x = \0. &
-\end{flalign*}
-\item[Orthogonality]
-\begin{flalign*}
-& \langle x, y\rangle = 0, \text{ we say the two vectors are orthogonal.  } & \\
-& \langle x, \neg x \rangle = 0, \text{ a vector is orthogonal to its complement.}
-\end{flalign*}
+$\langle x, y \rangle = \langle y, x \rangle$.
+\begin{equation*}
+\begin{array}{rlr}
+	\langle x, y \rangle & =\sum _{i=1}^{n} | x_i y_i) |  & \text{(definition)}, \\
+	& =\sum _{i=1}^{n} | y_i x_i) | & \text{(commutative law of bits)}, \\
+	& =\langle y,x \rangle.
+\end{array}
+\end{equation*}
+\item[Positive definiteness] \
+\begin{description}
+\item[Non-negativity] $\langle x, x\rangle \ge 0$. \\
+Since the absolute value of a product of bits $x_i \cdot x_i$ is always greater than or equal to zero $|x_i \cdot x_i| \ge 0$ the
+sum of these absolute values is also never negative. $\langle x, x\rangle  = \sum_{i=1}^{n} |x_i \cdot x_i| \ge 0$.
+\item[Definiteness] $\langle x, x\rangle = 0 \Leftrightarrow x = \0$.
+\begin{description}
+\item[$\implies :$] Let $\langle x, x\rangle = 0$. This means $\sum_{i=1}^{n} |x_i \cdot x_i| = 0$.
+This sum can equal $0$ only if every single term is $0$.
+Thus $x_i \cdot x_i = x_i  = 0$ must hold for all $i \in \{1, 2, \dots, n\}$.
+It follows a vector with all $x_i = 0$, corresponds exactly to the zero vector $x = \0$.
+\item[$\impliedby $:] If $x = \0$, then each component $x_i = 0$. Consequently, $|x_i \cdot x_i| = 0$ as well,
+and the sum equals zero:~$\langle \0, \0 \rangle = \sum_{i=1}^{n} |0 \cdot 0| = 0$.
+\end{description}
+\end{description}
+\item[Orthogonality] $x \perp y : \langle x, y\rangle = 0, \langle x, \neg x \rangle = 0 \Leftrightarrow x \perp \neg x$
+\begin{description}
+\item[$\implies :$] Let $\langle x, \neg x \rangle = 0$. This means $\sum_{i=1}^{n} |x_i \cdot \neg x_i| = 0$.
+Since $x_i \cdot \neg x_i = 0$ for all $i \in \{1, \dots, n\}$. So $x \perp \neg x$.
+\item[$\impliedby $:] If $x \perp \neg x$, then $x_i \cdot \neg x_i = 0$ for each component.
+Consequently, $\langle x, \neg x \rangle = 0$ as well.
 \end{description}
 In coding theory \cite{Lint1988} the orthogonal bit vector is called the dual code.
+\end{description}
+
+Since the bit vector scalar product, defined here,
+satisfies all axioms of a scalar product it is a scalar product, bilinear form in 
+mathematical perspective. \qed
 
 \subsection{Identities}
 
@@ -453,7 +514,7 @@ D. E. Knuth \cite[(4),~\dots,~(14)]{knuth:taocp_v4_f1} provides most of them.
 & x + (\neg x) = \1, \enspace x \cdot (\neg x) = \0, \enspace x | (\neg x) = \1; & \\
 & \neg(x + y) = (\neg x) + y = x + (\neg y); & \\
 & \neg ( x \cdot y) = (\neg x) | (\neg y), \enspace \neg(x | y) = (\neg x) \cdot (\neg y): & \text{De Morgan}; \\
-& \| \0 \|_1 = 0, \enspace \| \1 \|_1 = n; & \\
+& \| \0 \| = 0, \enspace \| \1 \| = n; & \\
 & \langle \1, \1 \rangle = n, \enspace \langle x, \neg x \rangle = 0;
 \end{flalign}
 
