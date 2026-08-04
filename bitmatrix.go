@@ -78,7 +78,7 @@ func (z *BitMatrix) Set(x *BitMatrix) *BitMatrix {
 // RowReducedEcholonForm convert a binary Matrix to row reduced echolon form,
 // and return the rank of the matrix, for mr bits on right side.
 // If last line has only values on right side we have a contradiction,
-// ok will be false.
+// the corresponding linear system of equations has no solution, ok will be false.
 func (bm *BitMatrix) RowReducedEcholonForm(mr int) (rank int, ok bool) {
 	bmat := *bm
 	ok = true
@@ -162,7 +162,7 @@ func (e *XorSatSolveError) Error() string {
 // The value may be 0.
 // -1 is returned for rows not in row reduced echolon form and
 // error is set to "Partial Solution returned".
-// Maximum value of mr supported is bits.UintSize - 2
+// Maximum value of mr supported is bits.UintSize - 1
 // Other errors are set on invalid input.
 func (bm *BitMatrix) SolutionFromRref(mr int) ([]int, error) {
 	if mr <= 0 {
