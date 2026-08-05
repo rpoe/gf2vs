@@ -26,7 +26,6 @@ func TestNewGF2VectorSpaceString(t *testing.T) {
 		in   uint
 		want string
 	}{
-		{0, "NewGF2VectorSpace(dim): dim = 0 < 1"},
 		{bits.UintSize + 1, "NewGF2VectorSpace(dim): dim = 65 > 64 = bits.UintSize"},
 	}
 	for _, c := range cases {
@@ -51,6 +50,7 @@ func TestNewGF2VectorSpaceString(t *testing.T) {
 		in   uint
 		want string
 	}{
+		{0, "GF(2)sp{0: 0}"},
 		{1, "GF(2)sp{1: 1}"},
 		{2, "GF(2)sp{2: 3}"},
 		{3, "GF(2)sp{3: 7}"},
@@ -73,13 +73,12 @@ func TestNewGF2VectorSubspaceString(t *testing.T) {
 		want string
 	}{
 		// panic from NewGF2VectorSpace
-		{0, 0, "NewGF2VectorSpace(dim): dim = 0 < 1"},
 		{bits.UintSize + 1, 2, "NewGF2VectorSpace(dim): dim = 65 > 64 = bits.UintSize"},
 		// panic from NewGF2VectorSubspace
-		{1, 2, "NewGF2VectorSubspace(dim): base 2 not in space with dim = 1"},
-		{3, 5, "NewGF2VectorSubspace(dim): base 5 not in space with dim = 3"},
+		{1, 2, "NewGF2VectorSubspace(dim): vector 2 not in space with dim = 1"},
+		{3, 8, "NewGF2VectorSubspace(dim): vector 8 not in space with dim = 3"},
 	}
-	for _, c := range cases[0:2] {
+	for _, c := range cases {
 		func(in, b uint, want string) {
 			defer func(in uint, want string) {
 				r := recover()
@@ -93,24 +92,8 @@ func TestNewGF2VectorSubspaceString(t *testing.T) {
 					}
 				}
 			}(in, want)
-			NewGF2VectorSubspace(c.n, c.b)
-		}(c.n, c.b, c.want)
-	}
-	for _, c := range cases[2:] {
-		func(in, b uint, want string) {
-			defer func(in, b uint, want string) {
-				r := recover()
-				if r == nil {
-					t.Errorf("NewGF2VectorSubspace(%v) did not panic with %v",
-						in, want)
-				} else {
-					if r != want {
-						t.Errorf("NewGF2VectorSubspace(%v) == Panic(%v),"+
-							" want Panic(%v)", in, r, want)
-					}
-				}
-			}(in, b, want)
-			NewGF2VectorSubspace(c.n, c.b)
+			sp := NewGF2VectorSpace(c.n)
+			sp.NewGF2VectorSubspace(c.b)
 		}(c.n, c.b, c.want)
 	}
 
@@ -119,39 +102,19 @@ func TestNewGF2VectorSubspaceString(t *testing.T) {
 		b    uint
 		want string
 	}{
-		{1, 0, "GF(2)ssp{1: 1, 0}"},
-		{2, 1, "GF(2)ssp{2: 3, 1}"},
-		{3, 2, "GF(2)ssp{3: 7, 2}"},
-		{4, 3, "GF(2)ssp{4: 15, 3}"},
+		{0, 0, "GF(2)ssp{0: 0, GF(2)sp{0: 0}}"},
+		{1, 0, "GF(2)ssp{0: 0, GF(2)sp{0: 0}}"}, // zero vector space
+		{2, 1, "GF(2)ssp{1: 1, GF(2)sp{2: 3}}"},
+		{3, 2, "GF(2)ssp{1: 2, GF(2)sp{3: 7}}"},
+		{4, 3, "GF(2)ssp{2: 3, GF(2)sp{4: 15}}"},
 	}
 	for _, c := range cases {
-		sp := NewGF2VectorSubspace(c.n, c.b)
-		got := fmt.Sprint(sp)
+		sp := NewGF2VectorSpace(c.n)
+		ssp := sp.NewGF2VectorSubspace(c.b)
+		got := fmt.Sprint(ssp)
 		if got != c.want {
 			t.Errorf("NewGF2VectorSubspace(%v) = %v, want %v", c.n, got, c.want)
 		}
-	}
-}
-
-func TestGF2Vector(t *testing.T) {
-	s := NewGF2VectorSpace(3)
-	v := GF2Vector{s, 2}
-	want := "010"
-	wVal2 := uint(2)
-	wVal0 := uint(0)
-	got := fmt.Sprintf("%v", &v)
-	if got != want {
-		t.Errorf("GF2Vector{3, 2} = %v, want %v", got, want)
-	}
-	gVal := v.Val()
-	if gVal != wVal2 {
-		t.Errorf("GF2Vector{3, 2}.Val() = %v, want %v", gVal, wVal2)
-	}
-	// special handling of uninitialized vectors
-	var vp *GF2Vector
-	gVal = vp.Val()
-	if gVal != wVal0 {
-		t.Errorf("nil.Val() = %v, want %v", gVal, wVal0)
 	}
 }
 
@@ -162,7 +125,7 @@ func TestNewGF2VectorString(t *testing.T) {
 		vin  uint
 		want string
 	}{
-		//{1, -1, "NewGF2Vector(value): value = -1 < 0"}, invalid, test, vin is uint
+		//{1, -1, "NewGF2Vector(value): value = -1 < 0"}, invalid, test, vin is not uint
 		{1, 2, "NewGF2Vector(value): value = 2 > 1"},
 		{2, 4, "NewGF2Vector(value): value = 4 > 3"},
 	}
@@ -181,7 +144,7 @@ func TestNewGF2VectorString(t *testing.T) {
 					}
 				}
 			}(spin, vin, want)
-			sp.NewGF2Vector(c.vin)
+			sp.NewGF2Vector(vin)
 		}(c.spin, c.vin, c.want)
 	}
 
@@ -190,6 +153,8 @@ func TestNewGF2VectorString(t *testing.T) {
 		vin  uint
 		want string
 	}{
+		{0, 0, "0"},
+		{0, 1, "0"},
 		{1, 0, "0"},
 		{1, 1, "1"},
 		{2, 0, "00"},
@@ -231,6 +196,97 @@ func TestNewGF2VectorString(t *testing.T) {
 	}
 }
 
+func TestNewGF2VectorSet(t *testing.T) {
+	cases := []struct {
+		n    uint
+		u    []uint
+		want string
+	}{
+		// Panic from inside NewGF2Vector, for vector not in vector space
+		{1, []uint{2}, "NewGF2Vector(value): value = 2 > 1"},
+	}
+	for _, c := range cases {
+		func(n uint, u []uint, want string) {
+			sp := NewGF2VectorSpace(n)
+			defer func(n uint, u []uint, want string) {
+				r := recover()
+				if r == nil {
+					t.Errorf("%v.NewGF2VectorSet(%v) did not panic with %v",
+						n, u, want)
+				} else {
+					if r != want {
+						t.Errorf("%v.NewGF2VectorSet(%v) == Panic(%v),"+
+							" want Panic(%v)", n, u, r, want)
+					}
+				}
+			}(n, u, want)
+			sp.NewGF2VectorSet(u)
+		}(c.n, c.u, c.want)
+	}
+
+	cases = []struct {
+		n    uint
+		u    []uint
+		want string
+	}{
+		{1, []uint{}, "[]"},
+		{1, []uint{0}, "[0]"},
+		{1, []uint{1}, "[1]"},
+		{1, []uint{0, 1}, "[0 1]"},
+		{3, []uint{0, 1, 2, 3}, "[000 001 010 011]"},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.n)
+		set := sp.NewGF2VectorSet(c.u)
+		str := fmt.Sprint(set)
+		if str != c.want {
+			t.Errorf("%v.NewGf2VectorSet(%v) = \n%v, want\n%v",
+				sp, c.u, str, c.want)
+		}
+	}
+}
+
+func TestGF2Zeros(t *testing.T) {
+	cases := []struct {
+		dim  uint
+		want string
+	}{
+		{1, "0"},
+		{2, "00"},
+		{3, "000"},
+		{4, "0000"},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.dim)
+		v := sp.GF2Zeros()
+		got := fmt.Sprint(v)
+		if got != c.want {
+			t.Errorf("%v.GF2Zeros() = %v, want %v", c.dim, got, c.want)
+		}
+	}
+}
+
+func TestGF2Ones(t *testing.T) {
+	cases := []struct {
+		dim  uint
+		want string
+	}{
+		{1, "1"},
+		{2, "11"},
+		{3, "111"},
+		{4, "1111"},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.dim)
+		v := sp.GF2Ones()
+		got := fmt.Sprint(v)
+		if got != c.want {
+			t.Errorf("%v.GF2Ones() = %v, want %v", c.dim, got, c.want)
+		}
+	}
+}
+
+// One combined test for the function of GF2VectorSpace and GF2Vector
 func TestGF2BaseVector(t *testing.T) {
 	cases := []struct {
 		dim   uint
@@ -292,43 +348,120 @@ func TestGF2BaseVector(t *testing.T) {
 	}
 }
 
-func TestGF2Zeros(t *testing.T) {
+func TestGF2VectorSpaceBase(t *testing.T) {
 	cases := []struct {
-		dim  uint
-		want string
+		dim     uint
+		ones    uint
+		baseStr string
 	}{
-		{1, "0"},
-		{2, "00"},
-		{3, "000"},
-		{4, "0000"},
+		{0, 0, "[]"},
+		{1, 1, "[1]"},
+		{2, 3, "[01 10]"},
+		{3, 7, "[001 010 100]"},
 	}
 	for _, c := range cases {
-		sp := NewGF2VectorSpace(c.dim)
-		v := sp.GF2Zeros()
-		got := fmt.Sprint(v)
-		if got != c.want {
-			t.Errorf("%v.GF2Zeros() = %v, want %v", c.dim, got, c.want)
+		sp := GF2VectorSpace{c.dim, c.ones}
+		base := sp.GF2VectorSpaceBase()
+		baseStr := fmt.Sprint(base)
+		if baseStr != c.baseStr {
+			t.Errorf("%v.GF2VectorSpaceBase() = \n%v, want\n%v", sp, baseStr, c.baseStr)
 		}
 	}
 }
 
-func TestGF2Ones(t *testing.T) {
+func TestGF2VectorSubspaceBase(t *testing.T) {
+	cases := []struct {
+		dim     uint
+		ones    uint
+		subones uint
+		baseStr string
+	}{
+		{0, 0, 0, "[]"},
+		{1, 1, 0, "[]"},
+		{1, 1, 1, "[1]"},
+		{2, 3, 0, "[]"},
+		{2, 3, 1, "[01]"},
+		{2, 3, 2, "[10]"},
+		{3, 7, 1, "[001]"},
+		{3, 7, 2, "[010]"},
+		{3, 7, 4, "[100]"},
+		{3, 7, 3, "[001 010]"},
+		{3, 7, 5, "[001 100]"},
+		{3, 7, 6, "[010 100]"},
+		{3, 7, 7, "[001 010 100]"},
+	}
+	for _, c := range cases {
+		sp := GF2VectorSpace{c.dim, c.ones}
+		subsp := sp.NewGF2VectorSubspace(c.subones)
+		base := subsp.GF2VectorSpaceBase()
+		baseStr := fmt.Sprint(base)
+		if baseStr != c.baseStr {
+			t.Errorf("%v.GF2VectorSubspaceBase() = \n%v, want\n%v", sp, baseStr, c.baseStr)
+		}
+	}
+}
+
+func TestCopy(t *testing.T) {
 	cases := []struct {
 		dim  uint
-		want string
+		val  uint
+		want uint
 	}{
-		{1, "1"},
-		{2, "11"},
-		{3, "111"},
-		{4, "1111"},
+		{1, 0, 0},
+		{1, 1, 1},
+		{2, 0, 0},
+		{2, 1, 1},
+		{2, 2, 2},
+		{2, 3, 3},
 	}
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.dim)
-		v := sp.GF2Ones()
-		got := fmt.Sprint(v)
-		if got != c.want {
-			t.Errorf("%v.GF2Ones() = %v, want %v", c.dim, got, c.want)
+		v := sp.NewGF2Vector(c.val)
+		vs1 := fmt.Sprint(v)
+		w := sp.NewGF2Vector(c.want)
+		ws := fmt.Sprint(w)
+		cp := v.Copy()
+		cs1 := fmt.Sprint(cp)
+		if cs1 != ws {
+			t.Errorf("%v.Copy() = %v, want %v", vs1, cp, ws)
 		}
+		// make sure change of source is not affecting copy
+		v.val++
+		cs2 := fmt.Sprint(cp)
+		if cs2 != cs1 {
+			t.Errorf("%v.Copy() source changed to %v", cs1, cs2)
+		}
+		// make sure change of copy is not affecting source
+		v = sp.NewGF2Vector(c.val)
+		vs1 = fmt.Sprint(v)
+		cp = v.Copy()
+		cp.val++
+		vs2 := fmt.Sprint(v)
+		if vs2 != vs1 {
+			t.Errorf("%v.Copy() copy changed to %v", vs1, vs2)
+		}
+	}
+}
+
+func TestGF2VectorVal(t *testing.T) {
+	s := NewGF2VectorSpace(3)
+	v := GF2Vector{s, 2}
+	want := "010"
+	wVal2 := uint(2)
+	wVal0 := uint(0)
+	got := fmt.Sprintf("%v", &v)
+	if got != want {
+		t.Errorf("GF2Vector{3, 2} = %v, want %v", got, want)
+	}
+	gVal := v.Val()
+	if gVal != wVal2 {
+		t.Errorf("GF2Vector{3, 2}.Val() = %v, want %v", gVal, wVal2)
+	}
+	// special handling of uninitialized vectors
+	var vp *GF2Vector
+	gVal = vp.Val()
+	if gVal != wVal0 {
+		t.Errorf("nil.Val() = %v, want %v", gVal, wVal0)
 	}
 }
 
@@ -410,47 +543,160 @@ func TestIndexIsBaseVector(t *testing.T) {
 	}
 }
 
-func TestCopy(t *testing.T) {
+func TestUnitVectors(t *testing.T) {
 	cases := []struct {
-		dim  uint
-		val  uint
-		want uint
+		n      uint
+		val    uint
+		setStr string
 	}{
-		{1, 0, 0},
-		{1, 1, 1},
-		{2, 0, 0},
-		{2, 1, 1},
-		{2, 2, 2},
-		{2, 3, 3},
+		{3, 0, "[]"},
+		{3, 1, "[001]"},
+		{3, 2, "[010]"},
+		{3, 4, "[100]"},
+		{3, 3, "[001 010]"},
+		{3, 5, "[001 100]"},
+		{3, 6, "[010 100]"},
+		{3, 7, "[001 010 100]"},
 	}
 	for _, c := range cases {
-		sp := NewGF2VectorSpace(c.dim)
+		sp := NewGF2VectorSpace(c.n)
 		v := sp.NewGF2Vector(c.val)
-		vs1 := fmt.Sprint(v)
-		w := sp.NewGF2Vector(c.want)
-		ws := fmt.Sprint(w)
-		cp := v.Copy()
-		cs1 := fmt.Sprint(cp)
-		if cs1 != ws {
-			t.Errorf("%v.Copy() = %v, want %v", vs1, cp, ws)
-		}
-		// make sure change of source is not affecting copy
-		v.val++
-		cs2 := fmt.Sprint(cp)
-		if cs2 != cs1 {
-			t.Errorf("%v.Copy() source changed to %v", cs1, cs2)
-		}
-		// make sure change of copy is not affecting source
-		v = sp.NewGF2Vector(c.val)
-		vs1 = fmt.Sprint(v)
-		cp = v.Copy()
-		cp.val++
-		vs2 := fmt.Sprint(v)
-		if vs2 != vs1 {
-			t.Errorf("%v.Copy() copy changed to %v", vs1, vs2)
+		set := v.UnitVectors()
+		setStr := fmt.Sprint(set)
+		if setStr != c.setStr {
+			t.Errorf("%v.UnitVectors() = \n%v, want \n%v",
+				v, setStr, c.setStr)
 		}
 	}
 }
+
+/////////////////////////////////////// GF2VectorSet //////////////////////////
+
+func TestSubspace(t *testing.T) {
+	cases := []struct {
+		n    uint
+		set  []uint
+		ones uint
+	}{
+		{3, []uint{}, 0b0},
+		{3, []uint{0b001, 0b101, 0b100}, 0b101},
+		{3, []uint{0b001, 0b011, 0b010}, 0b011},
+		{3, []uint{0b001, 0b011, 0b110}, 0b111},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.n)
+		set := sp.NewGF2VectorSet(c.set)
+		subSp := set.Subspace()
+		ones := subSp.ones
+		if ones != c.ones {
+			t.Errorf("%v.Subspace(%v) = \n%0[3]*[4]b, want \n%0[3]*[5]b",
+				sp, set, c.n, ones, c.ones)
+		}
+	}
+}
+
+func TestHasSubspaceWithDim(t *testing.T) {
+	cases := []struct {
+		n     uint
+		set   []uint
+		dim   int
+		ones  uint
+		found bool
+	}{
+		{3, []uint{0b001, 0b101, 0b100}, 0, 0b000, true},
+		{3, []uint{0b001, 0b101, 0b100}, 2, 0b101, true},
+		{3, []uint{0b001, 0b011, 0b010}, 1, 0b001, true},
+		{3, []uint{0b001, 0b011, 0b010}, 2, 0b011, true},
+		{3, []uint{0b001, 0b011, 0b010}, 3, 0, false},
+		{3, []uint{0b001, 0b011, 0b110}, 3, 0b111, true},
+		{4, []uint{0b0001, 0b0011, 0b0110}, 1, 0b0001, true},
+		{4, []uint{0b1001, 0b0011, 0b0110}, 1, 0, false},
+		{4, []uint{0b0001, 0b0011, 0b0110}, 3, 0b0111, true},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.n)
+		csubSp := sp.NewGF2VectorSubspace(c.ones)
+		set := sp.NewGF2VectorSet(c.set)
+		subSp, found := set.HasSubspaceWithDim(c.dim)
+		if c.found {
+			if !found || !reflect.DeepEqual(subSp, csubSp) {
+				t.Errorf("%v.HasSubspaceWithDim(%v) = \n%v, %v, want \n%v, %v",
+					set, c.dim, subSp, found, csubSp, c.found)
+			}
+		} else {
+			if found || subSp != nil {
+				t.Errorf("%v.HasSubspaceWithDim(%v) = \n%v, %v, want \n%v, %v",
+					set, c.dim, subSp, found, csubSp, c.found)
+			}
+		}
+	}
+}
+
+func TestContainsBitOfVector(t *testing.T) {
+	cases := []struct {
+		n        uint
+		set      []uint
+		val      uint
+		contains bool
+	}{
+		{0, []uint{}, 0, false},
+		{1, []uint{1}, 0, false},
+		{1, []uint{1}, 1, true},
+		{1, []uint{1, 0}, 1, true},
+		{2, []uint{1, 0}, 1, true},
+		{2, []uint{1, 2, 3}, 1, true},
+		{2, []uint{1, 2, 3}, 2, true},
+		{2, []uint{1, 2, 3}, 3, true},
+		{2, []uint{1, 0, 3}, 2, true},
+		{3, []uint{1, 2, 3}, 4, false},
+		{3, []uint{1, 2, 3}, 2, true},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.n)
+		set := sp.NewGF2VectorSet(c.set)
+		v := sp.NewGF2Vector(c.val)
+		contains := set.ContainsBitOfVector(v)
+		if contains != c.contains {
+			t.Errorf("%v.ContainsBitOfVector(%v) = %v, wamt %v",
+				set, v, contains, c.contains)
+		}
+	}
+}
+
+// RemoveBitsOfVector remove the bits of v from the elements of set
+func TestSetClearBits(t *testing.T) {
+	cases := []struct {
+		n   uint
+		set []uint
+		val uint
+		str string
+	}{
+		{0, []uint{}, 0, "[]"},
+		{0, []uint{}, 1, "[]"},
+		// illegal test case, will panic {0, []uint{1}, 0, "[1]"},
+		{1, []uint{0}, 0, "[0]"},
+		{1, []uint{0}, 1, "[0]"},
+		{1, []uint{1}, 1, "[0]"},
+		{1, []uint{1}, 0, "[1]"},
+		{3, []uint{1, 2, 3}, 0, "[001 010 011]"},
+		{3, []uint{1, 2, 3}, 1, "[000 010 010]"},
+		{3, []uint{1, 2, 3}, 2, "[001 000 001]"},
+		{3, []uint{1, 2, 3}, 3, "[000 000 000]"},
+	}
+	for _, c := range cases {
+		sp := NewGF2VectorSpace(c.n)
+		set := sp.NewGF2VectorSet(c.set)
+		str := fmt.Sprint(set)
+		v := sp.NewGF2Vector(c.val)
+		set.ClearBits(v)
+		rmvstr := fmt.Sprint(set)
+		if rmvstr != c.str {
+			t.Errorf("%v.ClearBits(%v) = \n%v, want\n%v", str, v, rmvstr, c.str)
+		}
+	}
+}
+
+/////////////////////////////////////// Functions /////////////////////////////
 
 func TestNot(t *testing.T) {
 	cases := []struct {
@@ -1435,11 +1681,12 @@ func TestScalarProduct(t *testing.T) {
 	}
 }
 
-func TestOnesOfSet(t *testing.T) {
+/*
+func TestSpanOfSet(t *testing.T) {
 	cases := []struct {
 		dim   uint
 		a     []uint
-		ones  uint
+		span  uint
 		spDim int
 	}{
 		// 0
@@ -1548,19 +1795,19 @@ func TestOnesOfSet(t *testing.T) {
 	for ic, c := range cases {
 		//fmt.Println(i)
 		sp := NewGF2VectorSpace(c.dim)
-		s := make([]*GF2Vector, len(c.a))
+		s := make(GF2VectorSet, len(c.a))
 		for i := range c.a {
 			s[i] = sp.NewGF2Vector(c.a[i])
 		}
-		ones, spDim := OnesOfSet(s)
-		if ones.Val() != c.ones || spDim != c.spDim {
-			t.Errorf("%v: OnesOfSet(%v) = %v, %v, want %b, %v",
-				ic, s, ones, spDim, c.ones, c.spDim)
+		span, spDim := s.SpanOfSet()
+		if span.Val() != c.span || spDim != c.spDim {
+			t.Errorf("%v: %v.SpanOfSet() = %v, %v, want %b, %v",
+				ic, s, span, spDim, c.span, c.spDim)
 		}
 	}
 }
 
-func TestBaseOfOnesVector(t *testing.T) {
+func TestBitDecomp(t *testing.T) {
 	cases := []struct {
 		dim  uint
 		val  uint
@@ -1577,9 +1824,9 @@ func TestBaseOfOnesVector(t *testing.T) {
 		sp := NewGF2VectorSpace(c.dim)
 		vc := sp.NewGF2Vector(c.val)
 		vBase := sp.NewGF2VectorSet(c.base)
-		base := BaseOfOnesVector(vc)
+		base := vc.BitDecomp()
 		if !reflect.DeepEqual(base, vBase) {
-			t.Errorf("BaseOfOnesVector(%v) = \n%v, want \n%v", vc, base, vBase)
+			t.Errorf("%v.BitDecomp() = \n%v, want \n%v", vc, base, vBase)
 		}
 	}
 }
@@ -1606,18 +1853,18 @@ func TestSubspaceOfSet(t *testing.T) {
 	for _, c := range cases {
 		sp := NewGF2VectorSpace(c.dim)
 		set := sp.NewGF2VectorSet(c.set)
-		v, found := SubspaceOfSet(set, c.sbstDim)
+		v, found := set.Subspace(c.sbstDim)
 		val := uint(0)
 		if found {
 			val = v.subOnes
 		}
 		if found != c.found || val != c.val {
-			t.Errorf("SubspaceOfSet(%v, %v, %v) =\n%v, %v, want\n%v, %v",
+			t.Errorf("%v.Subspace(%v, %v) =\n%v, %v, want\n%v, %v",
 				c.set, set, c.sbstDim, val, found, c.val, c.found)
 		}
 	}
 }
-
+*/
 /*
 func TestReduceOtherInUnit(t *testing.T) {
 	cases := []struct {

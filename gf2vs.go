@@ -6,13 +6,20 @@
 // It is sometimes called bit array (also known as bit map, bit set, bit string, or bit vector).
 // The vectors are defined as special type.
 // In addition to math/bits it implements functions of the vector space of a given size.
-// Each vector is constraint to the vector space given at creation time. The unit vectors
-// are considered the base of the vector space. There are functions for verifying is a vector
-// a base vector. The boolean operations and the vector operations are implemented.
+// Each vector is constraint to the vector space given at creation time.
+// The operation complement has only meaning for a vector space of a dedicated size.
+// The unit vectors are considered the base of the vector space.
+// There are functions for verifying is a vector a base vector.
+// The boolean operations and the vector operations are implemented.
 // The count of ones is considered the norm of the vectors. It is the l_1 norm, or hamming weight
 // of the vector. Some times this function is named popcount. It is the result of the scalar product.
-// Sub vector spaces are supported too. A set of vectors may be a span of a sub vector space. This
-// property is verified.
+// The scalar product deliveres the count of common bits of 2 vectors.
+// Sub vector spaces are supported. Each set of vectors spans a sub vector space.
+// If the size of the set equals the dimension of the subspace. The set is
+// confined to a subspace. If a set is partinioned into 2 subsets and one of
+// the subsets is confined to a subspace, the second subset can be restricted to
+// the complement subspace of the vector space. Then the direct sum of the vector spaces exists.
+// The function RestrictToComplement is implementing this algorithmus.
 package gf2vs
 
 import (
@@ -20,58 +27,18 @@ import (
 	"math/bits"
 )
 
+/////////////////////////////////////// Types /////////////////////////////////
+
 // GF2VectorSpace represents a vector space of size n over GF(2).
 type GF2VectorSpace struct {
 	dim  uint // dimension of the vector space
 	ones uint // bitvector where all bit are set, no zeros as allways 0
 }
 
-// NewGF2VectorSpace create a vector space of dimension n.
-// Return a pointer, as only a pointer has a null value, but a struct not.
-// Panic if n is out of range.
-func NewGF2VectorSpace(n uint) *GF2VectorSpace {
-	if n < 1 {
-		panic(fmt.Sprintf("NewGF2VectorSpace(dim): dim = %v < 1", n))
-	}
-	if n > bits.UintSize {
-		panic(fmt.Sprintf("NewGF2VectorSpace(dim): dim = %v > %v = bits.UintSize", n, bits.UintSize))
-	}
-
-	ones := uint(1)
-	for i := uint(1); i < n; i++ {
-		ones <<= 1
-		ones += 1
-	}
-
-	sp := GF2VectorSpace{n, ones}
-	return &sp
-}
-
-func (sp *GF2VectorSpace) String() string {
-	return fmt.Sprintf("GF(2)sp{%v: %v}", sp.dim, sp.ones)
-}
-
 // GF2VectorSubspace represents a vector subspace
 type GF2VectorSubspace struct {
-	GF2VectorSpace
-	subOnes uint // bitvector where the bits of the base are set
-}
-
-// NewGF2VectorSubspace create a sub vector space with base bits b as sub space
-// of a vector space with dimension n.
-// Panic if b > n.
-// We call internally NewGF2VectorSpace which may panic for n out of range.
-func NewGF2VectorSubspace(n, b uint) *GF2VectorSubspace {
-	if b > n {
-		panic(fmt.Sprintf("NewGF2VectorSubspace(dim): base %v not in space with dim = %v", b, n))
-	}
-	vs := NewGF2VectorSpace(n)
-	svs := GF2VectorSubspace{*vs, b}
-	return &svs
-}
-
-func (sp *GF2VectorSubspace) String() string {
-	return fmt.Sprintf("GF(2)ssp{%v: %v, %v}", sp.dim, sp.ones, sp.subOnes)
+	*GF2VectorSpace                 // embbed vector space, a subspace is a space
+	container       *GF2VectorSpace // reference to the vector space containing this subspace
 }
 
 // GF2vector represents a vector in GF(2^n) a bitvector of len n,
@@ -81,55 +48,91 @@ type GF2Vector struct {
 	val uint            // value of the vector
 }
 
-// Val return the value as int.
-// If no valid v is given we return 0.
-func (v *GF2Vector) Val() uint {
-	if v == nil {
-		return 0
+// GF2VectorSet a set of bit vectors
+type GF2VectorSet []*GF2Vector
+
+/////////////////////////////////////// GF2VectorSpace ////////////////////////
+
+// NewGF2VectorSpace create a vector space of dimension n.
+// Return a pointer, as only a pointer has a null value, but a struct not.
+// Panic if n is out of range.
+func NewGF2VectorSpace(n uint) *GF2VectorSpace {
+	if n == 0 {
+		return &GF2VectorSpace{n, n}
 	}
-	return v.val
+	if n > bits.UintSize {
+		panic(fmt.Sprintf("NewGF2VectorSpace(dim): dim = %v > %v = bits.UintSize", n, bits.UintSize))
+	}
+
+	ones := uint(1)
+	for i := ones; i < n; i++ {
+		ones <<= 1
+		ones += 1
+	}
+
+	sp := GF2VectorSpace{n, ones}
+	return &sp
 }
 
 // String returns a string representing
-func (v *GF2Vector) String() string {
-	return fmt.Sprintf("%0[1]*[2]b", v.sp.dim, v.val)
+func (sp *GF2VectorSpace) String() string {
+	return fmt.Sprintf("GF(2)sp{%v: %v}", sp.dim, sp.ones)
+}
+
+// NewGF2VectorSubspace create a sub vector space of sp with base bits b as sub space
+// Panic if b is not element of sp, b needs more bits in the space as dim.
+func (sp *GF2VectorSpace) NewGF2VectorSubspace(b uint) *GF2VectorSubspace {
+	zero := uint(0)
+	if b == zero {
+		sp = &GF2VectorSpace{zero, zero}
+		return &GF2VectorSubspace{sp, sp}
+	}
+	l := uint(bits.Len(b))
+	if l > sp.dim {
+		panic(fmt.Sprintf("NewGF2VectorSubspace(dim): vector %v not in space with dim = %v", b, sp.dim))
+	}
+	dim := uint(bits.OnesCount(b))
+	subsp := &GF2VectorSpace{dim, b} // GF2VectorSpace is embedded
+	return &GF2VectorSubspace{subsp, sp}
 }
 
 // NewGF2Vector create a vector with value in vector space,
 // value must be greater equal 0.
 func (s *GF2VectorSpace) NewGF2Vector(value uint) *GF2Vector {
+	zero := uint(0)
+	if s.dim == zero {
+		return &GF2Vector{s, zero}
+	}
 	vmx := (uint(1) << s.dim) - 1
 	if value > vmx {
 		panic(fmt.Sprintf("NewGF2Vector(value): value = %v > %v", value, vmx))
 	}
 
-	v := GF2Vector{s, value}
-	return &v
+	return &GF2Vector{s, value}
 }
 
 // NewGF2VectorSet return a set of vectors with the values given.
-func (s *GF2VectorSpace) NewGF2VectorSet(u []uint) []*GF2Vector {
+// TODO add test // zero subspace
+func (s *GF2VectorSpace) NewGF2VectorSet(u []uint) GF2VectorSet {
+	if len(u) == 0 {
+		// return empty set
+		return GF2VectorSet{}
+	}
+	zero := uint(0)
+	if s.dim == zero {
+		if len(u) == 1 && u[0] == zero {
+			// we have the zero subspace
+			return GF2VectorSet{&GF2Vector{s, zero}}
+		} else {
+			// Only the zero space has dim zero
+			panic(fmt.Sprintf("%v is not element of the vector space %v.", u, s))
+		}
+	}
 	set := make([]*GF2Vector, len(u))
 	for i, x := range u {
 		set[i] = s.NewGF2Vector(x)
 	}
 	return set
-}
-
-// GF2BaseVector return a GF2Vector representing the base with index i.
-// Panic if i is out of range.
-func (s *GF2VectorSpace) GF2BaseVector(i uint) *GF2Vector {
-	if i == 0 || s.dim < i {
-		panic(fmt.Sprintf("GF2BaseVector(i): i = %v out of range [1, %v]", i, s.dim))
-	}
-	v := uint(1) << (i - 1)
-	b := GF2Vector{s, v}
-	return &b
-}
-
-// BaseVector return the base vector representing the base with index i in the same vector space.
-func (v *GF2Vector) GF2BaseVector(i uint) *GF2Vector {
-	return v.sp.GF2BaseVector(i)
 }
 
 // GF2Zeros return a GF2Vector where all bits are unset.
@@ -144,6 +147,90 @@ func (s *GF2VectorSpace) GF2Ones() *GF2Vector {
 	return &b
 }
 
+// GF2BaseVector return a GF2Vector representing the base with index i.
+// Panic if i is out of range.
+func (s *GF2VectorSpace) GF2BaseVector(i uint) *GF2Vector {
+	if i == 0 || s.dim < i {
+		panic(fmt.Sprintf("GF2BaseVector(i): i = %v out of range [1, %v]", i, s.dim))
+	}
+	v := uint(1) << (i - 1)
+	b := GF2Vector{s, v}
+	return &b
+}
+
+// GF2VectorSpaceBase return the set of base vectors of s.
+func (s *GF2VectorSpace) GF2VectorSpaceBase() GF2VectorSet {
+	set := make(GF2VectorSet, 0, s.dim)
+	o := s.ones
+	for o != 0 {
+		b := bits.TrailingZeros(o)
+		v := uint(1) << b
+		set = append(set, s.NewGF2Vector(v))
+		o -= v
+	}
+	return set
+}
+
+/////////////////////////////////////// GF2VectorSubspace /////////////////////
+
+// String returns a string representing
+func (sp *GF2VectorSubspace) String() string {
+	return fmt.Sprintf("GF(2)ssp{%v: %v, %v}", sp.dim, sp.ones, sp.container)
+}
+
+// NewGF2Vector not implemented, panic if accidently called
+func (sp *GF2VectorSubspace) NewGF2Vector(value uint) *GF2Vector {
+	panic("not implemented")
+	return nil
+}
+
+// GF2BaseVector not implemented, panic if accidently called
+func (sp *GF2VectorSubspace) GF2BaseVector(i uint) *GF2Vector {
+	panic("not implemented")
+	return nil
+}
+
+// GF2VectroSpaceBase return the set of base vectors of s.
+func (sb *GF2VectorSubspace) GF2VectorSpaceBase() GF2VectorSet {
+	set := make(GF2VectorSet, 0, sb.dim)
+	o := sb.ones
+	for o != 0 {
+		b := bits.TrailingZeros(o)
+		v := uint(1) << b
+		sp := sb.container
+		vv := sp.NewGF2Vector(v)
+		set = append(set, vv)
+		o -= v
+	}
+	return set
+}
+
+/////////////////////////////////////// GF2Vector /////////////////////////////
+
+// String returns a string representing
+func (v *GF2Vector) String() string {
+	return fmt.Sprintf("%0[1]*[2]b", v.sp.dim, v.val)
+}
+
+// Copy return a copy of x, sharing the same vector space.
+func (x *GF2Vector) Copy() *GF2Vector {
+	// we allow zero value
+	if x == nil {
+		return x
+	}
+	c := GF2Vector{x.sp, x.val}
+	return &c
+}
+
+// Val return the value as int.
+// If no valid v is given we return 0.
+func (v *GF2Vector) Val() uint {
+	if v == nil {
+		return 0
+	}
+	return v.val
+}
+
 // IsZeros return true if all bits are unset.
 func (v *GF2Vector) IsZeros() bool {
 	return v.val == 0
@@ -152,6 +239,19 @@ func (v *GF2Vector) IsZeros() bool {
 // IsOnes return true if all bits are set.
 func (v *GF2Vector) IsOnes() bool {
 	return v.val == v.sp.ones
+}
+
+/* TODO
+Cmp compares x and y and returns:
+
+-1 if x < y;
+0 if x == y;
++1 if x > y.
+*/
+
+// BaseVector return the base vector representing the base with index i in the same vector space.
+func (v *GF2Vector) GF2BaseVector(i uint) *GF2Vector {
+	return v.sp.GF2BaseVector(i)
 }
 
 // Index return the index of the coordinate of a base vector.
@@ -172,15 +272,81 @@ func (v *GF2Vector) IsBaseVector() bool {
 	return (c > 0) && (c&(c-1)) == 0
 }
 
-// Copy return a copy of x, sharing the same vector space.
-func (x *GF2Vector) Copy() *GF2Vector {
-	// we allow zero value
-	if x == nil {
-		return x
+// UnitVectors return the set of unit vectors of the given bit vector
+func (v *GF2Vector) UnitVectors() GF2VectorSet {
+	vec := v.Val()
+	res := make([]*GF2Vector, 0, bits.Len(vec))
+	for vec != 0 {
+		b := bits.TrailingZeros(vec)
+		vb := uint(1) << b
+		res = append(res, v.sp.NewGF2Vector(vb))
+		vec -= vb
 	}
-	c := GF2Vector{x.sp, x.val}
-	return &c
+	return res
 }
+
+/////////////////////////////////////// GF2VectorSet //////////////////////////
+
+// Subspace return the the subspace spanned by set.
+func (set GF2VectorSet) Subspace() (ssp *GF2VectorSubspace) {
+	if len(set) == 0 {
+		sp := NewGF2VectorSpace(uint(0))
+		return sp.NewGF2VectorSubspace(uint(0))
+	}
+	ones := Or(set...)
+	return set[0].sp.NewGF2VectorSubspace(ones.val)
+}
+
+// Subspace return first subspace of set, with dim.
+// Check all combinations of subsets of a set of bit vectors
+// to see wether a subset is confined to a subspace.
+// If found equals false sp is nil.
+// dim is int and must be greater 0, to support combinations.
+func (set GF2VectorSet) HasSubspaceWithDim(dim int) (sp *GF2VectorSubspace, found bool) {
+	if dim < 0 {
+		panic(fmt.Sprintf("dim = %v < 0, no Subspace defined.", dim))
+	}
+
+	// compute all combinations of subset of size dim
+	subsets := combinations(set, dim)
+
+	for _, s := range subsets {
+		set := GF2VectorSet(s)
+		subSp := set.Subspace()
+		if subSp.dim == uint(dim) {
+			return subSp, true
+		}
+	}
+
+	return
+}
+
+// ContainsBitOfVector return true if any element of the set has a bit of value set
+func (set GF2VectorSet) ContainsBitOfVector(v *GF2Vector) bool {
+	if v.IsZeros() {
+		return false
+	}
+	ub := v.UnitVectors()
+	for _, d := range ub {
+		for _, s := range set {
+			cmpVal := d.val & s.val
+			if cmpVal != 0 && cmpVal == d.val {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// ClearBits remove the bits of v from the elements of set
+func (set GF2VectorSet) ClearBits(v *GF2Vector) {
+	notv := Not(v)
+	for i, s := range set {
+		set[i] = And(s, notv)
+	}
+}
+
+/////////////////////////////////////// Functions /////////////////////////////
 
 // Not returns ^x, the negation of x.
 func Not(x *GF2Vector) *GF2Vector {
@@ -239,6 +405,14 @@ func Xor(x ...*GF2Vector) *GF2Vector {
 	return &z
 }
 
+// ComplementAnd return z = Not(And(x) = ^(x_1 | x_2 | ...),
+// This can be used to as complement mask
+// TODO add test
+func ComplementAnd(x ...*GF2Vector) *GF2Vector {
+	z := And(x...)
+	return Not(z)
+}
+
 // ComplementOr return z = Not(Or(x) = ^(x_1 | x_2 | ...),
 // This can be used to "subtract" the Or(x) from Ones.
 func ComplementOr(x ...*GF2Vector) *GF2Vector {
@@ -283,72 +457,6 @@ func ScalarProduct(a, b *GF2Vector) int {
 	prod := And(a, b)
 	return OnesCount(prod)
 }
-
-// BaseOfOnesVector return the base, the set of unit vectors of the given bit vector
-func BaseOfOnesVector(vc *GF2Vector) []*GF2Vector {
-	vec := vc.Val()
-	res := make([]*GF2Vector, 0, bits.Len(vec))
-	for vec != 0 {
-		b := bits.TrailingZeros(vec)
-		v := uint(1) << b
-		res = append(res, vc.sp.NewGF2Vector(v))
-		vec -= v
-	}
-	return res
-}
-
-// OnesOfSet return the ones of the span and the dimension of the subspace
-// of the vectors in the given set.
-func OnesOfSet(set []*GF2Vector) (*GF2Vector, int) {
-	span := Or(set...) // demands all s are in same vectorspace
-	return span, OnesCount(span)
-}
-
-// SubspaceOfSet return first subspace of set, with dim.
-// check all combinations of subsets of a set of bit vectors
-// to see wether a subset is confined to a subspace.
-// if found equals false sp is nil.
-func SubspaceOfSet(set []*GF2Vector, dim int) (sp *GF2VectorSubspace, found bool) {
-	// compute all combinations of subset of size dim
-	subsets := combinations(set, dim)
-
-	for _, s := range subsets {
-		spOnes, spDim := OnesOfSet(s)
-		if spDim == dim {
-			spa := GF2VectorSubspace{*set[0].sp, spOnes.Val()}
-			return &spa, true
-		}
-	}
-
-	return
-}
-
-/* TODO
-// isBaseElementOfValueInSet return true if any element of the set has the bits of value set
-func isValueInSet(value uint, set []*GF2Vector) bool {
-	if value == 0 {
-		return false
-	}
-	ub := unitBits(uint(value))
-	for _, d := range ub {
-		for _, s := range set {
-			cmpVal := grid[s] & d
-			if cmpVal != 0 && cmpVal == d {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-// removeValueFromSet remove the digit(value) from the elements of grid in set
-func removeValueFromSet(d, allDigits int, set, grid []int) {
-	notd := allDigits ^ d
-	for _, s := range set {
-		grid[s] &= notd
-	}
-}
-*/
 
 /////////////////////////////////////// utility functions /////////////////////
 
